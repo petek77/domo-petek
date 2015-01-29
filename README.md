@@ -37,6 +37,9 @@ A special THANK YOU, for help, testing, ideas and tips
 
 # Changelog
 
+0.51 - 28/01/2015
+- Changed default theme
+
 0.50 - 28/01/2015
 - Show last update date
 - Preparing for different themes

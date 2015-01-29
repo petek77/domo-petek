@@ -4,7 +4,7 @@ var req;
 var reqxbmc;
 var slide;
 var sliding = false;
-var dashticz_version='0.50';
+var dashticz_version='0.51';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 
@@ -149,20 +149,23 @@ function getDevices(){
 							var currentdate = '<span class="small">Update: '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 							
 							var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device'+data.result[r]['idx']+'">';
-								html+='<div class="panel panel-block panel-'+_THEMECOLOR+'">';
+								html+='<div class="panel panel-block panel-default">';
 									html+='<div class="panel-heading';
 									if(data.result[r]['TypeImg']=='temperature') html+=' nodetails';
 									html+='">';
 										html+='<div class="row">';
 											html+='<div class="col-xs-8">';
 												if(data.result[r]['SwitchType']=='Dimmer'){
-													html+='<div class="huge">'+data.result[r]['Name']+' <Br />TEST('+current+')</div>';
+													html+='<div>'+data.result[r]['Name']+' ('+current+')</div>';
 													html+='<div>';
 													html+='<input type="text" class="span2" value="'+data.result[r]['Level']+'" id="sl'+data.result[r]['idx']+'" >';
 													html+='</div>'
 												}
-												else {
+												else if(data.result[r]['TypeImg']=='temperature'){
 													html+='<div class="huge">'+current+'</div>';
+													html+='<div class="small">'+data.result[r]['Name']+'</div>';
+												}
+												else {
 													html+='<div>'+data.result[r]['Name']+'</div>';
 												}
 											html+='</div>';
@@ -286,16 +289,15 @@ function getDevices(){
 			if(typeof(temperatureBlock['Wunderground'])!=='undefined'){
 				var wg = temperatureBlock['Wunderground'];
 				var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="wunderground">';
-					html+='<div class="panel panel-'+_THEMECOLOR+'">';
+					html+='<div class="panel panel-default">';
 						html+='<div class="panel-heading nodetails">';
 							html+='<div class="row">';
 								html+='<div class="col-xs-8">';
-									html+='<div class="huge" style="font-size:21px;">'+wg['Temp']+'</div>';
-									html+='<div>';
+									html+='<div class="huge">'+wg['Temp']+'</div>';
+									html+='<div class="small">';
 									if(typeof(wg['Rain'])!=='undefined') html+='Regen: '+wg['Rain']+'mm<br />';
 									if(typeof(wg['Gust'])!=='undefined') html+='Windkracht: '+wg['Gust']+', '+wg['Direction']+'<br />';
-									if(typeof(wg['Humidity'])!=='undefined') html+='Luchtvochtigheid: '+wg['Humidity']+'<br />';
-									if(typeof(wg['Pressure'])!=='undefined') html+='Luchtdruk: '+wg['Pressure']+'<br />';
+									if(typeof(wg['Humidity'])!=='undefined') html+='Luchtdruk: '+wg['Pressure']+', '+wg['Humidity']+'<br />';
 									html+='</div>';
 								html+='</div>';
 								html+='<div class="col-xs-4 text-right" style="padding-left:0px;">';
@@ -443,7 +445,7 @@ function getXbmc(){
 				}
 				
 				var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
-					html+='<div class="panel panel-'+_THEMECOLOR_XBMC+'">';
+					html+='<div class="panel panel-default">';
 						html+='<div class="panel-heading">';
 							html+='<div class="row">';
 								html+='<div class="col-xs-12 text-left">';
