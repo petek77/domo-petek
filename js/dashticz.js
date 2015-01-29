@@ -9,9 +9,9 @@ var temperatureBlock=new Object();
 var sliderlist = new Object();
 
 $(document).ready(function(){
-	$('link#theme').attr('href','themes/default/css/style.css');
+	$('link#theme').attr('href','themes/'+_THEME+'/css/style.css');
 	$('span#dversion').html(dashticz_version);
-	$.get('/json.htm?type=command&param=getversion',function(data){
+	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 		data=$.parseJSON(data);
 		$('span#version').html(data.version);
 	});
@@ -32,7 +32,7 @@ function autoGetDevices(){
 function getDevices(){
 	if(!sliding){
 		if(typeof(req)!=='undefined') req.abort();
-		req = $.get('/json.htm?type=devices&filter=all&used=true&order=Name',function(data){
+		req = $.get(_DOMOTICZHOST+'/json.htm?type=devices&filter=all&used=true&order=Name',function(data){
 			data=$.parseJSON(data);
 			for(r in data.result){
 					
@@ -482,7 +482,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 	else {
 		realrange=range;
 		if(range=='last') realrange='day';
-		$.get('/json.htm?type=graph&sensor='+sensor+'&idx='+idx+'&range='+realrange,function(data){
+		$.get(_DOMOTICZHOST+'/json.htm?type=graph&sensor='+sensor+'&idx='+idx+'&range='+realrange,function(data){
 			
 			var html = '<div class="row dashboard" id="device'+idx+'">';
 				html+='<div class="col-lg-12">';
@@ -604,7 +604,7 @@ function switchDevice(idx,status){
 	if(status=='Off') var doStatus='On';
 	if(status=='On') var doStatus='Off';
 	req.abort();
-	$.get('/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd='+doStatus+'&level=0&passcode=',function(){
+	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd='+doStatus+'&level=0&passcode=',function(){
 		setTimeout(function(){ getDevices(); },1000);
 	});	
 }
@@ -615,7 +615,7 @@ function slideDevice(idx,status){
 	
 	if(typeof(slide)!=='undefined') slide.abort();
 	if(status>1) sliderlist['sl'+idx] = status;
-	slide = $.get('/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+status,function(){
+	slide = $.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+status,function(){
 		if(status>1) icon.removeClass('icon-inactive').addClass('icon-active');
 		else icon.removeClass('icon-active').addClass('inicon-active');
 		sliding = false;
@@ -626,12 +626,12 @@ function slideDeviceToggle(idx){
 	var parentblock = $('#device'+idx);
 	var icon = parentblock.find('i.mainicon');
 	if(icon.hasClass('icon-active')){
-		$.get('/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level=1',function(){
+		$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level=1',function(){
 			icon.removeClass('icon-active').addClass('icon-inactive');
 		});	
 	}
 	else {
-		$.get('/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+sliderlist['sl'+idx],function(){
+		$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+sliderlist['sl'+idx],function(){
 			icon.removeClass('icon-inactive').addClass('icon-active');
 		});	
 	}
