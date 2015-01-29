@@ -22,6 +22,11 @@ WARNING!!
 After a Domoticz-update, you have to re-upload Dashticz.
 Domoticz removes the whole folder!
 
+
+# Screenshots
+http://www.domoticz.com/wiki/images/4/44/Dashticz-v0.35.jpg
+
+
 # Special thanks
 
 A special THANK YOU, for help, testing, ideas and tips

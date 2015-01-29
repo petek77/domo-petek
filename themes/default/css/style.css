@@ -2,6 +2,9 @@ body {
     background-color: #fff;
 	font-family:"Open Sans";
 }
+a {
+	color: #333;	
+}
 b, strong {
     font-weight: 600;
 }
@@ -12,6 +15,12 @@ b, strong {
 #page-wrapper {
     padding: 15px;
 	padding-top:50px;
+}
+
+span#settings {
+	border-left:1px solid #000;
+	padding-left:10px;
+	margin-left:10px;
 }
 
 div.fl-left { float:left }
@@ -36,7 +45,9 @@ div.fl-right { float:right }
 	width:100%;	
 }
 .row div.huge {
-	font-size:25px;	
+	font-size:25px;
+	height: 36px;
+    overflow: hidden;	
 }
 .row #xbmc-playing div.huge {
 	font-size:21px;	

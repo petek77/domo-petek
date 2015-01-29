@@ -4,12 +4,14 @@ var req;
 var reqxbmc;
 var slide;
 var sliding = false;
-var dashticz_version='0.49';
+var dashticz_version='0.50';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 
 $(document).ready(function(){
-	$('link#theme').attr('href','themes/'+_THEME+'/css/style.css');
+	if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
+	
+	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
 	$('span#dversion').html(dashticz_version);
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 		data=$.parseJSON(data);
@@ -23,6 +25,22 @@ $(document).ready(function(){
 	
 	//if(_XBMCHOST!=="") openXbmcLibrary();
 });
+
+function openSettings(){
+	$('#settingsModal').modal('show');	
+}
+
+function saveSettings(){
+	$('#settingsModal select,#settingsModal input').each(function(){
+		$.cookie($(this).attr('name'),$(this).val());
+	});
+	setTimeout(function(){ document.location.href=document.location.href; },1000);
+}
+
+function switchTheme(theme){
+	$('link#theme').attr('href','themes/'+theme+'/css/style.css');
+	$.cookie('theme', theme);
+}
 
 function autoGetDevices(){
 	getDevices();
@@ -138,7 +156,7 @@ function getDevices(){
 										html+='<div class="row">';
 											html+='<div class="col-xs-8">';
 												if(data.result[r]['SwitchType']=='Dimmer'){
-													html+='<div class="huge">'+data.result[r]['Name']+' ('+current+')</div>';
+													html+='<div class="huge">'+data.result[r]['Name']+' <Br />TEST('+current+')</div>';
 													html+='<div>';
 													html+='<input type="text" class="span2" value="'+data.result[r]['Level']+'" id="sl'+data.result[r]['idx']+'" >';
 													html+='</div>'
@@ -221,7 +239,7 @@ function getDevices(){
 							html+='</div>';
 						
 							if($('#device'+data.result[r]['idx']).length>0){
-								$('#device'+data.result[r]['idx']).replaceWith(html);
+								//$('#device'+data.result[r]['idx']).replaceWith(html);
 							}
 							else $('.row.dashboard').append(html);
 						}
