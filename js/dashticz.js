@@ -128,9 +128,10 @@ function getDevices(){
 							
 						}
 						else if(!sliding){
+							var currentdate = '<span class="small">Update: '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 							
 							var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device'+data.result[r]['idx']+'">';
-								html+='<div class="panel panel-'+_THEMECOLOR+'">';
+								html+='<div class="panel panel-block panel-'+_THEMECOLOR+'">';
 									html+='<div class="panel-heading';
 									if(data.result[r]['TypeImg']=='temperature') html+=' nodetails';
 									html+='">';
@@ -182,12 +183,14 @@ function getDevices(){
 									if(data.result[r]['SwitchType']=='On/Off'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
+											html+='<span class="pull-left">Beveiligd'+currentdate+'</span>';
 											html+='<span class="pull-right"><i class="fa fa-lock"></i></span>';
 											html+='<div class="clearfix"></div>';
-										}else{
+										}
+										else{
 											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+',\''+data.result[r]['Status']+'\');">';
 												html+='<div class="panel-footer">';
-													html+='<span class="pull-left">Schakelen</span>';
+													html+='<span class="pull-left">Schakelen'+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -197,7 +200,7 @@ function getDevices(){
 									else if(data.result[r]['SwitchType']=='Dimmer'){
 										html+='<a href="javascript:slideDeviceToggle('+data.result[r]['idx']+');">';
 											html+='<div class="panel-footer">';
-												html+='<span class="pull-left">Schakelen</span>';
+												html+='<span class="pull-left">Schakelen'+currentdate+'</span>';
 												html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 												html+='<div class="clearfix"></div>';
 											html+='</div>';
