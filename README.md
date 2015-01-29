@@ -1,4 +1,4 @@
-# dashticz
+# Dashticz
 Dashboard addon for Domoticz
 
 To install Dashticz, you should have access to the installation directory of Domoticz.
