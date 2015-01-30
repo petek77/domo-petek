@@ -33,9 +33,15 @@ A special THANK YOU, for help, testing, ideas and tips
 - Michaël van der Heijden
 - Remco van Geel
 - Arjan van de Wiel
+- Leon G. / Dountill
 
 
 # Changelog
+
+0.52 - 29/01/2015
+- More preparation for theming
+- Fix in XBMC-block wich shows what's currently playing
+- Small CSS-fixes for settings screen
 
 0.51 - 29/01/2015
 - Changed default theme

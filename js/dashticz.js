@@ -37,6 +37,7 @@ function openSettings(){
 }
 
 function saveSettings(){
+	$('.modal-footer .btn-primary').html('Saving...');
 	$('#settingsModal select,#settingsModal input').each(function(){
 		$.cookie($(this).attr('name'),$(this).val());
 	});

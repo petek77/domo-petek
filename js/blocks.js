@@ -5,7 +5,7 @@ var blocks = new Object();
 //TOP BAR
 blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">';
     blocks['topbar']+= '<div class="navbar-header">';
-        blocks['topbar']+= '<div class="fl-left" style="padding-top:3px;">';
+        blocks['topbar']+= '<div class="fl-left">';
         	blocks['topbar']+= '<strong>Domoticz</strong> V<span id="version"></span> | ';
             blocks['topbar']+= '<strong>Dashticz</strong> V<span id="dversion"></span>';
             blocks['topbar']+= '<span id="menu" style="display:none;"> | ';
@@ -49,14 +49,20 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 		blocks['settings']+= '<div class="modal-content">';
 			blocks['settings']+= '<div class="modal-header">';
 				blocks['settings']+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
-				blocks['settings']+= '<h4 class="modal-title" id="myModalLabel">Settings</h4>';
+				blocks['settings']+= '<h3 class="modal-title" id="myModalLabel">Settings</h3>';
+				blocks['settings']+= '<h5>Change Dashticz the way you want it to be</h5>';
 			blocks['settings']+= '</div>';
 			blocks['settings']+= '<div class="modal-body">';
-				blocks['settings']+= 'Thema:<br />';
-				blocks['settings']+= '<select name="theme">';
-					blocks['settings']+= '<option value="default">Default</option>';
-					//blocks['settings']+= '<option value="darkoticz">Darkoticz</option>';
-				blocks['settings']+= '</select>';
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-2">Theme</label>';
+					blocks['settings']+= '<div class="col-md-10">';
+						blocks['settings']+= '<select name="theme" class="form-control">';
+							blocks['settings']+= '<option value="default">Default</option>';
+						blocks['settings']+= '</select>';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';
+					
 			blocks['settings']+= '</div>';
 			blocks['settings']+= '<div class="modal-footer">';
 				blocks['settings']+= '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';

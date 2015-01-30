@@ -17,10 +17,24 @@ $(window).resize(function(){
 	
 		clearTimeout($.data(this, 'resizeTimer'));
     	$.data(this, 'resizeTimer', setTimeout(function() {
-    	    checkHeighest();
+    	    checkHeighestPoster();
    		}, 500));
 	}
 });
+
+
+
+function checkHeighestPoster(){
+	var highestBox = 0;
+	$('.movieitem').each(function(){
+		if($(this).find('img.poster').height() > highestBox) {
+		   highestBox = $(this).find('img.poster').height(); 
+		}
+	});
+	
+	$('.movieitem img.poster').height(highestBox);	
+}
+
 
 function openXbmcLibrary(){
 	_data = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies",  "params": {"sort": {"order": "ascending", "method": "title"}, "properties": ["title", "art"] }, "id": 1};
