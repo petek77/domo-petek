@@ -1,17 +1,28 @@
 //DON'T TOUCH, UNLESS YOU KNOW WHAT YOU ARE DOING
-var xbmcplaying;
 var req;
-var reqxbmc;
 var slide;
 var sliding = false;
-var dashticz_version='0.51';
+var dashticz_version='0.52';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 
 $(document).ready(function(){
 	if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
 	
+    $('#jsscripts').before('<script src="js/config.js"></script>');
+    $('#jsscripts').before('<script src="js/blocks.js"></script>');
+    $('#jsscripts').before('<script src="js/functions.js"></script>');
+    $('#jsscripts').before('<script src="js/xbmc.js"></script>');
+	
 	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
+    $('#jsscripts').before('<script src="themes/'+$.cookie('theme')+'/js/config.js"></script>');
+    $('#jsscripts').before('<script src="themes/'+$.cookie('theme')+'/js/blocks.js"></script>');
+    
+    $('div#wrapper').append(blocks['topbar']);
+    $('div#wrapper').append(blocks['blocks']);
+    if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+	$('div#wrapper').append(blocks['settings']);
+	
 	$('span#dversion').html(dashticz_version);
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 		data=$.parseJSON(data);
@@ -19,11 +30,6 @@ $(document).ready(function(){
 	});
 	
 	autoGetDevices();
-	if(_XBMCHOST!==""){
-		$('span#menu').show();	
-	}
-	
-	//if(_XBMCHOST!=="") openXbmcLibrary();
 });
 
 function openSettings(){
@@ -54,14 +60,8 @@ function getDevices(){
 			data=$.parseJSON(data);
 			for(r in data.result){
 					
-				if(_XBMCHOST!==""){
-					xbmcplaying=false;
-					if(data.result[r]['Name']==_XBMCSWITCH){
-						if(data.result[r]['Status']=='On') xbmcplaying=true;
-						getXbmc();
-					}
-				}
-				
+				getXbmc(data.result[r]['Name']);
+							
 				if(data.result[r]['Favorite']==1){
 					
 					  if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='vandaag '+data.result[r]['CounterToday'];
@@ -211,7 +211,7 @@ function getDevices(){
 										else{
 											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+',\''+data.result[r]['Status']+'\');">';
 												html+='<div class="panel-footer">';
-													html+='<span class="pull-left">Schakelen'+currentdate+'</span>';
+													html+='<span class="pull-left">Switch'+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -221,7 +221,7 @@ function getDevices(){
 									else if(data.result[r]['SwitchType']=='Dimmer'){
 										html+='<a href="javascript:slideDeviceToggle('+data.result[r]['idx']+');">';
 											html+='<div class="panel-footer">';
-												html+='<span class="pull-left">Schakelen'+currentdate+'</span>';
+												html+='<span class="pull-left">Switch'+currentdate+'</span>';
 												html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 												html+='<div class="clearfix"></div>';
 											html+='</div>';
@@ -295,9 +295,9 @@ function getDevices(){
 								html+='<div class="col-xs-8">';
 									html+='<div class="huge">'+wg['Temp']+'</div>';
 									html+='<div class="small">';
-									if(typeof(wg['Rain'])!=='undefined') html+='Regen: '+wg['Rain']+'mm<br />';
-									if(typeof(wg['Gust'])!=='undefined') html+='Windkracht: '+wg['Gust']+', '+wg['Direction']+'<br />';
-									if(typeof(wg['Humidity'])!=='undefined') html+='Luchtdruk: '+wg['Pressure']+', '+wg['Humidity']+'<br />';
+									if(typeof(wg['Rain'])!=='undefined') html+='Rain: '+wg['Rain']+'mm<br />';
+									if(typeof(wg['Gust'])!=='undefined') html+='Gust: '+wg['Gust']+', '+wg['Direction']+'<br />';
+									if(typeof(wg['Humidity'])!=='undefined') html+='Pressure: '+wg['Pressure']+', '+wg['Humidity']+'<br />';
 									html+='</div>';
 								html+='</div>';
 								html+='<div class="col-xs-4 text-right" style="padding-left:0px;">';
@@ -340,16 +340,6 @@ function getDevices(){
 							html+='</div>';
 						html+='</div>';
 						
-						/*
-						html+='<a href="javascript:javascript:void(0);">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">&nbsp;</span>';
-								html+='<span class="pull-right"></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-						*/
-						
 					html+='</div>';
 				html+='</div>';
 				
@@ -366,133 +356,9 @@ function getDevices(){
 	}
 }
 
-function openXbmcLibrary(){
-	_data = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies",  "params": {"sort": {"order": "ascending", "method": "title"}, "properties": ["title", "art"] }, "id": 1};
-
-	$.post(_XBMCHOST,_data,function(data){
-		data=$.parseJSON(data);
-		for(m in data['result']['movies']){
-			if($('#movie'+data['result']['movies'][m]['movieid']).length==0){
-
-				var html='<div class="col-sm-2 movieitem" id="movie'+data['result']['movies'][m]['movieid']+'">';
-					html+='<div class="panel panel-'+_THEMECOLOR+'">';
-						html+='<div class="panel-heading">';
-							html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
-						html+='</div>';
-						
-						html+='<a class="details" href="javascript:javascript:void(0);">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Afspelen</span>';
-								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-					html+='</div>';
-				html+='</div>';
-				  
-				$('.row.xbmc').append(html);
-			}
-		}
-	});
-}
-
 function showDashboard(){
 	$('.row').show();
 	$('.row.xbmc').hide();
-}
-
-function showXbmc(){
-	$('.row').hide();
-	$('.row.xbmc').show();
-	
-	checkHeighest();
-}
-
-function checkHeighest(){
-	var highestBox = 0;
-	$('.movieitem').each(function(){
-		if($(this).find('img.poster').height() > highestBox) {
-		   highestBox = $(this).find('img.poster').height(); 
-		}
-	});
-	
-	$('.movieitem img.poster').height(highestBox);	
-}
-
-$(window).resize(function(){
-	if(_XBMCHOST!==""){
-		$('.movieitem img.poster').height('auto');
-	
-		clearTimeout($.data(this, 'resizeTimer'));
-    	$.data(this, 'resizeTimer', setTimeout(function() {
-    	    checkHeighest();
-   		}, 500));
-	}
-});
-
-function getXbmc(){
-	
-	_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": 1 }, "id": "VideoGetItem"};
-	if(typeof(reqxbmc)=='undefined'){
-		reqxbmc = $.post(_XBMCHOST,_data,function(data){
-			data=$.parseJSON(data);
-			if(typeof(data['result'])!=='undefined'){
-				dis_pause = '';
-				dis_play = 'display:none;';
-				if(!xbmcplaying){
-					dis_pause = 'display:none;';
-					dis_play = '';
-				}
-				
-				var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
-					html+='<div class="panel panel-default">';
-						html+='<div class="panel-heading">';
-							html+='<div class="row">';
-								html+='<div class="col-xs-12 text-left">';
-									
-									if(data['result']['item']['season']<0){
-										label = data['result']['item']['label'].split(' - ');
-										label[0] = label[0].replace('.avi','').replace('.mkv','');
-										html+='<div class="huge">'+label[0]+'</div>';
-										if(typeof(label[1])!=='undefined') html+='<div>'+label[1]+'</div>';
-										else html+='<div>&nbsp;</div>';
-									}
-									else {
-										html+='<div class="huge">'+data['result']['item']['showtitle']+'</div>';
-										html+='<div>S'+data['result']['item']['season']+'E'+data['result']['item']['episode']+' - '+data['result']['item']['label']+'</div>';
-									}
-									
-								html+='</div>';
-							html+='</div>';
-						html+='</div>';
-						
-						html+='<a class="details pause" style="'+dis_pause+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'On\');">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Pauzeren</span>';
-								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-					
-						html+='<a class="details play" style="'+dis_play+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'Off\');">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Hervatten</span>';
-								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-					html+='</div>';
-				html+='</div>';
-				
-				if($('#xbmc-playing').length>0){
-					$('#xbmc-playing').replaceWith(html);
-				}
-				else $('.row.dashboard:first').prepend(html);
-			}
-			delete reqxbmc;		
-		});	
-	}
-	
 }
 
 function showGraph(idx,title,label,range,current,forced,sensor){
@@ -512,10 +378,10 @@ function showGraph(idx,title,label,range,current,forced,sensor){
                     html+='<div class="panel panel-default">';
                         html+='<div class="panel-heading graph"><div class="pull-left">';
                             html+=title+': <B>'+current+'</B>';
-							if(range=='last') html+='<br />Laatste 4 uur:';
-							if(range=='day') html+='<br />Vandaag:';
-							if(range=='week') html+='<br />Afgelopen week:';
-							if(range=='month') html+='<br />Afgelopen maand:';
+							if(range=='last') html+='<br />Last hours:';
+							if(range=='day') html+='<br />Today:';
+							if(range=='week') html+='<br />Last week:';
+							if(range=='month') html+='<br />Last month:';
                             html+='</div><div class="pull-right">';
                                 html+='<div class="btn-group">';
                                    
@@ -527,20 +393,10 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 									if(range=='day') html+='active';
 									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">Dag</button> ';
 									
-									/*
-									html+='<button type="button" class="btn btn-default ';
-									if(range=='week') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'week\',\''+current+'\',true,\''+sensor+'\');">Week</button> ';
-									*/
-									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='month') html+='active';
 									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">Maand</button>';
-									/*
-									html+='<button type="button" class="btn btn-default ';
-									if(range=='year') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'year\',\''+current+'\',true,\''+sensor+'\');">Jaar</button>';
-									*/
+
                                 html+='</div>';
                             html+='</div><div class="clearfix"></div>';
                         html+='</div>';
