@@ -97,10 +97,10 @@ function getDevices(){
 						data.result[r]['SubType']=='Energy' ||
 						data.result[r]['SubType']=='Gas'
 					){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Verbruik','last',current,false,'counter');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Usage','last',current,false,'counter');
 					}
 					else if (data.result[r]['HardwareName']=='Motherboard' && data.result[r]['Type']=='Temp'){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Temperatuur','last',current,false,'temp');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Temperature','last',current,false,'temp');
 					}
 					else if (data.result[r]['HardwareName']=='Motherboard' && (stristr(data.result[r]['Name'],'cpu') || stristr(data.result[r]['Name'],'hdd') || stristr(data.result[r]['Name'],'geheugen') || stristr(data.result[r]['Name'],'memory'))){
 						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Percentage','last',current,false,'Percentage');
@@ -108,7 +108,7 @@ function getDevices(){
 					else if(
 						data.result[r]['SubType']=='Solar Radiation'
 					){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Straling','last',current,false,'counter');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Radiation','last',current,false,'counter');
 					}
 					else if(
 						data.result[r]['Name']==_SUNSWITCH
@@ -204,14 +204,14 @@ function getDevices(){
 									if(data.result[r]['SwitchType']=='On/Off'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
-											html+='<span class="pull-left">Beveiligd'+currentdate+'</span>';
+											html+='<span class="pull-left">Locked'+currentdate+'</span>';
 											html+='<span class="pull-right"><i class="fa fa-lock"></i></span>';
 											html+='<div class="clearfix"></div>';
 										}
 										else{
 											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+',\''+data.result[r]['Status']+'\');">';
 												html+='<div class="panel-footer">';
-													html+='<span class="pull-left">Schakelen'+currentdate+'</span>';
+													html+='<span class="pull-left">Switch'+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -221,7 +221,7 @@ function getDevices(){
 									else if(data.result[r]['SwitchType']=='Dimmer'){
 										html+='<a href="javascript:slideDeviceToggle('+data.result[r]['idx']+');">';
 											html+='<div class="panel-footer">';
-												html+='<span class="pull-left">Schakelen'+currentdate+'</span>';
+												html+='<span class="pull-left">Switch'+currentdate+'</span>';
 												html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 												html+='<div class="clearfix"></div>';
 											html+='</div>';
@@ -242,7 +242,7 @@ function getDevices(){
 							html+='</div>';
 						
 							if($('#device'+data.result[r]['idx']).length>0){
-								//$('#device'+data.result[r]['idx']).replaceWith(html);
+								$('#device'+data.result[r]['idx']).replaceWith(html);
 							}
 							else $('.row.dashboard').append(html);
 						}
@@ -295,9 +295,9 @@ function getDevices(){
 								html+='<div class="col-xs-8">';
 									html+='<div class="huge">'+wg['Temp']+'</div>';
 									html+='<div class="small">';
-									if(typeof(wg['Rain'])!=='undefined') html+='Regen: '+wg['Rain']+'mm<br />';
-									if(typeof(wg['Gust'])!=='undefined') html+='Windkracht: '+wg['Gust']+', '+wg['Direction']+'<br />';
-									if(typeof(wg['Humidity'])!=='undefined') html+='Luchtdruk: '+wg['Pressure']+', '+wg['Humidity']+'<br />';
+									if(typeof(wg['Rain'])!=='undefined') html+='Rain: '+wg['Rain']+'mm<br />';
+									if(typeof(wg['Gust'])!=='undefined') html+='Gust: '+wg['Gust']+', '+wg['Direction']+'<br />';
+									if(typeof(wg['Humidity'])!=='undefined') html+='Pressure: '+wg['Pressure']+', '+wg['Humidity']+'<br />';
 									html+='</div>';
 								html+='</div>';
 								html+='<div class="col-xs-4 text-right" style="padding-left:0px;">';
@@ -340,16 +340,6 @@ function getDevices(){
 							html+='</div>';
 						html+='</div>';
 						
-						/*
-						html+='<a href="javascript:javascript:void(0);">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">&nbsp;</span>';
-								html+='<span class="pull-right"></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-						*/
-						
 					html+='</div>';
 				html+='</div>';
 				
@@ -382,7 +372,7 @@ function openXbmcLibrary(){
 						
 						html+='<a class="details" href="javascript:javascript:void(0);">';
 							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Afspelen</span>';
+								html+='<span class="pull-left">Play</span>';
 								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 								html+='<div class="clearfix"></div>';
 							html+='</div>';
@@ -468,7 +458,7 @@ function getXbmc(){
 						
 						html+='<a class="details pause" style="'+dis_pause+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'On\');">';
 							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Pauzeren</span>';
+								html+='<span class="pull-left">Pause</span>';
 								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 								html+='<div class="clearfix"></div>';
 							html+='</div>';
@@ -476,7 +466,7 @@ function getXbmc(){
 					
 						html+='<a class="details play" style="'+dis_play+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'Off\');">';
 							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Hervatten</span>';
+								html+='<span class="pull-left">Resume</span>';
 								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 								html+='<div class="clearfix"></div>';
 							html+='</div>';
@@ -512,20 +502,20 @@ function showGraph(idx,title,label,range,current,forced,sensor){
                     html+='<div class="panel panel-default">';
                         html+='<div class="panel-heading graph"><div class="pull-left">';
                             html+=title+': <B>'+current+'</B>';
-							if(range=='last') html+='<br />Laatste 4 uur:';
-							if(range=='day') html+='<br />Vandaag:';
-							if(range=='week') html+='<br />Afgelopen week:';
-							if(range=='month') html+='<br />Afgelopen maand:';
+							if(range=='last') html+='<br />Last hours:';
+							if(range=='day') html+='<br />Today:';
+							if(range=='week') html+='<br />Last week:';
+							if(range=='month') html+='<br />Last month:';
                             html+='</div><div class="pull-right">';
                                 html+='<div class="btn-group">';
                                    
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='last') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">4 uur</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">Last</button> ';
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='day') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">Dag</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">Day</button> ';
 									
 									/*
 									html+='<button type="button" class="btn btn-default ';
@@ -535,7 +525,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='month') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">Maand</button>';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">Month</button>';
 									/*
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='year') html+='active';
