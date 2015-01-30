@@ -38,7 +38,7 @@ function openXbmcLibrary(){
 						
 						html+='<a class="details" href="javascript:javascript:void(0);">';
 							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Afspelen</span>';
+								html+='<span class="pull-left">Play</span>';
 								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 								html+='<div class="clearfix"></div>';
 							html+='</div>';
@@ -52,12 +52,11 @@ function openXbmcLibrary(){
 	});
 }
 
-function getXbmc(NAME,STATUS){
+function getXbmc(DEVICE){
 	if(_XBMCHOST!==""){
-		xbmcplaying=false;
-		if(NAME==_XBMCSWITCH){
-			if(STATUS=='On') xbmcplaying=true;
-				
+		if(DEVICE['Name']==_XBMCSWITCH){
+			xbmcplaying=false;
+			if(DEVICE['Status']=='On') xbmcplaying=true;
 			_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": 1 }, "id": "VideoGetItem"};
 			if(typeof(reqxbmc)=='undefined'){
 				reqxbmc = $.post(_XBMCHOST,_data,function(data){
@@ -94,7 +93,7 @@ function getXbmc(NAME,STATUS){
 								
 								html+='<a class="details pause" style="'+dis_pause+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'On\');">';
 									html+='<div class="panel-footer">';
-										html+='<span class="pull-left">Pauzeren</span>';
+										html+='<span class="pull-left">Pause</span>';
 										html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 										html+='<div class="clearfix"></div>';
 									html+='</div>';
@@ -102,7 +101,7 @@ function getXbmc(NAME,STATUS){
 							
 								html+='<a class="details play" style="'+dis_play+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'Off\');">';
 									html+='<div class="panel-footer">';
-										html+='<span class="pull-left">Hervatten</span>';
+										html+='<span class="pull-left">Resume</span>';
 										html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 										html+='<div class="clearfix"></div>';
 									html+='</div>';
@@ -120,70 +119,4 @@ function getXbmc(NAME,STATUS){
 			}
 		}
 	}
-	
-}
-
-function getXbmc(){
-	
-	_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": 1 }, "id": "VideoGetItem"};
-	if(typeof(reqxbmc)=='undefined'){
-		reqxbmc = $.post(_XBMCHOST,_data,function(data){
-			data=$.parseJSON(data);
-			if(typeof(data['result'])!=='undefined'){
-				dis_pause = '';
-				dis_play = 'display:none;';
-				if(!xbmcplaying){
-					dis_pause = 'display:none;';
-					dis_play = '';
-				}
-				
-				var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
-					html+='<div class="panel panel-default">';
-						html+='<div class="panel-heading">';
-							html+='<div class="row">';
-								html+='<div class="col-xs-12 text-left">';
-									
-									if(data['result']['item']['season']<0){
-										label = data['result']['item']['label'].split(' - ');
-										label[0] = label[0].replace('.avi','').replace('.mkv','');
-										html+='<div class="huge">'+label[0]+'</div>';
-										if(typeof(label[1])!=='undefined') html+='<div>'+label[1]+'</div>';
-										else html+='<div>&nbsp;</div>';
-									}
-									else {
-										html+='<div class="huge">'+data['result']['item']['showtitle']+'</div>';
-										html+='<div>S'+data['result']['item']['season']+'E'+data['result']['item']['episode']+' - '+data['result']['item']['label']+'</div>';
-									}
-									
-								html+='</div>';
-							html+='</div>';
-						html+='</div>';
-						
-						html+='<a class="details pause" style="'+dis_pause+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'On\');">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Pauzeren</span>';
-								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-					
-						html+='<a class="details play" style="'+dis_play+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'Off\');">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Hervatten</span>';
-								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-								html+='<div class="clearfix"></div>';
-							html+='</div>';
-						html+='</a>';
-					html+='</div>';
-				html+='</div>';
-				
-				if($('#xbmc-playing').length>0){
-					$('#xbmc-playing').replaceWith(html);
-				}
-				else $('.row.dashboard:first').prepend(html);
-			}
-			delete reqxbmc;		
-		});	
-	}
-	
 }
