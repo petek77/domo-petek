@@ -97,10 +97,10 @@ function getDevices(){
 						data.result[r]['SubType']=='Energy' ||
 						data.result[r]['SubType']=='Gas'
 					){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Verbruik','last',current,false,'counter');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Usage','last',current,false,'counter');
 					}
 					else if (data.result[r]['HardwareName']=='Motherboard' && data.result[r]['Type']=='Temp'){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Temperatuur','last',current,false,'temp');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Temperature','last',current,false,'temp');
 					}
 					else if (data.result[r]['HardwareName']=='Motherboard' && (stristr(data.result[r]['Name'],'cpu') || stristr(data.result[r]['Name'],'hdd') || stristr(data.result[r]['Name'],'geheugen') || stristr(data.result[r]['Name'],'memory'))){
 						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Percentage','last',current,false,'Percentage');
@@ -108,7 +108,7 @@ function getDevices(){
 					else if(
 						data.result[r]['SubType']=='Solar Radiation'
 					){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Straling','last',current,false,'counter');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Radiation','last',current,false,'counter');
 					}
 					else if(
 						data.result[r]['Name']==_SUNSWITCH
@@ -204,7 +204,7 @@ function getDevices(){
 									if(data.result[r]['SwitchType']=='On/Off'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
-											html+='<span class="pull-left">Beveiligd'+currentdate+'</span>';
+											html+='<span class="pull-left">Locked'+currentdate+'</span>';
 											html+='<span class="pull-right"><i class="fa fa-lock"></i></span>';
 											html+='<div class="clearfix"></div>';
 										}
@@ -242,7 +242,7 @@ function getDevices(){
 							html+='</div>';
 						
 							if($('#device'+data.result[r]['idx']).length>0){
-								//$('#device'+data.result[r]['idx']).replaceWith(html);
+								$('#device'+data.result[r]['idx']).replaceWith(html);
 							}
 							else $('.row.dashboard').append(html);
 						}
@@ -356,11 +356,141 @@ function getDevices(){
 	}
 }
 
+<<<<<<< HEAD
+=======
+function openXbmcLibrary(){
+	_data = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies",  "params": {"sort": {"order": "ascending", "method": "title"}, "properties": ["title", "art"] }, "id": 1};
+
+	$.post(_XBMCHOST,_data,function(data){
+		data=$.parseJSON(data);
+		for(m in data['result']['movies']){
+			if($('#movie'+data['result']['movies'][m]['movieid']).length==0){
+
+				var html='<div class="col-sm-2 movieitem" id="movie'+data['result']['movies'][m]['movieid']+'">';
+					html+='<div class="panel panel-'+_THEMECOLOR+'">';
+						html+='<div class="panel-heading">';
+							html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
+						html+='</div>';
+						
+						html+='<a class="details" href="javascript:javascript:void(0);">';
+							html+='<div class="panel-footer">';
+								html+='<span class="pull-left">Play</span>';
+								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+								html+='<div class="clearfix"></div>';
+							html+='</div>';
+						html+='</a>';
+					html+='</div>';
+				html+='</div>';
+				  
+				$('.row.xbmc').append(html);
+			}
+		}
+	});
+}
+
+>>>>>>> 0eb90f222899874bb058b04f75db052a7548ea9f
 function showDashboard(){
 	$('.row').show();
 	$('.row.xbmc').hide();
 }
 
+<<<<<<< HEAD
+=======
+function showXbmc(){
+	$('.row').hide();
+	$('.row.xbmc').show();
+	
+	checkHeighest();
+}
+
+function checkHeighest(){
+	var highestBox = 0;
+	$('.movieitem').each(function(){
+		if($(this).find('img.poster').height() > highestBox) {
+		   highestBox = $(this).find('img.poster').height(); 
+		}
+	});
+	
+	$('.movieitem img.poster').height(highestBox);	
+}
+
+$(window).resize(function(){
+	if(_XBMCHOST!==""){
+		$('.movieitem img.poster').height('auto');
+	
+		clearTimeout($.data(this, 'resizeTimer'));
+    	$.data(this, 'resizeTimer', setTimeout(function() {
+    	    checkHeighest();
+   		}, 500));
+	}
+});
+
+function getXbmc(){
+	
+	_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": 1 }, "id": "VideoGetItem"};
+	if(typeof(reqxbmc)=='undefined'){
+		reqxbmc = $.post(_XBMCHOST,_data,function(data){
+			data=$.parseJSON(data);
+			if(typeof(data['result'])!=='undefined'){
+				dis_pause = '';
+				dis_play = 'display:none;';
+				if(!xbmcplaying){
+					dis_pause = 'display:none;';
+					dis_play = '';
+				}
+				
+				var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
+					html+='<div class="panel panel-default">';
+						html+='<div class="panel-heading">';
+							html+='<div class="row">';
+								html+='<div class="col-xs-12 text-left">';
+									
+									if(data['result']['item']['season']<0){
+										label = data['result']['item']['label'].split(' - ');
+										label[0] = label[0].replace('.avi','').replace('.mkv','');
+										html+='<div class="huge">'+label[0]+'</div>';
+										if(typeof(label[1])!=='undefined') html+='<div>'+label[1]+'</div>';
+										else html+='<div>&nbsp;</div>';
+									}
+									else {
+										html+='<div class="huge">'+data['result']['item']['showtitle']+'</div>';
+										html+='<div>S'+data['result']['item']['season']+'E'+data['result']['item']['episode']+' - '+data['result']['item']['label']+'</div>';
+									}
+									
+								html+='</div>';
+							html+='</div>';
+						html+='</div>';
+						
+						html+='<a class="details pause" style="'+dis_pause+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'On\');">';
+							html+='<div class="panel-footer">';
+								html+='<span class="pull-left">Pause</span>';
+								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+								html+='<div class="clearfix"></div>';
+							html+='</div>';
+						html+='</a>';
+					
+						html+='<a class="details play" style="'+dis_play+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'Off\');">';
+							html+='<div class="panel-footer">';
+								html+='<span class="pull-left">Resume</span>';
+								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+								html+='<div class="clearfix"></div>';
+							html+='</div>';
+						html+='</a>';
+					html+='</div>';
+				html+='</div>';
+				
+				if($('#xbmc-playing').length>0){
+					$('#xbmc-playing').replaceWith(html);
+				}
+				else $('.row.dashboard:first').prepend(html);
+			}
+			delete reqxbmc;		
+		});	
+	}
+	
+}
+
+>>>>>>> 0eb90f222899874bb058b04f75db052a7548ea9f
 function showGraph(idx,title,label,range,current,forced,sensor){
 	
 	if(typeof(forced)=='undefined') forced=false;
@@ -387,16 +517,25 @@ function showGraph(idx,title,label,range,current,forced,sensor){
                                    
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='last') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">4 uur</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">Last</button> ';
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='day') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">Dag</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">Day</button> ';
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='month') html+='active';
+<<<<<<< HEAD
 									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">Maand</button>';
 
+=======
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">Month</button>';
+									/*
+									html+='<button type="button" class="btn btn-default ';
+									if(range=='year') html+='active';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'year\',\''+current+'\',true,\''+sensor+'\');">Jaar</button>';
+									*/
+>>>>>>> 0eb90f222899874bb058b04f75db052a7548ea9f
                                 html+='</div>';
                             html+='</div><div class="clearfix"></div>';
                         html+='</div>';
