@@ -65,17 +65,19 @@ function openEditmode(){
 		$('.panel').each(function(){
 			var panel = $(this);
 			panel.prepend('<div class="editclick" />');
-			if(panel.data('idx').length>0){
+			//if(panel.data('idx').length>0){
 				panel.find('.editclick').height(panel.height());
 				panel.find('.editclick').width(panel.width());
 				panel.find('.editclick').bind( "click", function(e) {
 					$('div#wrapper').append(blocks['editblock']);
 					
-					$('#editblockModal #name').val(alldevices[panel.data('idx')]['Name'])
+					$('#editblockModal #name').val(alldevices[panel.data('idx')]['Name']);
+					$('#editblockModal #switchtype').val(alldevices[panel.data('idx')]['SwitchTypeVal']);
+					
 					$('#editblockModal').data('idx',panel.data('idx')).modal('show');	
 					e.preventDefault();
 				});
-			}
+			//}
 		});
 		
 	}
@@ -87,11 +89,10 @@ function openEditmode(){
 
 function saveEditblock(idx){
 	var idx = $('#editblockModal').data('idx');
-	/*
-	/json.htm?type=setused&idx='+$('#editblockModal').data('idx')+'&name='+$('#editblockModal #name').val()+'&strparam1=&strparam2=&protected=false&switchtype=0&customimage=15&used=true&addjvalue=0&addjvalue2=0
-	*/
-	console.log(alldevices[idx]);
-	$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val());
+	
+	var used=1;
+	alert('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+$('#editblockModal #switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2']);
+	//$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+$('#editblockModal #switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2']);
 }
 
 function switchTheme(theme){
@@ -132,7 +133,8 @@ function getDevices(){
 					}
 					if(data.result[r]['SwitchType']=='Dimmer'){
 						
-						current = data.result[r]['Level']+'%';
+						//current = data.result[r]['Level']+'%';
+						current = data.result[r]['Level'];
 					}
 					
 					if(
@@ -222,7 +224,8 @@ function getDevices(){
 										html+='<div class="row">';
 											html+='<div class="col-xs-8">';
 												if(data.result[r]['SwitchType']=='Dimmer'){
-													html+='<div>'+data.result[r]['Name']+' ('+current+')</div>';
+													//html+='<div>'+data.result[r]['Name']+' ('+current+')</div>';
+													html+='<div>'+data.result[r]['Name']+' (<span id="current'+data.result[r]['idx']+'">'+current+'</span>%)</div>';
 													html+='<div>';
 													html+='<input type="text" class="span2" value="'+data.result[r]['Level']+'" id="sl'+data.result[r]['idx']+'" >';
 													html+='</div>'
@@ -337,6 +340,7 @@ function getDevices(){
 									sliding = true;
 								})
 								.on('slideStop', function(ev){
+									$('#current'+ $(this).attr('id').substr(2)).text(ev.value);
 									slideDevice($(this).attr('id').substr(2),ev.value);
 								});
 							}
@@ -352,7 +356,8 @@ function getDevices(){
 									sliding = true;
 								})
 								.on('slideStop', function(ev){
-									slideDevice($(this).attr('id').substr(2),ev.value);
+									$('#current'+ $(this).attr('id').substr(2)).text(Math.ceil(ev.value/0.16));
+ 									slideDevice($(this).attr('id').substr(2),ev.value);
 								});
 							}
 						}

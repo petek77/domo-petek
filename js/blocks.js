@@ -17,7 +17,7 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
         	blocks['topbar']+= '<span id="systeminfo"></span>';
         	blocks['topbar']+= '<span id="sun"></span>';
             blocks['topbar']+= '<span id="settings"><a href="javascript:openSettings();"><i class="fa fa-cog"></i></a></span>';
-           // blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
+          //  blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
     	blocks['topbar']+= '</div>';
     blocks['topbar']+= '</div> ';           
 blocks['topbar']+= '</nav>';
@@ -56,8 +56,8 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 			blocks['settings']+= '<div class="modal-body">';
 			
 				blocks['settings']+= '<div class="row">';
-					blocks['settings']+= '<label class="col-md-2">Theme</label>';
-					blocks['settings']+= '<div class="col-md-10">';
+					blocks['settings']+= '<label class="col-md-3">Theme</label>';
+					blocks['settings']+= '<div class="col-md-9">';
 						blocks['settings']+= '<select name="theme" class="form-control">';
 							blocks['settings']+= '<option value="default">Default</option>';
 							blocks['settings']+= '<option value="darkoticz">Darkoticz</option>';
@@ -87,11 +87,44 @@ blocks['editblock'] = '<div class="modal fade" id="editblockModal" tabindex="-1"
 			blocks['editblock']+= '<div class="modal-body">';
 			
 				blocks['editblock']+= '<div class="row">';
-					blocks['editblock']+= '<label class="col-md-2">Title</label>';
-					blocks['editblock']+= '<div class="col-md-10">';
+					blocks['editblock']+= '<label class="col-md-3">Title</label>';
+					blocks['editblock']+= '<div class="col-md-9">';
 						blocks['editblock']+= '<input type="text" id="name" class="form-control" />';
 					blocks['editblock']+= '</div>';
 				blocks['editblock']+= '</div>';
+				
+				blocks['editblock']+= '<div class="row">';
+					blocks['editblock']+= '<label class="col-md-3">Switch type</label>';
+					blocks['editblock']+= '<div class="col-md-9">';
+						blocks['editblock']+= '<select id="switchtype" class="form-control">';
+							
+							var switchtypes = new Object();
+							switchtypes[3] = 'Blinds';
+							switchtypes[6] = 'Blinds Inverted';
+							switchtypes[13] = 'Blinds Percentage';
+							switchtypes[16] = 'Blinds Percentage Inverted';
+							switchtypes[2] = 'Contact';
+							switchtypes[7] = 'Dimmer';
+							switchtypes[11] = 'Door Lock';
+							switchtypes[1] = 'Doorbell';
+							switchtypes[12] = 'Dusk Sensor';
+							switchtypes[8] = 'Motion Sensor';
+							switchtypes[0] = 'On/Off';
+							switchtypes[10] = 'Push Off Button';
+							switchtypes[9] = 'Push On Button';
+							switchtypes[5] = 'Smoke Detector';
+							switchtypes[15] = 'Venetian Blinds EU';
+							switchtypes[14] = 'Venetian Blinds US';
+							switchtypes[4] = 'X10 Siren';
+							
+							for(st in switchtypes){
+								blocks['editblock']+= '<option value="'+st+'">'+switchtypes[st]+'</option>';
+							}
+							
+
+						blocks['editblock']+= '</select>';
+					blocks['editblock']+= '</div>';
+				blocks['editblock']+= '</div>';				
 					
 			blocks['editblock']+= '</div>';
 			blocks['editblock']+= '<div class="modal-footer">';
