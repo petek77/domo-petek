@@ -24,7 +24,7 @@ Domoticz removes the whole folder!
 
 
 # Screenshots
-http://www.domoticz.com/wiki/images/4/44/Dashticz-v0.35.jpg
+http://plaatjesdump.nl/upload/314019db2d6725525edfbe7c7db6a92e.jpg
 
 
 # Special thanks
@@ -37,6 +37,8 @@ A special THANK YOU, for help, testing, ideas and tips
 
 
 # Changelog
+0.53 - 31/01/2015
+- added Darkoticz-theme
 
 0.52 - 29/01/2015
 - More preparation for theming

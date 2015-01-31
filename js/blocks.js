@@ -59,6 +59,7 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 					blocks['settings']+= '<div class="col-md-10">';
 						blocks['settings']+= '<select name="theme" class="form-control">';
 							blocks['settings']+= '<option value="default">Default</option>';
+							blocks['settings']+= '<option value="darkoticz">Darkoticz</option>';
 						blocks['settings']+= '</select>';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';

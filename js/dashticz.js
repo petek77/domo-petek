@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.52';
+var dashticz_version='0.53';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 
@@ -27,6 +27,12 @@ $(document).ready(function(){
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 		data=$.parseJSON(data);
 		$('span#version').html(data.version);
+	});
+	
+	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
+		console.log('Domoticz config retreived!');
+		data=$.parseJSON(data);
+		console.log(data);
 	});
 	
 	autoGetDevices();
@@ -149,8 +155,21 @@ function getDevices(){
 						else if(!sliding){
 							var currentdate = '<span class="small">Update: '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 							
+							if(
+								(data.result[r]['Status']!=='Off' && parseFloat(data.result[r]['Level'])>0) || 
+								data.result[r]['Status']=='On' ||
+								parseFloat(data.result[r]['Rain'])>0
+							){
+								var iconclass = 'icon-active';
+								var deviceactive = 'device-online';
+							}
+							else {
+								var iconclass = 'icon-inactive';
+								var deviceactive = 'device-offline';
+							}
+												
 							var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device'+data.result[r]['idx']+'">';
-								html+='<div class="panel panel-block panel-default">';
+								html+='<div class="panel panel-block panel-default '+deviceactive+'">';
 									html+='<div class="panel-heading';
 									if(data.result[r]['TypeImg']=='temperature') html+=' nodetails';
 									html+='">';
@@ -184,16 +203,7 @@ function getDevices(){
 												else if(data.result[r]['Type']=='Rain') icon='fa fa-umbrella';
 												else if(data.result[r]['Type']=='Wind') icon='fa fa-location-arrow';
 												
-												if(
-													(data.result[r]['Status']!=='Off' && parseFloat(data.result[r]['Level'])>0) || 
-													data.result[r]['Status']=='On' ||
-													parseFloat(data.result[r]['Rain'])>0
-												){
-													var iconclass = 'icon-active';
-												}
-												else {
-													var iconclass = 'icon-inactive';
-												}
+												
 												
 												html+='<i class="mainicon '+icon+' '+iconclass+'"></i>';
 												
@@ -388,7 +398,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
                                    
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='last') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">Last</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">Last hours</button> ';
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='day') html+='active';

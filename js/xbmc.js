@@ -1,5 +1,6 @@
 //DON'T TOUCH, UNLESS YOU KNOW WHAT YOU ARE DOING
 var xbmcplaying;
+var xbmcdevice;
 var reqxbmc;
 
 $(document).ready(function(){
@@ -8,7 +9,7 @@ $(document).ready(function(){
 		$('span#menu').show();	
 	}
 	
-	//if(_XBMCHOST!=="") openXbmcLibrary();
+	if(_XBMCHOST!=="") openXbmcLibrary();
 });
 
 $(window).resize(function(){
@@ -22,7 +23,11 @@ $(window).resize(function(){
 	}
 });
 
-
+function showXbmc(){
+	$('.row').show();
+	$('.row.dashboard').hide();
+	checkHeighestPoster();
+}
 
 function checkHeighestPoster(){
 	var highestBox = 0;
@@ -50,7 +55,7 @@ function openXbmcLibrary(){
 							html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
 						html+='</div>';
 						
-						html+='<a class="details" href="javascript:javascript:void(0);">';
+						html+='<a class="details" href="javascript:playMovie('+data['result']['movies'][m]['movieid']+');">';
 							html+='<div class="panel-footer">';
 								html+='<span class="pull-left">Play</span>';
 								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
@@ -63,14 +68,25 @@ function openXbmcLibrary(){
 				$('.row.xbmc').append(html);
 			}
 		}
+		
 	});
 }
 
-function getXbmc(DEVICE){
+function playMovie(ID){
+	alert('Not yet implemented!');
+
+	showDashboard();
+	getXbmc(xbmcdevice,true);
+}
+
+function getXbmc(DEVICE,forceplaying){
+	if(typeof(forceplaying)=='undefined') forceplaying=false;
 	if(_XBMCHOST!==""){
 		if(DEVICE['Name']==_XBMCSWITCH){
+			xbmcdevice = DEVICE;
 			xbmcplaying=false;
-			if(DEVICE['Status']=='On') xbmcplaying=true;
+			if(forceplaying || DEVICE['Status']=='On') xbmcplaying=true;
+
 			_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": 1 }, "id": "VideoGetItem"};
 			if(typeof(reqxbmc)=='undefined'){
 				reqxbmc = $.post(_XBMCHOST,_data,function(data){
