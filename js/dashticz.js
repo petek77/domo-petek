@@ -7,33 +7,42 @@ var temperatureBlock=new Object();
 var sliderlist = new Object();
 
 var showNavigation;
+if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
+
 
 $(document).ready(function(){
-	if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
-	
-	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
-	$('script#configjs').attr('src','themes/'+$.cookie('theme')+'/js/config.js');
-	$('script#blocksjs').attr('src','themes/'+$.cookie('theme')+'/js/blocks.js');
     
-    $('div#wrapper').append(blocks['topbar']);
-    $('div#wrapper').append(blocks['blocks']);
-   	if(showNavigation) $('div#wrapper').append(blocks['navigation']);
-	$('div#wrapper').append(blocks['settings']);
+	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
 	
-	$('span#dversion').html(dashticz_version);
+    $.getScript( 'js/config.js');
+    $.getScript( 'js/blocks.js');
+    $.getScript( 'js/functions.js');
+    $.getScript( 'js/xbmc.js');
 	
-	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
-		data=$.parseJSON(data);
-		$('span#version').html(data.version);
+    $.getScript( 'themes/'+$.cookie('theme')+'/js/config.js',function(){
+		$.getScript( 'themes/'+$.cookie('theme')+'/js/blocks.js',function(){
+		
+			$('div#wrapper').append(blocks['topbar']);
+			$('div#wrapper').append(blocks['blocks']);
+			if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+			$('div#wrapper').append(blocks['settings']);
+			
+			$('span#dversion').html(dashticz_version);
+			
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
+				data=$.parseJSON(data);
+				$('span#version').html(data.version);
+			});
+			
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
+				//console.log('Domoticz config retreived!');
+				data=$.parseJSON(data);
+				//console.log(data);
+			});
+			
+			autoGetDevices();
+		});
 	});
-	
-	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
-		//console.log('Domoticz config retreived!');
-		data=$.parseJSON(data);
-		//console.log(data);
-	});
-	
-	autoGetDevices();
 });
 
 function openSettings(){
