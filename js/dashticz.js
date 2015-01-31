@@ -2,9 +2,10 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.53';
+var dashticz_version='0.54';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
+var alldevices = new Object();
 
 var showNavigation;
 if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
@@ -40,6 +41,7 @@ $(document).ready(function(){
 				//console.log(data);
 			});
 			
+			loadXBMC();
 			autoGetDevices();
 		});
 	});
@@ -54,7 +56,42 @@ function saveSettings(){
 	$('#settingsModal select,#settingsModal input').each(function(){
 		$.cookie($(this).attr('name'),$(this).val());
 	});
-	setTimeout(function(){ document.location.href=document.location.href; },1000);
+	setTimeout(function(){ window.location.reload(); },1000);
+}
+
+function openEditmode(){
+	if(!$('#editmode').hasClass('active')){
+		$('#editmode').addClass('active');
+		$('.panel').each(function(){
+			var panel = $(this);
+			panel.prepend('<div class="editclick" />');
+			if(panel.data('idx').length>0){
+				panel.find('.editclick').height(panel.height());
+				panel.find('.editclick').width(panel.width());
+				panel.find('.editclick').bind( "click", function(e) {
+					$('div#wrapper').append(blocks['editblock']);
+					
+					$('#editblockModal #name').val(alldevices[panel.data('idx')]['Name'])
+					$('#editblockModal').data('idx',panel.data('idx')).modal('show');	
+					e.preventDefault();
+				});
+			}
+		});
+		
+	}
+	else {
+		$('#editmode').removeClass('active');	
+		$('.panel').unbind( "click" );
+	}
+}
+
+function saveEditblock(idx){
+	var idx = $('#editblockModal').data('idx');
+	/*
+	/json.htm?type=setused&idx='+$('#editblockModal').data('idx')+'&name='+$('#editblockModal #name').val()+'&strparam1=&strparam2=&protected=false&switchtype=0&customimage=15&used=true&addjvalue=0&addjvalue2=0
+	*/
+	console.log(alldevices[idx]);
+	$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val());
 }
 
 function switchTheme(theme){
@@ -73,20 +110,22 @@ function getDevices(){
 		req = $.get(_DOMOTICZHOST+'/json.htm?type=devices&filter=all&used=true&order=Name',function(data){
 			data=$.parseJSON(data);
 			for(r in data.result){
-				
+				alldevices[data.result[r]['idx']] = data.result[r];
 				getXbmc(data.result[r]);
 							
 				if(data.result[r]['Favorite']==1){
-					
-					  if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='vandaag '+data.result[r]['CounterToday'];
-					  else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
-					  else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
-					  else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
-					  else if(data.result[r]['TypeImg']=='temperature'){
-						  var current=data.result[r]['Data'].split(' ');
-						  current = current[0]+'&deg;';
-					  }
-					  else var current=data.result[r]['Data'];
+					if(data.result[r]['Name']=='Group1'){
+						console.log(data.result[r]);	
+					}
+					if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='vandaag '+data.result[r]['CounterToday'];
+						else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
+						else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
+						else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
+						else if(data.result[r]['TypeImg']=='temperature'){
+						var current=data.result[r]['Data'].split(' ');
+						current = current[0]+'&deg;';
+					}
+					else var current=data.result[r]['Data'];
 					
 					if(data.result[r]['SubType']=='Energy'){
 						current = 'nu '+data.result[r]['Usage']+', '+current;
@@ -174,9 +213,9 @@ function getDevices(){
 								var iconclass = 'icon-inactive';
 								var deviceactive = 'device-offline';
 							}
-												
+								
 							var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device'+data.result[r]['idx']+'">';
-								html+='<div class="panel panel-block panel-default '+deviceactive+'">';
+								html+='<div class="panel panel-block panel-default '+deviceactive+'" data-idx="'+data.result[r]['idx']+'">';
 									html+='<div class="panel-heading';
 									if(data.result[r]['TypeImg']=='temperature') html+=' nodetails';
 									html+='">';
@@ -203,7 +242,7 @@ function getDevices(){
 												if(data.result[r]['Image']=='Media'){
 													icon='fa fa-play-circle-o';
 												}
-												else if(data.result[r]['Image']=='Light') icon='fa fa-lightbulb-o';
+												else if(data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group' || data.result[r]['Image']=='Light') icon='fa fa-lightbulb-o';
 												else if(data.result[r]['Image']=='Heating') icon='fa fa-fire';
 												else if(data.result[r]['TypeImg']=='temperature') icon='wi wi-thermometer';
 												else if(data.result[r]['SubType']=='Solar Radiation') icon='fa fa-sun-o';
@@ -219,15 +258,33 @@ function getDevices(){
 									html+='</div>';
 									
 									var setslide='';
-									if(data.result[r]['SwitchType']=='On/Off'){
+									if(data.result[r]['SwitchType']=='On/Off' || data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
 											html+='<span class="pull-left">Locked'+currentdate+'</span>';
 											html+='<span class="pull-right"><i class="fa fa-lock"></i></span>';
 											html+='<div class="clearfix"></div>';
 										}
+										else if(data.result[r]['Type']=='Scene') {
+											html+='<a href="javascript:switchScene('+data.result[r]['idx']+');">';
+												html+='<div class="panel-footer">';
+													html+='<span class="pull-left">Turn on'+currentdate+'</span>';
+													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+													html+='<div class="clearfix"></div>';
+												html+='</div>';
+											html+='</a>';
+										}
+										else if(data.result[r]['Type']=='Group') {
+											html+='<a href="javascript:switchGroup('+data.result[r]['idx']+');">';
+												html+='<div class="panel-footer">';
+													html+='<span class="pull-left">Switch'+currentdate+'</span>';
+													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+													html+='<div class="clearfix"></div>';
+												html+='</div>';
+											html+='</a>';
+										}
 										else{
-											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+',\''+data.result[r]['Status']+'\');">';
+											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+');">';
 												html+='<div class="panel-footer">';
 													html+='<span class="pull-left">Switch'+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
@@ -393,7 +450,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 			
 			var html = '<div class="row dashboard" id="device'+idx+'">';
 				html+='<div class="col-lg-12">';
-                    html+='<div class="panel panel-default">';
+                    html+='<div class="panel panel-default" data-idx="'+idx+'">';
                         html+='<div class="panel-heading graph"><div class="pull-left">';
                             html+=title+': <B>'+current+'</B>';
 							if(range=='last') html+='<br />Last hours:';
@@ -496,21 +553,71 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 	}
 }
 
-function switchDevice(idx,status){
-	if(status=='Off') var doStatus='On';
-	if(status=='On') var doStatus='Off';
+function switchDevice(idx){
+	
+	if($('#device'+idx+' .panel').hasClass('device-online')){
+		var doStatus='Off';
+		$('#device'+idx+' .panel').addClass('device-offline').removeClass('device-online');		
+		$('#device'+idx+' .mainicon').addClass('icon-inactive').removeClass('icon-active');	
+	}
+	else {
+		var doStatus='On';
+		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
+		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+	}
+	
 	req.abort();
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd='+doStatus+'&level=0&passcode=',function(){
 		setTimeout(function(){ getDevices(); },1000);
 	});	
 }
 
+function switchScene(idx){
+
+	var doStatus='On';
+	$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
+	$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+	
+	req.abort();
+	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchscene&idx='+idx+'&switchcmd='+doStatus+'&level=0&passcode=',function(){
+		setTimeout(function(){ getDevices(); },1000);
+	});	
+}
+
+function switchGroup(idx){
+	
+	if($('#device'+idx+' .panel').hasClass('device-online')){
+		var doStatus='Off';
+		$('#device'+idx+' .panel').addClass('device-offline').removeClass('device-online');		
+		$('#device'+idx+' .mainicon').addClass('icon-inactive').removeClass('icon-active');	
+	}
+	else {
+		var doStatus='On';
+		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
+		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+	}
+	
+	req.abort();
+	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchscene&idx='+idx+'&switchcmd='+doStatus+'&level=0&passcode=',function(){
+		setTimeout(function(){ getDevices(); },1000);
+	});	
+}
+
 function slideDevice(idx,status){
+	
+	if(status>1){
+		sliderlist['sl'+idx] = status;
+		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
+		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+	}
+	else {
+		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
+		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+	}	
 	var parentblock = $('#device'+idx);
 	var icon = parentblock.find('i.mainicon');
 	
 	if(typeof(slide)!=='undefined') slide.abort();
-	if(status>1) sliderlist['sl'+idx] = status;
 	slide = $.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+status,function(){
 		if(status>1) icon.removeClass('icon-inactive').addClass('icon-active');
 		else icon.removeClass('icon-active').addClass('inicon-active');

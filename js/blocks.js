@@ -17,6 +17,7 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
         	blocks['topbar']+= '<span id="systeminfo"></span>';
         	blocks['topbar']+= '<span id="sun"></span>';
             blocks['topbar']+= '<span id="settings"><a href="javascript:openSettings();"><i class="fa fa-cog"></i></a></span>';
+           // blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
     	blocks['topbar']+= '</div>';
     blocks['topbar']+= '</div> ';           
 blocks['topbar']+= '</nav>';
@@ -72,3 +73,31 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 		blocks['settings']+= '</div>';
 	blocks['settings']+= '</div>';
 blocks['settings']+= '</div>';
+
+
+//EDIT BLOCK
+blocks['editblock'] = '<div class="modal fade" id="editblockModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">';
+	blocks['editblock']+= '<div class="modal-dialog">';
+		blocks['editblock']+= '<div class="modal-content">';
+			blocks['editblock']+= '<div class="modal-header">';
+				blocks['editblock']+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
+				blocks['editblock']+= '<h3 class="modal-title" id="myModalLabel">Blocksettings</h3>';
+				blocks['editblock']+= '<h5>Change this block the way you want it to be</h5>';
+			blocks['editblock']+= '</div>';
+			blocks['editblock']+= '<div class="modal-body">';
+			
+				blocks['editblock']+= '<div class="row">';
+					blocks['editblock']+= '<label class="col-md-2">Title</label>';
+					blocks['editblock']+= '<div class="col-md-10">';
+						blocks['editblock']+= '<input type="text" id="name" class="form-control" />';
+					blocks['editblock']+= '</div>';
+				blocks['editblock']+= '</div>';
+					
+			blocks['editblock']+= '</div>';
+			blocks['editblock']+= '<div class="modal-footer">';
+				blocks['editblock']+= '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
+				blocks['editblock']+= '<button type="button" class="btn btn-primary" onclick="saveEditblock();">Save</button>';
+			blocks['editblock']+= '</div>';
+		blocks['editblock']+= '</div>';
+	blocks['editblock']+= '</div>';
+blocks['editblock']+= '</div>';

@@ -1,3 +1,9 @@
+.editclick {
+	position:absolute;
+	z-index:1000;
+	cursor:pointer;	
+}
+
 body {
 	font-size:16px;	
 }
@@ -77,6 +83,19 @@ span#settings {
 	padding-left:10px;
 	margin-left:10px;
 	font-size:16px;
+}
+
+span#editmode {
+	border-left:1px solid #000;
+	padding-left:10px;
+	margin-left:10px;
+	font-size:16px;
+}
+span#editmode a{
+	color:#f00;
+}
+span#editmode.active a{
+	color:#46D439;
 }
 
 div.huge {

@@ -1,3 +1,9 @@
+.editclick {
+	position:absolute;
+	z-index:1000;
+	cursor:pointer;	
+}
+
 body {
 background: url("../images/bg.png") repeat scroll 0% 0% transparent;
 font-family: "Cabin",sans-serif;
@@ -127,7 +133,19 @@ div.fl-right { float:right }
 	min-height:10px;	
 	width:100%;
 }
+span#settings {
+	border-left:1px solid #000;
+	padding-left:10px;
+	margin-left:10px;
+	font-size:16px;
+}
 
+span#editmode {
+	border-left:1px solid #000;
+	padding-left:10px;
+	margin-left:10px;
+	font-size:16px;
+}
 .navbar{
 	border: 0px !important;
 }

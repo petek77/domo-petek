@@ -37,6 +37,10 @@ A special THANK YOU, for help, testing, ideas and tips
 
 
 # Changelog
+0.54 - 31/01/2015
+- Support for scenes and groups
+- Preparing for editing mode (for editing names and icons)
+
 0.53 - 31/01/2015
 - added Darkoticz-theme
 

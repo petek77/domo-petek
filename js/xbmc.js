@@ -3,14 +3,12 @@ var xbmcplaying;
 var xbmcdevice;
 var reqxbmc;
 
-$(document).ready(function(){
-
+function loadXBMC(){
 	if(_XBMCHOST!==""){
 		$('span#menu').show();	
+		openXbmcLibrary();
 	}
-	
-	if(_XBMCHOST!=="") openXbmcLibrary();
-});
+}
 
 $(window).resize(function(){
 	if(_XBMCHOST!==""){
