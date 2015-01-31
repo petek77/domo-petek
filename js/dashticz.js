@@ -29,6 +29,7 @@ $(document).ready(function(){
 			$('div#wrapper').append(blocks['settings']);
 			
 			$('span#dversion').html(dashticz_version);
+			$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
 			
 			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 				data=$.parseJSON(data);

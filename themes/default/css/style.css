@@ -8,6 +8,15 @@ body {
 	font-size:16px;	
 }
 
+#logo {
+	margin-right:10px;	
+	margin-top:-7px;
+}
+
+.domoticz {
+	color:#B9B9B9
+}
+
 .dropdown{
 	padding-left: 6px;
 	padding-right: 6px;
@@ -126,6 +135,7 @@ div.fl-right { float:right }
 }
 .navbar-header {
 	width:100%;	
+	padding-top:2px;
 }
 .panel.panel-block {
 	height: 130px;
