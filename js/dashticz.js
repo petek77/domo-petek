@@ -6,33 +6,31 @@ var dashticz_version='0.53';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 
+var showNavigation;
+
 $(document).ready(function(){
 	if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
 	
-    $('#jsscripts').before('<script src="js/config.js"></script>');
-    $('#jsscripts').before('<script src="js/blocks.js"></script>');
-    $('#jsscripts').before('<script src="js/functions.js"></script>');
-    $('#jsscripts').before('<script src="js/xbmc.js"></script>');
-	
 	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
-    $('#jsscripts').before('<script src="themes/'+$.cookie('theme')+'/js/config.js"></script>');
-    $('#jsscripts').before('<script src="themes/'+$.cookie('theme')+'/js/blocks.js"></script>');
+	$('script#configjs').attr('src','themes/'+$.cookie('theme')+'/js/config.js');
+	$('script#blocksjs').attr('src','themes/'+$.cookie('theme')+'/js/blocks.js');
     
     $('div#wrapper').append(blocks['topbar']);
     $('div#wrapper').append(blocks['blocks']);
-    if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+   	if(showNavigation) $('div#wrapper').append(blocks['navigation']);
 	$('div#wrapper').append(blocks['settings']);
 	
 	$('span#dversion').html(dashticz_version);
+	
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 		data=$.parseJSON(data);
 		$('span#version').html(data.version);
 	});
 	
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
-		console.log('Domoticz config retreived!');
+		//console.log('Domoticz config retreived!');
 		data=$.parseJSON(data);
-		console.log(data);
+		//console.log(data);
 	});
 	
 	autoGetDevices();

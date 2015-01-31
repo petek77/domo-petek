@@ -1,1 +1,1 @@
-var showNavigation = false;
+showNavigation = false;
