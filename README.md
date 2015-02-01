@@ -34,9 +34,14 @@ A special THANK YOU, for help, testing, ideas and tips
 - Remco van Geel
 - Arjan van de Wiel
 - Leon G. / Dountill
+- Dave Drager
 
 
 # Changelog
+0.55 - 01/02/2015
+- Added readings for Aeon Labs HEM and Smart Switch/Meter
+- Preparing for multiple languages
+
 0.54 - 31/01/2015
 - Support for scenes and groups
 - Preparing for editing mode (for editing names and icons)

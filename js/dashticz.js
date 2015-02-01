@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.54';
+var dashticz_version='0.55';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -15,35 +15,36 @@ $(document).ready(function(){
     
 	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
 	
-    $.getScript( 'js/config.js');
-    $.getScript( 'js/blocks.js');
-    $.getScript( 'js/functions.js');
-    $.getScript( 'js/xbmc.js');
-	
-    $.getScript( 'themes/'+$.cookie('theme')+'/js/config.js',function(){
-		$.getScript( 'themes/'+$.cookie('theme')+'/js/blocks.js',function(){
-		
-			$('div#wrapper').append(blocks['topbar']);
-			$('div#wrapper').append(blocks['blocks']);
-			if(showNavigation) $('div#wrapper').append(blocks['navigation']);
-			$('div#wrapper').append(blocks['settings']);
+    $.getScript( 'js/config.js',function(){
+		$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
+			$.getScript( 'js/blocks.js');
+			$.getScript( 'js/functions.js');
+			$.getScript( 'js/xbmc.js');
 			
-			$('span#dversion').html(dashticz_version);
-			$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
-			
-			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
-				data=$.parseJSON(data);
-				$('span#version').html(data.version);
+			$.getScript( 'themes/'+$.cookie('theme')+'/js/config.js',function(){
+				$.getScript( 'themes/'+$.cookie('theme')+'/js/blocks.js',function(){
+				
+					$('div#wrapper').append(blocks['topbar']);
+					$('div#wrapper').append(blocks['blocks']);
+					if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+					$('div#wrapper').append(blocks['settings']);
+					
+					$('span#dversion').html(dashticz_version);
+					$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
+					
+					$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
+						data=$.parseJSON(data);
+						$('span#version').html(data.version);
+					});
+					
+					$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
+						data=$.parseJSON(data);
+					});
+					
+					loadXBMC();
+					autoGetDevices();
+				});
 			});
-			
-			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
-				//console.log('Domoticz config retreived!');
-				data=$.parseJSON(data);
-				//console.log(data);
-			});
-			
-			loadXBMC();
-			autoGetDevices();
 		});
 	});
 });
@@ -53,7 +54,7 @@ function openSettings(){
 }
 
 function saveSettings(){
-	$('.modal-footer .btn-primary').html('Saving...');
+	$('.modal-footer .btn-primary').html(lang['settings_saving']);
 	$('#settingsModal select,#settingsModal input').each(function(){
 		$.cookie($(this).attr('name'),$(this).val());
 	});
@@ -136,8 +137,6 @@ function getDevices(){
 						current = parseFloat(data.result[r]['Data'].replace( / Watt$/g, ''));
 					}
 					if(data.result[r]['SwitchType']=='Dimmer'){
-						
-						//current = data.result[r]['Level']+'%';
 						current = data.result[r]['Level'];
 					}
 					
@@ -160,18 +159,18 @@ function getDevices(){
 						data.result[r]['SubType']=='Gas' ||
 						data.result[r]['SubType']=='Electric'
 					){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Usage','last',current,false,'counter');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_usage'],'last',current,false,'counter');
 					}
 					else if (data.result[r]['HardwareName']=='Motherboard' && data.result[r]['Type']=='Temp'){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Temperature','last',current,false,'temp');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_temperature'],'last',current,false,'temp');
 					}
 					else if (data.result[r]['HardwareName']=='Motherboard' && (stristr(data.result[r]['Name'],'cpu') || stristr(data.result[r]['Name'],'hdd') || stristr(data.result[r]['Name'],'geheugen') || stristr(data.result[r]['Name'],'memory'))){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Percentage','last',current,false,'Percentage');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_percentage'],'last',current,false,'Percentage');
 					}
 					else if(
 						data.result[r]['SubType']=='Solar Radiation'
 					){
-						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Radiation','last',current,false,'counter');
+						showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_radiation'],'last',current,false,'counter');
 					}
 					else if(
 						data.result[r]['Name']==_SUNSWITCH
@@ -209,7 +208,7 @@ function getDevices(){
 							
 						}
 						else if(!sliding){
-							var currentdate = '<span class="small">Update: '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
+							var currentdate = '<span class="small">'+lang['last_seen']+': '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 							
 							if(
 								(data.result[r]['Status']!=='Off' && parseFloat(data.result[r]['Level'])>0) || 
@@ -272,14 +271,14 @@ function getDevices(){
 									if(data.result[r]['SwitchType']=='On/Off' || data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
-											html+='<span class="pull-left">Locked'+currentdate+'</span>';
+											html+='<span class="pull-left">'+lang['locked']+currentdate+'</span>';
 											html+='<span class="pull-right"><i class="fa fa-lock"></i></span>';
 											html+='<div class="clearfix"></div>';
 										}
 										else if(data.result[r]['Type']=='Scene') {
 											html+='<a href="javascript:switchScene('+data.result[r]['idx']+');">';
 												html+='<div class="panel-footer">';
-													html+='<span class="pull-left">Turn on'+currentdate+'</span>';
+													html+='<span class="pull-left">'+lang['turn_on']+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -288,7 +287,7 @@ function getDevices(){
 										else if(data.result[r]['Type']=='Group') {
 											html+='<a href="javascript:switchGroup('+data.result[r]['idx']+');">';
 												html+='<div class="panel-footer">';
-													html+='<span class="pull-left">Switch'+currentdate+'</span>';
+													html+='<span class="pull-left">'+lang['switch']+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -297,7 +296,7 @@ function getDevices(){
 										else{
 											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+');">';
 												html+='<div class="panel-footer">';
-													html+='<span class="pull-left">Switch'+currentdate+'</span>';
+													html+='<span class="pull-left">'+lang['switch']+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -307,7 +306,7 @@ function getDevices(){
 									else if(data.result[r]['SwitchType']=='Dimmer'){
 										html+='<a href="javascript:slideDeviceToggle('+data.result[r]['idx']+');">';
 											html+='<div class="panel-footer">';
-												html+='<span class="pull-left">Switch'+currentdate+'</span>';
+												html+='<span class="pull-left">'+lang['switch']+currentdate+'</span>';
 												html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 												html+='<div class="clearfix"></div>';
 											html+='</div>';
@@ -467,24 +466,23 @@ function showGraph(idx,title,label,range,current,forced,sensor){
                     html+='<div class="panel panel-default" data-idx="'+idx+'">';
                         html+='<div class="panel-heading graph"><div class="pull-left">';
                             html+=title+': <B>'+current+'</B>';
-							if(range=='last') html+='<br />Last hours:';
-							if(range=='day') html+='<br />Today:';
-							if(range=='week') html+='<br />Last week:';
-							if(range=='month') html+='<br />Last month:';
+							if(range=='last') html+='<br />'+lang['graph_last_hours']+':';
+							if(range=='day') html+='<br />'+lang['graph_today']+':';
+							if(range=='month') html+='<br />'+lang['graph_last_month']+':';
                             html+='</div><div class="pull-right">';
                                 html+='<div class="btn-group">';
                                    
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='last') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">Last hours</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_last_hours']+'</button> ';
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='day') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">Day</button> ';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_today']+'</button> ';
 									
 									html+='<button type="button" class="btn btn-default ';
 									if(range=='month') html+='active';
-									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">Month</button>';
+									html+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_last_month']+'</button>';
                                 html+='</div>';
                             html+='</div><div class="clearfix"></div>';
                         html+='</div>';
