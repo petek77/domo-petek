@@ -361,6 +361,7 @@ function getDevices(){
  									slideDevice($(this).attr('id').substr(2),ev.value);
 								});
 							}
+							setslide='';
 						}
 			
 					}
