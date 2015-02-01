@@ -23,9 +23,6 @@ if(typeof($.cookie('pathdomoticz'))!=='undefined'){
 
 
 $(document).ready(function(){
-    
-	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
-	$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
 	
     $.getScript( 'js/languages/'+$.cookie('language')+'.js',function(){
 		$.getScript( 'js/blocks.js');
@@ -41,6 +38,9 @@ $(document).ready(function(){
 				$('div#wrapper').append(blocks['settings']);
 				
 				$('span#dversion').html(dashticz_version);
+    
+				$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
+				$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
 				
 				$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 					data=$.parseJSON(data);
@@ -182,7 +182,7 @@ function getDevices(){
 						showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_radiation'],'last',current,false,'counter');
 					}
 					else if(
-						typeof($.cookie('sunswitch'))=='undefined' && data.result[r]['Name']==$.cookie('sunswitch')
+						typeof($.cookie('sunswitch'))!=='undefined' && data.result[r]['Name']==$.cookie('sunswitch')
 					){
 						if(current=='On') var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-sun-o"></i></span>';
 						if(current=='Off') var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-moon-o"></i></span>';
@@ -246,11 +246,12 @@ function getDevices(){
 													html+='<input type="text" class="span2" value="'+data.result[r]['Level']+'" id="sl'+data.result[r]['idx']+'" >';
 													html+='</div>'
 												}
-												else if(data.result[r]['TypeImg']=='temperature'){
+												else /*if(data.result[r]['TypeImg']=='temperature'){
 													html+='<div class="huge">'+current+'</div>';
 													html+='<div class="small">'+data.result[r]['Name']+'</div>';
 												}
-												else {
+												else */{
+													html+='<div class="huge">'+current+'</div>';
 													html+='<div>'+data.result[r]['Name']+'</div>';
 												}
 											html+='</div>';

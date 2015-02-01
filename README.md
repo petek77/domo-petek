@@ -7,7 +7,7 @@ In my case I used to following command through SSH:
 
 mount -o bind /usr/local/domoticz /volume1/Rob/Domoticz/
 
-Once you have access to the directory, create a subfolder named 'dash' (or any other foldername you want) in the www-folder. Extract the files from the ZP-file you've just downloaded into this folder.
+Once you have access to the directory, create a subfolder named 'dash' (or any other foldername you want) in the www-folder. Extract the files from the ZIP-file you've just downloaded into this folder.
 
 In /js/dashticz.js there are some configuration-options you can set.
 If you don't want to use the Kodi/XBMC-functions, leave this variable empty.
@@ -23,13 +23,16 @@ After a Domoticz-update, you have to re-upload Dashticz.
 Domoticz removes the whole folder!
 
 
+
+
 # Screenshots
 http://plaatjesdump.nl/upload/6570bb2afbeab696fc3eeb8261bee636.jpg
 http://plaatjesdump.nl/upload/5ef2edcd1f2b6eb6c76547d1331f853e.jpg
 
 
-# Special thanks
 
+
+# Special thanks
 A special THANK YOU, for help, testing, ideas and tips
 - Michaël van der Heijden
 - Remco van Geel
@@ -38,9 +41,34 @@ A special THANK YOU, for help, testing, ideas and tips
 - Dave Drager
 
 
+
+
+#Frequently Asked Questions
+- How do I get the day/night icon in the top right of the screen?
+In Domoticz, add a dummy switch with a name of your choice. Set a timer so it goes on at sunrise and goes out on sunset.
+Fill in the name of this dummy switch in Dashticz's settings.
+
+- How to use Dashticz if Domoticz is password protected?
+Go to Dashticz's settings via the cog-icon in the top right of the screen.
+Fill in the full path for Domoticz, e.g.: http://username:password@192.168.1.3:8084 (withouth trailing slash)
+
+- When Domoticz is updated, it has removed Dashticz?!
+Unfortunately, Dashticz has to be installed into Domoticz's www-directory.
+When Domoticz installs an update, it complete removes the www-directory, before placing the updated version back. Currently, there is no solution for this, youhave to re-install Dashticz.
+
+
+
+
+
 # Changelog
+0.58 - 02/02/2015
+- Fixed empty UV-blocks
+- Fixed logo (again)
+- Fixed Day/Night icon in the top right of the screen 
+
 0.57 - 02/02/2015
 - Removed config.js, settings can be changed in settings-screen (cog-icon on the top right)
+-- > Currently settings are saved in a cookie, will find another way in future (probable Domoticz-vars?)
 
 0.56 - 02/02/2015
 - Language switch added in settings
