@@ -548,34 +548,51 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 						}; 
 					}
 					else if(typeof(data.result[r]['u'])!=='undefined'){
-                                                data_com[count] = {
-                                                        xkey: currentdate,
-                                                        ykey: data.result[r]['u']
-                                                };
-                                        }
-                                       else if(typeof(data.result[r]['u_max'])!=='undefined' ){
-                                                data_com[count] = {
-                                                        xkey: currentdate,
-                                                        ykey: data.result[r]['u_max'],
+						data_com[count] = {
+							xkey: currentdate,
+							ykey: data.result[r]['u']
+						};
+					}
+				   	else if(typeof(data.result[r]['u_max'])!=='undefined' ){
+						data_com[count] = {
+							xkey: currentdate,
+							ykey: data.result[r]['u_max'],
 							ykey2: data.result[r]['u_min']
-                                                };
-                                        }
+						};
+					}
 					count++;
 				}
 			}
 			//console.log(data_com);
-			Morris.Area({
-				parseTime:false,element: 'graph'+idx+'',
-				data: data_com,
-				xkey: ['xkey'],
-				ykeys: ['ykey', 'ykey2'],
-				labels: [label],
-				lineColors: ['#ddd', '#ccc'],
-				pointFillColors: ['none'],
-				pointSize: 3,
-				hideHover: 'auto',
-				resize: true
-			});
+			if(typeof(data_com[0]['ykey2'])!=='undefined'){
+				
+				Morris.Area({
+					parseTime:false,element: 'graph'+idx+'',
+					data: data_com,
+					xkey: ['xkey'],
+					ykeys: ['ykey', 'ykey2'],
+					labels: [label],
+					lineColors: ['#ddd', '#ccc'],
+					pointFillColors: ['none'],
+					pointSize: 3,
+					hideHover: 'auto',
+					resize: true
+				});
+			}
+			else {
+				Morris.Area({
+					parseTime:false,element: 'graph'+idx+'',
+					data: data_com,
+					xkey: ['xkey'],
+					ykeys: ['ykey'],
+					labels: [label],
+					lineColors: ['#ddd', '#ccc'],
+					pointFillColors: ['none'],
+					pointSize: 3,
+					hideHover: 'auto',
+					resize: true
+				});
+			}
 
 		});
 	}
