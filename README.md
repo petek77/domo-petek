@@ -61,6 +61,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.59 - 02/02/2015
+- Support for doorbell/locks
+
 0.58 - 02/02/2015
 - Fixed empty UV-blocks
 - Fixed logo (again)

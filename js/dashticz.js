@@ -278,7 +278,8 @@ function getDevices(){
 									html+='</div>';
 									
 									var setslide='';
-									if(data.result[r]['SwitchType']=='On/Off' || data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group'){
+									//if(data.result[r]['Name']=='Voordeur' || data.result[r]['Name']=='Deurbel') console.log(data.result[r]);
+									if(data.result[r]['SwitchType']=='On/Off' || data.result[r]['SwitchType']=='Doorbell' || data.result[r]['SwitchType']=='Door Lock' || data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
 											html+='<span class="pull-left">'+lang['locked']+currentdate+'</span>';
@@ -289,6 +290,15 @@ function getDevices(){
 											html+='<a href="javascript:switchScene('+data.result[r]['idx']+');">';
 												html+='<div class="panel-footer">';
 													html+='<span class="pull-left">'+lang['turn_on']+currentdate+'</span>';
+													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+													html+='<div class="clearfix"></div>';
+												html+='</div>';
+											html+='</a>';
+										}
+										else if(data.result[r]['SwitchType']=='Doorbell' || data.result[r]['SwitchType']=='Door Lock') {
+											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+');">';
+												html+='<div class="panel-footer">';
+													html+='<span class="pull-left">'+lang['activate']+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 													html+='<div class="clearfix"></div>';
 												html+='</div>';
@@ -324,7 +334,7 @@ function getDevices(){
 										var setslide = 'sl'+data.result[r]['idx'];
 									}
 									else if(data.result[r]['TypeImg']!=='temperature') {
-										html+='<a href="javascript:javascript:void(0);">';
+										html+='<a href="javascript:void(0);">';
 											html+='<div class="panel-footer">';
 												html+='<span class="pull-left">&nbsp;</span>';
 												html+='<span class="pull-right"></span>';

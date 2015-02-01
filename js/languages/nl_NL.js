@@ -37,3 +37,4 @@ lang['last_seen'] = 'Update';
 lang['locked'] = 'Vergrendeld';
 lang['turn_on'] = 'Aanzetten';
 lang['switch'] = 'Schakelen';
+lang['activate'] = 'Activeren';
