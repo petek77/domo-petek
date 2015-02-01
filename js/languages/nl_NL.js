@@ -10,7 +10,7 @@ lang['settings_language'] = 'Taal';
 lang['settings_pathdomoticz'] = 'HTTP-pad naar Domoticz';
 lang['settings_pathxbmc'] = 'HTTP-pad naar XBMC';
 lang['settings_sunswitch'] = 'Naam dag/nacht schakelaar';
-lang['settings_xbmcswitch'] = 'Nam XBMC schakelaar';
+lang['settings_xbmcswitch'] = 'Naam XBMC schakelaar';
 
 lang['blocksettings_title'] = 'Blocksettings';
 lang['blocksettings_description'] = 'Pas dit blok aan zoals jij het wil';
