@@ -24,7 +24,8 @@ Domoticz removes the whole folder!
 
 
 # Screenshots
-http://plaatjesdump.nl/upload/314019db2d6725525edfbe7c7db6a92e.jpg
+http://plaatjesdump.nl/upload/6570bb2afbeab696fc3eeb8261bee636.jpg
+http://plaatjesdump.nl/upload/5ef2edcd1f2b6eb6c76547d1331f853e.jpg
 
 
 # Special thanks
@@ -38,6 +39,9 @@ A special THANK YOU, for help, testing, ideas and tips
 
 
 # Changelog
+0.57 - 02/02/2015
+- Removed config.js, settings can be changed in settings-screen (cog-icon on the top right)
+
 0.56 - 02/02/2015
 - Language switch added in settings
 

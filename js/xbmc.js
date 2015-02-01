@@ -3,6 +3,11 @@ var xbmcplaying;
 var xbmcdevice;
 var reqxbmc;
 
+var _XBMCSWITCH='';
+if(typeof($.cookie('xbmcswitch'))=='undefined' && $.cookie('xbmcswitch')!==""){
+	_XBMCSWITCH = $.cookie('xbmcswitch');
+}
+
 function loadXBMC(){
 	if(_XBMCHOST!==""){
 		$('span#menu').show();	
@@ -48,7 +53,7 @@ function openXbmcLibrary(){
 			if($('#movie'+data['result']['movies'][m]['movieid']).length==0){
 
 				var html='<div class="col-sm-2 movieitem" id="movie'+data['result']['movies'][m]['movieid']+'">';
-					html+='<div class="panel panel-'+_THEMECOLOR+'">';
+					html+='<div class="panel">';
 						html+='<div class="panel-heading">';
 							html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
 						html+='</div>';

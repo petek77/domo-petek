@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.56';
+var dashticz_version='0.57';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -11,40 +11,48 @@ var showNavigation;
 if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
 if(typeof($.cookie('language'))=='undefined') $.cookie('language','en_US');
 
+var _XBMCHOST='';
+if(typeof($.cookie('pathxbmc'))!=='undefined'){
+	_XBMCHOST = $.cookie('pathxbmc');
+}
+
+var _DOMOTICZHOST='';
+if(typeof($.cookie('pathdomoticz'))!=='undefined'){
+	_DOMOTICZHOST = $.cookie('pathdomoticz');
+}
+
 
 $(document).ready(function(){
     
 	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
 	
-    $.getScript( 'js/config.js',function(){
-		$.getScript( 'js/languages/'+$.cookie('language')+'.js',function(){
-			$.getScript( 'js/blocks.js');
-			$.getScript( 'js/functions.js');
-			$.getScript( 'js/xbmc.js');
+    $.getScript( 'js/languages/'+$.cookie('language')+'.js',function(){
+		$.getScript( 'js/blocks.js');
+		$.getScript( 'js/functions.js');
+		$.getScript( 'js/xbmc.js');
+		
+		$.getScript( 'themes/'+$.cookie('theme')+'/js/config.js',function(){
+			$.getScript( 'themes/'+$.cookie('theme')+'/js/blocks.js',function(){
 			
-			$.getScript( 'themes/'+$.cookie('theme')+'/js/config.js',function(){
-				$.getScript( 'themes/'+$.cookie('theme')+'/js/blocks.js',function(){
+				$('div#wrapper').append(blocks['topbar']);
+				$('div#wrapper').append(blocks['blocks']);
+				if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+				$('div#wrapper').append(blocks['settings']);
 				
-					$('div#wrapper').append(blocks['topbar']);
-					$('div#wrapper').append(blocks['blocks']);
-					if(showNavigation) $('div#wrapper').append(blocks['navigation']);
-					$('div#wrapper').append(blocks['settings']);
-					
-					$('span#dversion').html(dashticz_version);
-					$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
-					
-					$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
-						data=$.parseJSON(data);
-						$('span#version').html(data.version);
-					});
-					
-					$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
-						data=$.parseJSON(data);
-					});
-					
-					loadXBMC();
-					autoGetDevices();
+				$('span#dversion').html(dashticz_version);
+				$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
+				
+				$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
+					data=$.parseJSON(data);
+					$('span#version').html(data.version);
 				});
+				
+				$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getactivetabs',function(data){
+					data=$.parseJSON(data);
+				});
+				
+				loadXBMC();
+				autoGetDevices();
 			});
 		});
 	});
@@ -174,7 +182,7 @@ function getDevices(){
 						showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_radiation'],'last',current,false,'counter');
 					}
 					else if(
-						data.result[r]['Name']==_SUNSWITCH
+						typeof($.cookie('sunswitch'))=='undefined' && data.result[r]['Name']==$.cookie('sunswitch')
 					){
 						if(current=='On') var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-sun-o"></i></span>';
 						if(current=='Off') var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-moon-o"></i></span>';
