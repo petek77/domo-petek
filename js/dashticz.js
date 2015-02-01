@@ -25,6 +25,7 @@ if(typeof($.cookie('pathdomoticz'))!=='undefined'){
 $(document).ready(function(){
     
 	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
+	$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
 	
     $.getScript( 'js/languages/'+$.cookie('language')+'.js',function(){
 		$.getScript( 'js/blocks.js');
@@ -40,7 +41,6 @@ $(document).ready(function(){
 				$('div#wrapper').append(blocks['settings']);
 				
 				$('span#dversion').html(dashticz_version);
-				$('img#logo').attr('src','themes/'+$.cookie('theme')+'/images/logo.png');
 				
 				$.get(_DOMOTICZHOST+'/json.htm?type=command&param=getversion',function(data){
 					data=$.parseJSON(data);
