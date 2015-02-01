@@ -38,7 +38,10 @@ A special THANK YOU, for help, testing, ideas and tips
 
 
 # Changelog
-0.55 - 01/02/2015
+0.56 - 02/02/2015
+- Language switch added in settings
+
+0.55 - 02/02/2015
 - Added readings for Aeon Labs HEM and Smart Switch/Meter
 - Preparing for multiple languages
 

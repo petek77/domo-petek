@@ -55,7 +55,7 @@ function openXbmcLibrary(){
 						
 						html+='<a class="details" href="javascript:playMovie('+data['result']['movies'][m]['movieid']+');">';
 							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">Play</span>';
+								html+='<span class="pull-left">'+lang['media_play']+'</span>';
 								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 								html+='<div class="clearfix"></div>';
 							html+='</div>';
@@ -121,7 +121,7 @@ function getXbmc(DEVICE,forceplaying){
 								
 								html+='<a class="details pause" style="'+dis_pause+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'On\');">';
 									html+='<div class="panel-footer">';
-										html+='<span class="pull-left">Pause</span>';
+										html+='<span class="pull-left">'+lang['media_pause']+'</span>';
 										html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 										html+='<div class="clearfix"></div>';
 									html+='</div>';
@@ -129,7 +129,7 @@ function getXbmc(DEVICE,forceplaying){
 							
 								html+='<a class="details play" style="'+dis_play+'" href="javascript:$(\'#xbmc-playing .detail\').toggleClass(\'tile-green\');$(\'#xbmc-playing .detail\').toggleClass(\'tile-orange\');$(\'#xbmc-playing .pause,#xbmc-playing .play\').toggle();switchDevice(51,\'Off\');">';
 									html+='<div class="panel-footer">';
-										html+='<span class="pull-left">Resume</span>';
+										html+='<span class="pull-left">'+lang['media_resume']+'</span>';
 										html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 										html+='<div class="clearfix"></div>';
 									html+='</div>';

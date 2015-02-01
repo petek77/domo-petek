@@ -9,8 +9,8 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
             blocks['topbar']+= '<img id="logo" src="" />v<span id="dversion"></span> | ';
         	blocks['topbar']+= '<span class="domoticz"><strong>Domoticz</strong> v<span id="version"></span></span>';
             blocks['topbar']+= '<span id="menu" style="display:none;"> | ';
-                blocks['topbar']+= '<a href="javascript:void(0);" onclick="showDashboard();">Dashboard</a> | ';
-                blocks['topbar']+= '<a href="javascript:void(0);" onclick="showXbmc();">XBMC</a>';
+                blocks['topbar']+= '<a href="javascript:void(0);" onclick="showDashboard();">'+lang['dashboard']+'</a> | ';
+                blocks['topbar']+= '<a href="javascript:void(0);" onclick="showXbmc();">'+lang['kodi']+'</a>';
             blocks['topbar']+= '</span>    ';                
         blocks['topbar']+= '</div>';
     	blocks['topbar']+= '<div class="fl-right">';
@@ -50,25 +50,45 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 		blocks['settings']+= '<div class="modal-content">';
 			blocks['settings']+= '<div class="modal-header">';
 				blocks['settings']+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
-				blocks['settings']+= '<h3 class="modal-title" id="myModalLabel">Settings</h3>';
-				blocks['settings']+= '<h5>Change Dashticz the way you want it to be</h5>';
+				blocks['settings']+= '<h3 class="modal-title" id="myModalLabel">'+lang['settings_title']+'</h3>';
+				blocks['settings']+= '<h5>'+lang['settings_description']+'</h5>';
 			blocks['settings']+= '</div>';
 			blocks['settings']+= '<div class="modal-body">';
 			
 				blocks['settings']+= '<div class="row">';
-					blocks['settings']+= '<label class="col-md-3">Theme</label>';
+					blocks['settings']+= '<label class="col-md-3">'+lang['settings_theme']+'</label>';
 					blocks['settings']+= '<div class="col-md-9">';
 						blocks['settings']+= '<select name="theme" class="form-control">';
-							blocks['settings']+= '<option value="default">Default</option>';
-							blocks['settings']+= '<option value="darkoticz">Darkoticz</option>';
+						
+							if($.cookie('theme')=='default') blocks['settings']+= '<option value="default" selected>Dashticz</option>';
+							else blocks['settings']+= '<option value="default">Dashticz</option>';
+						
+							if($.cookie('theme')=='darkoticz') blocks['settings']+= '<option value="darkoticz" selected>Darkoticz</option>';
+							else blocks['settings']+= '<option value="darkoticz">Darkoticz</option>';
+							
+						blocks['settings']+= '</select>';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-3">'+lang['settings_language']+'</label>';
+					blocks['settings']+= '<div class="col-md-9">';
+						blocks['settings']+= '<select name="language" class="form-control">';
+												
+							if($.cookie('language')=='en_US') blocks['settings']+= '<option value="en_US" selected>English</option>';
+							else blocks['settings']+= '<option value="en_US">English</option>';
+						
+							if($.cookie('language')=='nl_NL') blocks['settings']+= '<option value="nl_NL" selected>Nederlands</option>';
+							else blocks['settings']+= '<option value="nl_NL">Nederlands</option>';
+							
 						blocks['settings']+= '</select>';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';
 					
 			blocks['settings']+= '</div>';
 			blocks['settings']+= '<div class="modal-footer">';
-				blocks['settings']+= '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
-				blocks['settings']+= '<button type="button" class="btn btn-primary" onclick="saveSettings();">Save</button>';
+				blocks['settings']+= '<button type="button" class="btn btn-default" data-dismiss="modal">'+lang['cancel']+'</button>';
+				blocks['settings']+= '<button type="button" class="btn btn-primary" onclick="saveSettings();">'+lang['save']+'</button>';
 			blocks['settings']+= '</div>';
 		blocks['settings']+= '</div>';
 	blocks['settings']+= '</div>';
@@ -81,20 +101,20 @@ blocks['editblock'] = '<div class="modal fade" id="editblockModal" tabindex="-1"
 		blocks['editblock']+= '<div class="modal-content">';
 			blocks['editblock']+= '<div class="modal-header">';
 				blocks['editblock']+= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
-				blocks['editblock']+= '<h3 class="modal-title" id="myModalLabel">Blocksettings</h3>';
-				blocks['editblock']+= '<h5>Change this block the way you want it to be</h5>';
+				blocks['editblock']+= '<h3 class="modal-title" id="myModalLabel">'+lang['blocksettings_title']+'</h3>';
+				blocks['editblock']+= '<h5>'+lang['blocksettings_description']+'</h5>';
 			blocks['editblock']+= '</div>';
 			blocks['editblock']+= '<div class="modal-body">';
 			
 				blocks['editblock']+= '<div class="row">';
-					blocks['editblock']+= '<label class="col-md-3">Title</label>';
+					blocks['editblock']+= '<label class="col-md-3">'+lang['blocksettings_blocktitle']+'</label>';
 					blocks['editblock']+= '<div class="col-md-9">';
 						blocks['editblock']+= '<input type="text" id="name" class="form-control" />';
 					blocks['editblock']+= '</div>';
 				blocks['editblock']+= '</div>';
 				
 				blocks['editblock']+= '<div class="row">';
-					blocks['editblock']+= '<label class="col-md-3">Switch type</label>';
+					blocks['editblock']+= '<label class="col-md-3">'+lang['blocksettings_switchtype']+'</label>';
 					blocks['editblock']+= '<div class="col-md-9">';
 						blocks['editblock']+= '<select id="switchtype" class="form-control">';
 							
@@ -128,8 +148,8 @@ blocks['editblock'] = '<div class="modal fade" id="editblockModal" tabindex="-1"
 					
 			blocks['editblock']+= '</div>';
 			blocks['editblock']+= '<div class="modal-footer">';
-				blocks['editblock']+= '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
-				blocks['editblock']+= '<button type="button" class="btn btn-primary" onclick="saveEditblock();">Save</button>';
+				blocks['editblock']+= '<button type="button" class="btn btn-default" data-dismiss="modal">'+lang['cancel']+'</button>';
+				blocks['editblock']+= '<button type="button" class="btn btn-primary" onclick="saveSettings();">'+lang['save']+'</button>';
 			blocks['editblock']+= '</div>';
 		blocks['editblock']+= '</div>';
 	blocks['editblock']+= '</div>';

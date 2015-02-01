@@ -2,13 +2,14 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.55';
+var dashticz_version='0.56';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
 
 var showNavigation;
 if(typeof($.cookie('theme'))=='undefined') $.cookie('theme','default');
+if(typeof($.cookie('language'))=='undefined') $.cookie('language','en_US');
 
 
 $(document).ready(function(){
@@ -16,7 +17,7 @@ $(document).ready(function(){
 	$('link#themecss').attr('href','themes/'+$.cookie('theme')+'/css/style.css');
 	
     $.getScript( 'js/config.js',function(){
-		$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
+		$.getScript( 'js/languages/'+$.cookie('language')+'.js',function(){
 			$.getScript( 'js/blocks.js');
 			$.getScript( 'js/functions.js');
 			$.getScript( 'js/xbmc.js');
@@ -54,7 +55,7 @@ function openSettings(){
 }
 
 function saveSettings(){
-	$('.modal-footer .btn-primary').html(lang['settings_saving']);
+	$('.modal-footer .btn-primary').html(lang['saving']);
 	$('#settingsModal select,#settingsModal input').each(function(){
 		$.cookie($(this).attr('name'),$(this).val());
 	});
