@@ -44,15 +44,15 @@ A special THANK YOU, for help, testing, ideas and tips
 
 
 #Frequently Asked Questions
-- How do I get the day/night icon in the top right of the screen?
+<b>How do I get the day/night icon in the top right of the screen?</b><br />
 In Domoticz, add a dummy switch with a name of your choice. Set a timer so it goes on at sunrise and goes out on sunset.
 Fill in the name of this dummy switch in Dashticz's settings.
 
-- How to use Dashticz if Domoticz is password protected?
+<b>How to use Dashticz if Domoticz is password protected?</b><br />
 Go to Dashticz's settings via the cog-icon in the top right of the screen.
 Fill in the full path for Domoticz, e.g.: http://username:password@192.168.1.3:8084 (withouth trailing slash)
 
-- When Domoticz is updated, it has removed Dashticz?!
+<b>When Domoticz is updated, it has removed Dashticz?!</b><br />
 Unfortunately, Dashticz has to be installed into Domoticz's www-directory.
 When Domoticz installs an update, it complete removes the www-directory, before placing the updated version back. Currently, there is no solution for this, youhave to re-install Dashticz.
 
