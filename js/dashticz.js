@@ -119,7 +119,7 @@ function getDevices(){
 					if(data.result[r]['Name']=='Group1'){
 						console.log(data.result[r]);	
 					}
-					if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='vandaag '+data.result[r]['CounterToday'];
+					if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='Today '+data.result[r]['CounterToday'];
 						else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
 						else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
 						else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
@@ -129,8 +129,11 @@ function getDevices(){
 					}
 					else var current=data.result[r]['Data'];
 					
-					if(data.result[r]['SubType']=='Energy'){
-						current = 'nu '+data.result[r]['Usage']+', '+current;
+					if(data.result[r]['SubType']=='Energy' || data.result[r]['Type']=='Energy'){
+						current = 'Current '+data.result[r]['Usage']+', '+current;
+					}
+					if(data.result[r]['SubType']=='Electric'){
+						current = parseFloat(data.result[r]['Data'].replace( / Watt$/g, ''));
 					}
 					if(data.result[r]['SwitchType']=='Dimmer'){
 						
@@ -149,9 +152,13 @@ function getDevices(){
 					}
 					
 					
+
+					// now process data	
 					if(
 						data.result[r]['SubType']=='Energy' ||
-						data.result[r]['SubType']=='Gas'
+						data.result[r]['Type']=='Energy' ||
+						data.result[r]['SubType']=='Gas' ||
+						data.result[r]['SubType']=='Electric'
 					){
 						showGraph(data.result[r]['idx'],data.result[r]['Name'],'Usage','last',current,false,'counter');
 					}
@@ -498,7 +505,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 			var count=0;
 			for(r in data.result){
 				
-				var currentdate = data.result[r]['d'];
+				var currentdate = data.result[r].d;
 				var currentstamp = strtotime(currentdate);
 				var currenttimeLessFour = Math.round((new Date().getTime()) / 1000)-(3600*4);
 				//console.log('DIFF: '+currentstamp+' > '+currenttimeLessFour);
@@ -540,6 +547,19 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 							ykey: data.result[r]['v']
 						}; 
 					}
+					else if(typeof(data.result[r]['u'])!=='undefined'){
+                                                data_com[count] = {
+                                                        xkey: currentdate,
+                                                        ykey: data.result[r]['u']
+                                                };
+                                        }
+                                       else if(typeof(data.result[r]['u_max'])!=='undefined' ){
+                                                data_com[count] = {
+                                                        xkey: currentdate,
+                                                        ykey: data.result[r]['u_max'],
+							ykey2: data.result[r]['u_min']
+                                                };
+                                        }
 					count++;
 				}
 			}
@@ -548,9 +568,10 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 				parseTime:false,element: 'graph'+idx+'',
 				data: data_com,
 				xkey: ['xkey'],
-				ykeys: ['ykey'],
+				ykeys: ['ykey', 'ykey2'],
 				labels: [label],
-				lineColors: ['#ccc'],
+				lineColors: ['#ddd', '#ccc'],
+				pointFillColors: ['none'],
 				pointSize: 3,
 				hideHover: 'auto',
 				resize: true
