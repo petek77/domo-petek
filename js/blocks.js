@@ -17,7 +17,7 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
         	blocks['topbar']+= '<span id="systeminfo"></span>';
         	blocks['topbar']+= '<span id="sun"></span>';
             blocks['topbar']+= '<span id="settings"><a href="javascript:openSettings();"><i class="fa fa-cog"></i></a></span>';
-          //  blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
+          	blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
     	blocks['topbar']+= '</div>';
     blocks['topbar']+= '</div> ';           
 blocks['topbar']+= '</nav>';

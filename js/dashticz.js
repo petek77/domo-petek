@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.61';
+var dashticz_version='0.62';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -13,6 +13,7 @@ var _XBMCHOST='';
 var _DOMOTICZHOST='';
 var _LANGUAGE='en_US';
 var _THEME='default';
+var _BLOCKSORDER =false;
 
 $(document).ready(function(){
 	
@@ -20,6 +21,10 @@ $(document).ready(function(){
 	    data=$.parseJSON(data);
 		for(r in data.result){
 			uservars[data.result[r]['Name']] = data.result[r];
+		}
+		
+		if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
+			_BLOCKSORDER = uservars['dashticz_blockorder']['Value'].split(',');
 		}
 		
 		if(typeof(uservars['dashticz_pathdomoticz'])!=='undefined') _DOMOTICZHOST = uservars['dashticz_pathdomoticz']['Value'];
@@ -78,13 +83,17 @@ function saveSettings(){
 function openEditmode(){
 	if(!$('#editmode').hasClass('active')){
 		$('#editmode').addClass('active');
+		
 		$('.panel').each(function(){
 			var panel = $(this);
 			panel.prepend('<div class="editclick" />');
 			//if(panel.data('idx').length>0){
 				panel.find('.editclick').height(panel.height());
 				panel.find('.editclick').width(panel.width());
+				
 				panel.find('.editclick').bind( "click", function(e) {
+					/*
+					alert('Editmode is still active, deactivate before using Dashticz!');
 					$('div#wrapper').append(blocks['editblock']);
 					
 					$('#editblockModal #name').val(alldevices[panel.data('idx')]['Name']);
@@ -92,12 +101,28 @@ function openEditmode(){
 					
 					$('#editblockModal').data('idx',panel.data('idx')).modal('show');	
 					e.preventDefault();
+					*/
 				});
+				
 			//}
 		});
 		
+		
+		$( ".row.dashboard" ).sortable({
+			update: function () {
+				var order1 = $(this).sortable('toArray').toString();
+				if(typeof(uservars['dashticz_blockorder'])=='undefined'){
+					$.get(_DOMOTICZHOST+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockorder&vtype=2&vvalue='+order1);
+				}
+				else {
+					$.get(_DOMOTICZHOST+'/json.htm?type=command&param=updateuservariable&idx='+uservars['dashticz_blockorder']['idx']+'&vname=dashticz_blockorder&vtype=2&vvalue='+order1);
+				}
+			}	
+		});
+			
 	}
 	else {
+		$( ".row.dashboard" ).sortable('destroy');
 		$('#editmode').removeClass('active');	
 		$('.panel').unbind( "click" );
 	}
@@ -142,9 +167,6 @@ function getDevices(){
 						typeof(uservars['dashticz_sunswitch'])!=='undefined' && data.result[r]['Name']==uservars['dashticz_sunswitch']['Value']	
 					)
 				){
-					if(data.result[r]['Name']=='Group1'){
-						console.log(data.result[r]);	
-					}
 					if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='Today '+data.result[r]['CounterToday'];
 						else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
 						else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
@@ -476,6 +498,13 @@ function getDevices(){
   				skycons.add("icon_wg", eval(iconclass));
 				skycons.play();
 			}
+			
+			var el = $('.row.dashboard');
+			for(bo in _BLOCKSORDER){
+				var clone = $('#'+_BLOCKSORDER[bo]);
+				$('#'+_BLOCKSORDER[bo]).remove();
+				el.append(clone);
+			}	
 		});
 	}
 }

@@ -61,6 +61,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.62 - 02/02/2015
+- Beta functionality to sort the blocks, THIS WILL NOT UPDATE DOMOTICZ SORTORDER!
+To activate this, click the green pencil on the top right of the screen and start dragging the blocks
+
 0.61 - 02/02/2015
 - Moved configuration settings (again, sorry) from cookies to Domoticz-uservars!
 - Changed default theme name to 'Default'
