@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.59';
+var dashticz_version='0.60';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -590,7 +590,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 					xkey: ['xkey'],
 					ykeys: ['ykey', 'ykey2'],
 					labels: [label],
-					lineColors: ['#ddd', '#ccc'],
+					lineColors: [graphColor, graphColor2],
 					pointFillColors: ['none'],
 					pointSize: 3,
 					hideHover: 'auto',
@@ -604,7 +604,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 					xkey: ['xkey'],
 					ykeys: ['ykey'],
 					labels: [label],
-					lineColors: ['#ddd', '#ccc'],
+					lineColors: [graphColor],
 					pointFillColors: ['none'],
 					pointSize: 3,
 					hideHover: 'auto',

@@ -61,19 +61,22 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
-0.59 - 02/02/2015
+0.60 - 02/02/2015
+- Color changes for graphs in themes
+
+0.59 - 01/02/2015
 - Support for doorbell/locks
 
-0.58 - 02/02/2015
+0.58 - 01/02/2015
 - Fixed empty UV-blocks
 - Fixed logo (again)
 - Fixed Day/Night icon in the top right of the screen 
 
-0.57 - 02/02/2015
+0.57 - 01/02/2015
 - Removed config.js, settings can be changed in settings-screen (cog-icon on the top right)
 -- > Currently settings are saved in a cookie, will find another way in future (probable Domoticz-vars?)
 
-0.56 - 02/02/2015
+0.56 - 01/02/2015
 - Language switch added in settings
 
 0.55 - 02/02/2015
