@@ -5,7 +5,10 @@ lang['kodi'] = 'Kodi';
 
 lang['settings_title'] = 'Instellingen';
 lang['settings_description'] = 'Pas Dashticz aan zoals jij het wil';
+
 lang['settings_theme'] = 'Thema';
+lang['settings_theme_default'] = 'Standaard';
+
 lang['settings_language'] = 'Taal';
 lang['settings_pathdomoticz'] = 'HTTP-pad naar Domoticz';
 lang['settings_pathxbmc'] = 'HTTP-pad naar XBMC';

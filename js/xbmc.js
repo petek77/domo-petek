@@ -4,8 +4,8 @@ var xbmcdevice;
 var reqxbmc;
 
 var _XBMCSWITCH='';
-if(typeof($.cookie('xbmcswitch'))=='undefined' && $.cookie('xbmcswitch')!==""){
-	_XBMCSWITCH = $.cookie('xbmcswitch');
+if(typeof(uservars['xbmcswitch'])!=='undefined'){
+	_XBMCSWITCH = uservars['xbmcswitch']['Value'];
 }
 
 function loadXBMC(){

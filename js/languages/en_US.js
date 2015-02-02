@@ -5,7 +5,10 @@ lang['kodi'] = 'Kodi';
 
 lang['settings_title'] = 'Settings';
 lang['settings_description'] = 'Change Dashticz the way you want it to be';
+
 lang['settings_theme'] = 'Theme';
+lang['settings_theme_default'] = 'Default';
+
 lang['settings_language'] = 'Language';
 lang['settings_pathdomoticz'] = 'HTTP-path to Domoticz';
 lang['settings_pathxbmc'] = 'HTTP-path to XBMC';

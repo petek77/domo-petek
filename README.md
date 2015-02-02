@@ -61,6 +61,11 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.61 - 02/02/2015
+- Moved configuration settings (again, sorry) from cookies to Domoticz-uservars!
+- Changed default theme name to 'Default'
+- If you have a day/night switch wich shows the day/night icon in the right top of the screen, it doenst have to be set as favorite in Domoticz
+
 0.60 - 02/02/2015
 - Color changes for graphs in themes
 

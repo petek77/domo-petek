@@ -58,12 +58,12 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_theme']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
-						blocks['settings']+= '<select name="theme" class="form-control">';
+						blocks['settings']+= '<select name="dashticz_theme" class="form-control">';
 						
-							if($.cookie('theme')=='default') blocks['settings']+= '<option value="default" selected>Dashticz</option>';
-							else blocks['settings']+= '<option value="default">Dashticz</option>';
+							if(_THEME=='default') blocks['settings']+= '<option value="default" selected>'+lang['settings_theme_default']+'</option>';
+							else blocks['settings']+= '<option value="default">'+lang['settings_theme_default']+'</option>';
 						
-							if($.cookie('theme')=='darkoticz') blocks['settings']+= '<option value="darkoticz" selected>Darkoticz</option>';
+							if(_THEME=='darkoticz') blocks['settings']+= '<option value="darkoticz" selected>Darkoticz</option>';
 							else blocks['settings']+= '<option value="darkoticz">Darkoticz</option>';
 							
 						blocks['settings']+= '</select>';
@@ -73,12 +73,12 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_language']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
-						blocks['settings']+= '<select name="language" class="form-control">';
+						blocks['settings']+= '<select name="dashticz_language" class="form-control">';
 												
-							if($.cookie('language')=='en_US') blocks['settings']+= '<option value="en_US" selected>English</option>';
+							if(_LANGUAGE=='en_US') blocks['settings']+= '<option value="en_US" selected>English</option>';
 							else blocks['settings']+= '<option value="en_US">English</option>';
 						
-							if($.cookie('language')=='nl_NL') blocks['settings']+= '<option value="nl_NL" selected>Nederlands</option>';
+							if(_LANGUAGE=='nl_NL') blocks['settings']+= '<option value="nl_NL" selected>Nederlands</option>';
 							else blocks['settings']+= '<option value="nl_NL">Nederlands</option>';
 							
 						blocks['settings']+= '</select>';
@@ -88,32 +88,36 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_pathdomoticz']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
-						if(typeof($.cookie('pathdomoticz'))=='undefined') $.cookie('pathdomoticz','');
-						blocks['settings']+= '<input type="text" name="pathdomoticz" value="'+$.cookie('pathdomoticz')+'" class="form-control" />';
+						blocks['settings']+= '<input type="text" name="dashticz_pathdomoticz" value="'+_DOMOTICZHOST+'" class="form-control" />';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';
 			
 				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_sunswitch']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
-						if(typeof($.cookie('sunswitch'))=='undefined') $.cookie('sunswitch','');
-						blocks['settings']+= '<input type="text" name="sunswitch" value="'+$.cookie('sunswitch')+'" class="form-control" />';
+						var sunswitch='';
+						if(typeof(uservars['dashticz_sunswitch'])!=='undefined'){
+							sunswitch = uservars['dashticz_sunswitch']['Value'];
+						}
+						blocks['settings']+= '<input type="text" name="dashticz_sunswitch" value="'+sunswitch+'" class="form-control" />';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';
 			
 				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_pathxbmc']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
-						if(typeof($.cookie('pathxbmc'))=='undefined') $.cookie('pathxbmc','');
-						blocks['settings']+= '<input type="text" name="pathxbmc" value="'+$.cookie('pathxbmc')+'" class="form-control" />';
+						blocks['settings']+= '<input type="text" name="dashticz_pathxbmc" value="'+_XBMCHOST+'" class="form-control" />';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';
 			
 				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_xbmcswitch']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
-						if(typeof($.cookie('xbmcswitch'))=='undefined') $.cookie('xbmcswitch','');
-						blocks['settings']+= '<input type="text" name="xbmcswitch" value="'+$.cookie('xbmcswitch')+'" class="form-control" />';
+						var xbcmswitch='';
+						if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined'){
+							xbcmswitch = uservars['dashticz_xbmcswitch']['Value'];
+						}
+						blocks['settings']+= '<input type="text" name="dashticz_xbmcswitch" value="'+xbcmswitch+'" class="form-control" />';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';
 					
