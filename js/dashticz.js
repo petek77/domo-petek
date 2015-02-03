@@ -531,11 +531,11 @@ function getDevices(){
 				skycons.play();
 			}
 			
-			var el = $('.row.dashboard');
 			for(bo in _BLOCKSORDER){
 				var clone = $('#'+_BLOCKSORDER[bo]);
+				var parent = $('#'+_BLOCKSORDER[bo]).parent();
 				$('#'+_BLOCKSORDER[bo]).remove();
-				el.append(clone);
+				parent.append(clone);
 			}	
 		});
 	}
