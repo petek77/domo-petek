@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.63';
+var dashticz_version='0.65';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -14,7 +14,7 @@ var _DOMOTICZHOST='';
 var _LANGUAGE='en_US';
 var _THEME='default';
 var _BLOCKSORDER = false;
-var _BLOCKSHIDE = '{}';
+var _BLOCKSHIDE = new Object();
 
 $(document).ready(function(){
 	
@@ -150,7 +150,7 @@ function saveEditblock(idx){
 	
 	var used=true;
 	if(alldevices[idx]['Type']=='Temp'){ //temperature blocks
-		$.get('/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue'],function(data){ 
+		$.get(_DOMOTICZHOST+'/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue'],function(data){ 
 			if(!modal.find('#hide').is(':checked')){
 				$('#loadingModal').remove();
 				window.location.reload(); 
@@ -158,7 +158,7 @@ function saveEditblock(idx){
 		});
 	}
 	else if(typeof(alldevices[idx]['SwitchType'])!=='undefined'){ //switches, dimmers etc.
-		$.get('/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+modal.find('#switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2'],function(data){ 
+		$.get(_DOMOTICZHOST+'/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+modal.find('#switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2'],function(data){ 
 			if(!modal.find('#hide').is(':checked')){
 				$('#loadingModal').remove();
 				window.location.reload(); 
@@ -425,7 +425,7 @@ function getDevices(){
 										var setslide = 'sl'+data.result[r]['idx'];
 									}
 									else if(data.result[r]['TypeImg']!=='temperature') {
-											console.log(data.result[r]);
+											//console.log(data.result[r]);
 										html+='<a href="javascript:void(0);">';
 											html+='<div class="panel-footer">';
 												html+='<span class="pull-left">&nbsp;</span>';
@@ -551,6 +551,58 @@ function getDevices(){
 				var skycons = new Skycons({"color": "#ccc"});
   				skycons.add("icon_wg", eval(iconclass));
 				skycons.play();
+				
+				/*
+				$.get('http://www.84media.nl/projects/dashticz/buienradar.php?lat=52&lon=4',function(data){
+					data=$.parseJSON(data);
+					var data_radar = new Array();
+					for(d in data){
+						if(data[d]!==""){
+							var rain = data[d].split('|');
+							rain[0] = rain[0]+Math.floor(Math.random()*11)-8;
+							if(rain[0]<0) rain[0] = 1;
+							data_radar[d] = {
+								xkey: rain[1],
+								ykey: rain[0]
+							}; 
+						}
+					}
+					
+					var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="buienradar">';
+						html+='<div class="panel panel-default">';
+							html+='<div class="panel-heading nodetails">';
+								html+='<div class="row">';
+									html+='<div class="col-xs-12">';
+										html+='<div class="huge">Buienradar</div>';
+										html+='<div id="graph_radar" style="height: 100px;"></div>';
+									html+='</div>';
+								html+='</div>';
+							html+='</div>';
+							
+						html+='</div>';
+					html+='</div>';
+				
+					if($('#buienradar').length>0){
+						$('#buienradar').replaceWith(html);
+					}
+					else $('.row.dashboard').prepend(html);
+					
+					Morris.Bar({
+						parseTime:false,
+						element: 'graph_radar',
+						data: data_radar,
+						xkey: 'xkey',
+						ykeys: ['ykey'],
+						labels: ['Neerslag'],
+						lineColors: [graphColor],
+						pointFillColors: ['none'],
+						pointSize: 2,
+						xLabelMargin: 1,
+						hideHover: 'auto',
+						resize: true
+					});
+				});
+				*/
 			}
 			
 			for(bo in _BLOCKSORDER){
@@ -681,34 +733,36 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 				}
 			}
 			//console.log(data_com);
-			if(typeof(data_com[0]['ykey2'])!=='undefined'){
-				
-				Morris.Area({
-					parseTime:false,element: 'graph'+idx+'',
-					data: data_com,
-					xkey: ['xkey'],
-					ykeys: ['ykey', 'ykey2'],
-					labels: [label],
-					lineColors: [graphColor, graphColor2],
-					pointFillColors: ['none'],
-					pointSize: 3,
-					hideHover: 'auto',
-					resize: true
-				});
-			}
-			else {
-				Morris.Area({
-					parseTime:false,element: 'graph'+idx+'',
-					data: data_com,
-					xkey: ['xkey'],
-					ykeys: ['ykey'],
-					labels: [label],
-					lineColors: [graphColor],
-					pointFillColors: ['none'],
-					pointSize: 3,
-					hideHover: 'auto',
-					resize: true
-				});
+			if(typeof(data_com[0])!=='undefined'){
+				if(typeof(data_com[0]['ykey2'])!=='undefined'){
+					
+					Morris.Area({
+						parseTime:false,element: 'graph'+idx+'',
+						data: data_com,
+						xkey: ['xkey'],
+						ykeys: ['ykey', 'ykey2'],
+						labels: [label],
+						lineColors: [graphColor, graphColor2],
+						pointFillColors: ['none'],
+						pointSize: 3,
+						hideHover: 'auto',
+						resize: true
+					});
+				}
+				else {
+					Morris.Area({
+						parseTime:false,element: 'graph'+idx+'',
+						data: data_com,
+						xkey: ['xkey'],
+						ykeys: ['ykey'],
+						labels: [label],
+						lineColors: [graphColor],
+						pointFillColors: ['none'],
+						pointSize: 3,
+						hideHover: 'auto',
+						resize: true
+					});
+				}
 			}
 
 		});

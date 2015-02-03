@@ -20,16 +20,13 @@ mount -o bind /usr/local/domoticz /volume1/Rob/Domoticz/
 
 Once you have access to the directory, create a subfolder named 'dash' (or any other foldername you want) in the www-folder. Extract the files from the ZIP-file you've just downloaded into this folder.
 
-In /js/dashticz.js there are some configuration-options you can set.
-If you don't want to use the Kodi/XBMC-functions, leave this variable empty.
-
 If you want to interact with Kodi/XBMC, create a PHP-file on a webserver, with the following code and replace the IP-address of Kodi:
 http://jsfiddle.net/d2vpuc26/ 
 
 Last but not least, Dashticz is accessible via http://DOMOTICZ_IP:PORT/YOUR_FOLDERNAME/index.html
 (Do not forget index.html in the end of the URL. For some reason Domoticz-webserver not automatically opens index.html)
 
-WARNING!!
+WARNING!! WARNING!! WARNING!! WARNING!!
 After a Domoticz-update, you have to re-upload Dashticz.
 Domoticz removes the whole folder!
 
