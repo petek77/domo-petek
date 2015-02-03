@@ -19,6 +19,7 @@ lang['blocksettings_title'] = 'Blocksettings';
 lang['blocksettings_description'] = 'Pas dit blok aan zoals jij het wil';
 lang['blocksettings_blocktitle'] = 'Titel';
 lang['blocksettings_switchtype'] = 'Schakelaar type';
+lang['blocksettings_hide'] = 'Blok verbergen';
 
 lang['cancel'] = 'Annuleren';
 lang['save'] = 'Opslaan';
@@ -35,6 +36,7 @@ lang['graph_radiation'] = 'Radiation';
 lang['graph_last_hours'] = 'Laatste uren';
 lang['graph_today'] = 'Vandaag';
 lang['graph_last_month'] = 'Afgelopen maand';
+lang['graph_current'] = 'Op dit moment';
 							
 lang['last_seen'] = 'Update';
 lang['locked'] = 'Vergrendeld';

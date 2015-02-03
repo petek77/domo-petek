@@ -1,6 +1,17 @@
 # Dashticz
-Dashboard addon for Domoticz
+Alternative dashboard for Domoticz
 
+
+
+
+# Screenshots
+http://plaatjesdump.nl/upload/6570bb2afbeab696fc3eeb8261bee636.jpg
+http://plaatjesdump.nl/upload/5ef2edcd1f2b6eb6c76547d1331f853e.jpg
+
+
+
+
+#Installation
 To install Dashticz, you should have access to the installation directory of Domoticz.
 If Domoticz is installed on a Synology NAS, you could create a symbolic link for easier access.
 In my case I used to following command through SSH:
@@ -21,13 +32,6 @@ Last but not least, Dashticz is accessible via http://DOMOTICZ_IP:PORT/YOUR_FOLD
 WARNING!!
 After a Domoticz-update, you have to re-upload Dashticz.
 Domoticz removes the whole folder!
-
-
-
-
-# Screenshots
-http://plaatjesdump.nl/upload/6570bb2afbeab696fc3eeb8261bee636.jpg
-http://plaatjesdump.nl/upload/5ef2edcd1f2b6eb6c76547d1331f853e.jpg
 
 
 
@@ -61,6 +65,14 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.63 - 03/02/2015
+- Beta functionality to hide blocks, THIS WILL NOT UPDATE DOMOTICZ FAVORITE-LIST!
+To activate this, click the green pencil on the top right of the screen and click on the blocks.
+DISCLAIMER: Create a test-switch to test with or make a backup of the Domoticz-database.
+- Graph css fix in default theme
+- Showing all blocks instead of favorite blocks
+- Untranslated words added to translation files
+
 0.62 - 02/02/2015
 - Beta functionality to sort the blocks, THIS WILL NOT UPDATE DOMOTICZ SORTORDER!
 To activate this, click the green pencil on the top right of the screen and start dragging the blocks

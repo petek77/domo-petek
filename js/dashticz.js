@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.62';
+var dashticz_version='0.63';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -13,7 +13,8 @@ var _XBMCHOST='';
 var _DOMOTICZHOST='';
 var _LANGUAGE='en_US';
 var _THEME='default';
-var _BLOCKSORDER =false;
+var _BLOCKSORDER = false;
+var _BLOCKSHIDE = '{}';
 
 $(document).ready(function(){
 	
@@ -25,6 +26,10 @@ $(document).ready(function(){
 		
 		if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
 			_BLOCKSORDER = uservars['dashticz_blockorder']['Value'].split(',');
+		}
+		
+		if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
+			_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
 		}
 		
 		if(typeof(uservars['dashticz_pathdomoticz'])!=='undefined') _DOMOTICZHOST = uservars['dashticz_pathdomoticz']['Value'];
@@ -87,24 +92,30 @@ function openEditmode(){
 		$('.panel').each(function(){
 			var panel = $(this);
 			panel.prepend('<div class="editclick" />');
-			//if(panel.data('idx').length>0){
+			var ix='';
+			if(typeof(panel.data('idx'))!=='undefined'){
+				var idx = panel.data('idx');
 				panel.find('.editclick').height(panel.height());
 				panel.find('.editclick').width(panel.width());
 				
 				panel.find('.editclick').bind( "click", function(e) {
-					/*
-					alert('Editmode is still active, deactivate before using Dashticz!');
+					
 					$('div#wrapper').append(blocks['editblock']);
+					$('#editblockModal #name').val(alldevices[idx]['Name']);
 					
-					$('#editblockModal #name').val(alldevices[panel.data('idx')]['Name']);
-					$('#editblockModal #switchtype').val(alldevices[panel.data('idx')]['SwitchTypeVal']);
+					if(typeof(alldevices[idx]['SwitchType'])!=='undefined'){
+						$('#editblockModal #switchtype').val(alldevices[idx]['SwitchTypeVal']);
+					}
+					else {
+						$('#editblockModal #switchtype').parents('.row').hide();
+					}
 					
-					$('#editblockModal').data('idx',panel.data('idx')).modal('show');	
+					$('#editblockModal').data('idx',idx).modal('show');	
 					e.preventDefault();
-					*/
+					
 				});
 				
-			//}
+			}
 		});
 		
 		
@@ -131,9 +142,25 @@ function openEditmode(){
 function saveEditblock(idx){
 	var idx = $('#editblockModal').data('idx');
 	
-	var used=1;
-	alert('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+$('#editblockModal #switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2']);
-	//$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+$('#editblockModal #switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2']);
+	var used=true;
+	if(alldevices[idx]['Type']=='Temp'){ //temperature blocks
+		$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']);
+	}
+	else if(typeof(alldevices[idx]['SwitchType'])!=='undefined'){ //switches, dimmers etc.
+		$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+$('#editblockModal #switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2']);
+	}
+	
+	if($('#editblockModal #hide').is(':checked')){
+		_BLOCKSHIDE[idx] = idx;	
+		savehide = JSON.stringify(_BLOCKSHIDE);
+		if(typeof(uservars['dashticz_blockhide'])=='undefined'){
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockhide&vtype=2&vvalue='+savehide,function(data){ window.location.reload(); });
+		}
+		else {
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=updateuservariable&idx='+uservars['dashticz_blockhide']['idx']+'&vname=dashticz_blockhide&vtype=2&vvalue='+savehide,function(data){ window.location.reload(); });
+		}
+		
+	}
 }
 
 function switchTheme(theme){
@@ -162,12 +189,16 @@ function getDevices(){
 				getXbmc(data.result[r]);
 							
 				if(
-					data.result[r]['Favorite']==1 || 
 					(
-						typeof(uservars['dashticz_sunswitch'])!=='undefined' && data.result[r]['Name']==uservars['dashticz_sunswitch']['Value']	
+						data.result[r]['Favorite']==1 || 
+						data.result[r]['Favorite']==0 || 
+						(
+							typeof(uservars['dashticz_sunswitch'])!=='undefined' && data.result[r]['Name']==uservars['dashticz_sunswitch']['Value']	
+						)
 					)
+					
 				){
-					if(typeof(data.result[r]['CounterToday'])!=='undefined') var current='Today '+data.result[r]['CounterToday'];
+					if(typeof(data.result[r]['CounterToday'])!=='undefined') var current=lang['graph_today']+' '+data.result[r]['CounterToday'];
 						else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
 						else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
 						else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
@@ -178,7 +209,7 @@ function getDevices(){
 					else var current=data.result[r]['Data'];
 					
 					if(data.result[r]['SubType']=='Energy' || data.result[r]['Type']=='Energy'){
-						current = 'Current '+data.result[r]['Usage']+', '+current;
+						current = lang['graph_current']+' '+data.result[r]['Usage']+', '+current;
 					}
 					if(data.result[r]['SubType']=='Electric'){
 						current = parseFloat(data.result[r]['Data'].replace( / Watt$/g, ''));
@@ -254,7 +285,7 @@ function getDevices(){
 							}
 							
 						}
-						else if(!sliding){
+						else if(!sliding && typeof(_BLOCKSHIDE[data.result[r]['idx']])=='undefined'){
 							var currentdate = '<span class="small">'+lang['last_seen']+': '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 							
 							if(
@@ -317,7 +348,7 @@ function getDevices(){
 									
 									var setslide='';
 									//if(data.result[r]['Name']=='Voordeur' || data.result[r]['Name']=='Deurbel') console.log(data.result[r]);
-									if(data.result[r]['SwitchType']=='On/Off' || data.result[r]['SwitchType']=='Doorbell' || data.result[r]['SwitchType']=='Door Lock' || data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group'){
+									if(data.result[r]['SwitchType']=='Push On Button' || data.result[r]['SwitchType']=='On/Off' || data.result[r]['SwitchType']=='Doorbell' || data.result[r]['SwitchType']=='Door Lock' || data.result[r]['Type']=='Scene' || data.result[r]['Type']=='Group'){
 										if(data.result[r]['Protected'] == true){
 											html+='<div class="panel-footer">';
 											html+='<span class="pull-left">'+lang['locked']+currentdate+'</span>';
@@ -333,7 +364,7 @@ function getDevices(){
 												html+='</div>';
 											html+='</a>';
 										}
-										else if(data.result[r]['SwitchType']=='Doorbell' || data.result[r]['SwitchType']=='Door Lock') {
+										else if(data.result[r]['SwitchType']=='Doorbell' || data.result[r]['SwitchType']=='Push On Button' || data.result[r]['SwitchType']=='Door Lock') {
 											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+');">';
 												html+='<div class="panel-footer">';
 													html+='<span class="pull-left">'+lang['activate']+currentdate+'</span>';
@@ -372,6 +403,7 @@ function getDevices(){
 										var setslide = 'sl'+data.result[r]['idx'];
 									}
 									else if(data.result[r]['TypeImg']!=='temperature') {
+											console.log(data.result[r]);
 										html+='<a href="javascript:void(0);">';
 											html+='<div class="panel-footer">';
 												html+='<span class="pull-left">&nbsp;</span>';

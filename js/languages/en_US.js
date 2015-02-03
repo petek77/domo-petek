@@ -19,6 +19,7 @@ lang['blocksettings_title'] = 'Blocksettings';
 lang['blocksettings_description'] = 'Change this block the way you want it to be';
 lang['blocksettings_blocktitle'] = 'Title';
 lang['blocksettings_switchtype'] = 'Switch type';
+lang['blocksettings_hide'] = 'Hide block';
 
 lang['cancel'] = 'Cancel';
 lang['save'] = 'Save';
@@ -35,6 +36,7 @@ lang['graph_radiation'] = 'Radiation';
 lang['graph_last_hours'] = 'Last hours';
 lang['graph_today'] = 'Today';
 lang['graph_last_month'] = 'Last month';
+lang['graph_current'] = 'Currently';
 							
 lang['last_seen'] = 'Update';
 lang['locked'] = 'Locked';

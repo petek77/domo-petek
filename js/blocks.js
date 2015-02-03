@@ -180,12 +180,19 @@ blocks['editblock'] = '<div class="modal fade" id="editblockModal" tabindex="-1"
 
 						blocks['editblock']+= '</select>';
 					blocks['editblock']+= '</div>';
-				blocks['editblock']+= '</div>';				
+				blocks['editblock']+= '</div>';	
+			
+				blocks['editblock']+= '<div class="row">';
+					blocks['editblock']+= '<label class="col-md-3">'+lang['blocksettings_hide']+'</label>';
+					blocks['editblock']+= '<div class="col-md-9">';
+						blocks['editblock']+= '<input type="checkbox" id="hide" class="form-control" style="width:12px;margin:0;"/>';
+					blocks['editblock']+= '</div>';
+				blocks['editblock']+= '</div>';			
 					
 			blocks['editblock']+= '</div>';
 			blocks['editblock']+= '<div class="modal-footer">';
 				blocks['editblock']+= '<button type="button" class="btn btn-default" data-dismiss="modal">'+lang['cancel']+'</button>';
-				blocks['editblock']+= '<button type="button" class="btn btn-primary" onclick="saveSettings();">'+lang['save']+'</button>';
+				blocks['editblock']+= '<button type="button" class="btn btn-primary" onclick="saveEditblock();">'+lang['save']+'</button>';
 			blocks['editblock']+= '</div>';
 		blocks['editblock']+= '</div>';
 	blocks['editblock']+= '</div>';
