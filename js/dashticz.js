@@ -140,24 +140,46 @@ function openEditmode(){
 }
 
 function saveEditblock(idx){
-	var idx = $('#editblockModal').data('idx');
+	var modal = $('#editblockModal');
+	var idx = modal.data('idx');
+	
+	/*WILL CLEAN THIS FUNCTION UP LATER! */
+	$('#editblockModal').remove();
+	$('div#wrapper').append(blocks['loading']);
+	$('#loadingModal').modal('show');	
 	
 	var used=true;
 	if(alldevices[idx]['Type']=='Temp'){ //temperature blocks
-		$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']);
+		$.get('/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue'],function(data){ 
+			if(!modal.find('#hide').is(':checked')){
+				$('#loadingModal').remove();
+				window.location.reload(); 
+			}
+		});
 	}
 	else if(typeof(alldevices[idx]['SwitchType'])!=='undefined'){ //switches, dimmers etc.
-		$.get('/json.htm?type=setused&idx='+idx+'&name='+$('#editblockModal #name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+$('#editblockModal #switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2']);
+		$.get('/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&strparam1='+alldevices[idx]['StrParam1']+'&strparam2='+alldevices[idx]['StrParam2']+'&protected='+alldevices[idx]['Protected']+'&switchtype='+modal.find('#switchtype').val()+'&customimage='+alldevices[idx]['CustomImage']+'&used='+used+'&addjvalue='+alldevices[idx]['AddjValue']+'&addjvalue2='+alldevices[idx]['AddjValue2'],function(data){ 
+			if(!modal.find('#hide').is(':checked')){
+				$('#loadingModal').remove();
+				window.location.reload(); 
+			}
+		});
 	}
 	
-	if($('#editblockModal #hide').is(':checked')){
+	if(modal.find('#hide').is(':checked')){
 		_BLOCKSHIDE[idx] = idx;	
 		savehide = JSON.stringify(_BLOCKSHIDE);
 		if(typeof(uservars['dashticz_blockhide'])=='undefined'){
-			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockhide&vtype=2&vvalue='+savehide,function(data){ window.location.reload(); });
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockhide&vtype=2&vvalue='+savehide,function(data){ 
+				$('#loadingModal').remove();
+				window.location.reload(); 
+			});
 		}
 		else {
-			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=updateuservariable&idx='+uservars['dashticz_blockhide']['idx']+'&vname=dashticz_blockhide&vtype=2&vvalue='+savehide,function(data){ window.location.reload(); });
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=updateuservariable&idx='+uservars['dashticz_blockhide']['idx']+'&vname=dashticz_blockhide&vtype=2&vvalue='+savehide,function(data){ 
+				$('#loadingModal').remove();
+				window.location.reload(); 
+			});
 		}
 		
 	}

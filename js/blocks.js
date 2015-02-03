@@ -2,6 +2,17 @@
 
 var blocks = new Object();
 
+//LOADING MODAL
+blocks['loading'] = '<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">';
+	blocks['loading']+= '<div class="modal-dialog">';
+		blocks['loading']+= '<div class="modal-content">';
+			blocks['loading']+= '<div class="modal-body">';
+				blocks['loading']+= '<h1>One moment please...</h1><br />DO NOT REFRESH THIS PAGE!';
+			blocks['loading']+= '</div>';
+		blocks['loading']+= '</div>';
+	blocks['loading']+= '</div>';
+blocks['loading']+= '</div>';
+
 //TOP BAR
 blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">';
     blocks['topbar']+= '<div class="navbar-header">';

@@ -65,6 +65,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.64 - 03/02/2015
+- Possible fix for not hiding blocks
+
 0.63 - 03/02/2015
 - Beta functionality to hide blocks, THIS WILL NOT UPDATE DOMOTICZ FAVORITE-LIST!
 To activate this, click the green pencil on the top right of the screen and click on the blocks.
