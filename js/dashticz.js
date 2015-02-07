@@ -553,7 +553,7 @@ function getDevices(){
 				if($('#wunderground').length>0){
 					$('#wunderground').replaceWith(html);
 				}
-				else $('.row.dashboard').prepend(html);
+				else $('.row.dashboard').first().prepend(html);
 				
 				var skycons = new Skycons({"color": "#ccc"});
   				skycons.add("icon_wg", eval(iconclass));
@@ -595,7 +595,7 @@ function getDevices(){
 						if($('#buienradar').length>0){
 							$('#buienradar').replaceWith(html);
 						}
-						else $('.row.dashboard').prepend(html);
+						else $('.row.dashboard').first().prepend(html);
 						
 						Morris.Bar({
 							parseTime:false,
