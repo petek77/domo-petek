@@ -62,6 +62,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.67 - 07/02/2015
+- Fix for not showing save-button in settings
+
 0.66 - 07/02/2015
 - Fix for showing XBMC block
 
