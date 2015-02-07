@@ -4,8 +4,13 @@ var xbmcdevice;
 var reqxbmc;
 
 var _XBMCSWITCH='';
-if(typeof(uservars['xbmcswitch'])!=='undefined'){
-	_XBMCSWITCH = uservars['xbmcswitch']['Value'];
+if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined'){
+	_XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
+}
+
+var _XBMCHOST='';
+if(typeof(uservars['dashticz_pathxbmc'])!=='undefined'){
+	_XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
 }
 
 function loadXBMC(){
@@ -85,6 +90,7 @@ function playMovie(ID){
 function getXbmc(DEVICE,forceplaying){
 	if(typeof(forceplaying)=='undefined') forceplaying=false;
 	if(_XBMCHOST!==""){
+		
 		if(DEVICE['Name']==_XBMCSWITCH){
 			xbmcdevice = DEVICE;
 			xbmcplaying=false;

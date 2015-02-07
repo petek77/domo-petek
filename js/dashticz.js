@@ -2,14 +2,13 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.65';
+var dashticz_version='0.66';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
 var uservars = new Object();
 var showNavigation;
 
-var _XBMCHOST='';
 var _DOMOTICZHOST='';
 var _LANGUAGE='en_US';
 var _THEME='default';
@@ -34,7 +33,6 @@ $(document).ready(function(){
 		}
 		
 		if(typeof(uservars['dashticz_pathdomoticz'])!=='undefined') _DOMOTICZHOST = uservars['dashticz_pathdomoticz']['Value'];
-		if(typeof(uservars['dashticz_pathxbmc'])!=='undefined') _XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
 		if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
 		if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
 		if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];

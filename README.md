@@ -62,6 +62,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.66 - 07/02/2015
+- Fix for showing XBMC block
+
 0.65 - 07/02/2015
 - Option (in settings) to show only favorite-blocks from Domoticz
 - Add Buienradar-block. Fill in latitude/longitude in Settings.
