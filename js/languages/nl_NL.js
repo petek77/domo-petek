@@ -14,6 +14,9 @@ lang['settings_pathdomoticz'] = 'HTTP-pad naar Domoticz';
 lang['settings_pathxbmc'] = 'HTTP-pad naar XBMC';
 lang['settings_sunswitch'] = 'Naam dag/nacht schakelaar';
 lang['settings_xbmcswitch'] = 'Naam XBMC schakelaar';
+lang['settings_latitude'] = 'Latitude';
+lang['settings_longitude'] = 'Longitude';
+lang['settings_onlyfavorites'] = 'Alleen favoriete blokken';
 
 lang['blocksettings_title'] = 'Blocksettings';
 lang['blocksettings_description'] = 'Pas dit blok aan zoals jij het wil';

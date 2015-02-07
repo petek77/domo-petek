@@ -15,6 +15,7 @@ var _LANGUAGE='en_US';
 var _THEME='default';
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
+var _FAVORITES=0;
 
 $(document).ready(function(){
 	
@@ -36,6 +37,7 @@ $(document).ready(function(){
 		if(typeof(uservars['dashticz_pathxbmc'])!=='undefined') _XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
 		if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
 		if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
+		if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
 		
 		$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
 			$.getScript( 'js/blocks.js');
@@ -75,11 +77,18 @@ function openSettings(){
 function saveSettings(){
 	$('.modal-footer .btn-primary').html(lang['saving']);
 	$('#settingsModal select,#settingsModal input').each(function(){
+		var value = $(this).val();
+		if(typeof($(this).attr('type'))!=='undefined' && $(this).attr('type')=='checkbox'){
+			if(!$(this).is(':checked')){
+				value=0;	
+			}
+		}
+		
 		if(typeof(uservars[$(this).attr('name')])=='undefined'){
-			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=saveuservariable&vname='+$(this).attr('name')+'&vtype=2&vvalue='+$(this).val());
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=saveuservariable&vname='+$(this).attr('name')+'&vtype=2&vvalue='+value);
 		}
 		else {
-			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=updateuservariable&idx='+uservars[$(this).attr('name')]['idx']+'&vname='+$(this).attr('name')+'&vtype=2&vvalue='+$(this).val());
+			$.get(_DOMOTICZHOST+'/json.htm?type=command&param=updateuservariable&idx='+uservars[$(this).attr('name')]['idx']+'&vname='+$(this).attr('name')+'&vtype=2&vvalue='+value);
 		}
 	});
 	setTimeout(function(){ window.location.reload(); },1000);
@@ -212,8 +221,8 @@ function getDevices(){
 							
 				if(
 					(
-						data.result[r]['Favorite']==1 || 
-						data.result[r]['Favorite']==0 || 
+						(_FAVORITES==1 && data.result[r]['Favorite']==1) || 
+						_FAVORITES==0 || 
 						(
 							typeof(uservars['dashticz_sunswitch'])!=='undefined' && data.result[r]['Name']==uservars['dashticz_sunswitch']['Value']	
 						)
@@ -552,57 +561,60 @@ function getDevices(){
   				skycons.add("icon_wg", eval(iconclass));
 				skycons.play();
 				
-				/*
-				$.get('http://www.84media.nl/projects/dashticz/buienradar.php?lat=52&lon=4',function(data){
-					data=$.parseJSON(data);
-					var data_radar = new Array();
-					for(d in data){
-						if(data[d]!==""){
-							var rain = data[d].split('|');
-							rain[0] = rain[0]+Math.floor(Math.random()*11)-8;
-							if(rain[0]<0) rain[0] = 1;
-							data_radar[d] = {
-								xkey: rain[1],
-								ykey: rain[0]
-							}; 
+				if(
+					typeof(uservars['dashticz_latitude'])!=='undefined' && uservars['dashticz_latitude']['Value']!=='' && 
+					typeof(uservars['dashticz_longitude'])!=='undefined' && uservars['dashticz_longitude']['Value']!==''
+				){
+					$.get('http://www.84media.nl/projects/dashticz/buienradar.php?lat='+uservars['dashticz_latitude']['Value']+'&lon='+uservars['dashticz_longitude']['Value'],function(data){
+						data=$.parseJSON(data);
+						var data_radar = new Array();
+						for(d in data){
+							if(data[d]!==""){
+								var rain = data[d].split('|');
+								//rain[0] = rain[0]+Math.floor(Math.random()*11)-8;
+								//if(rain[0]<0) rain[0] = 1;
+								data_radar[d] = {
+									xkey: rain[1],
+									ykey: rain[0]
+								}; 
+							}
 						}
-					}
-					
-					var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="buienradar">';
-						html+='<div class="panel panel-default">';
-							html+='<div class="panel-heading nodetails">';
-								html+='<div class="row">';
-									html+='<div class="col-xs-12">';
-										html+='<div class="huge">Buienradar</div>';
-										html+='<div id="graph_radar" style="height: 100px;"></div>';
+						
+						var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="buienradar">';
+							html+='<div class="panel panel-default">';
+								html+='<div class="panel-heading nodetails">';
+									html+='<div class="row">';
+										html+='<div class="col-xs-12">';
+											html+='<div class="huge">Buienradar</div>';
+											html+='<div id="graph_radar" style="height: 100px;"></div>';
+										html+='</div>';
 									html+='</div>';
 								html+='</div>';
+								
 							html+='</div>';
-							
 						html+='</div>';
-					html+='</div>';
-				
-					if($('#buienradar').length>0){
-						$('#buienradar').replaceWith(html);
-					}
-					else $('.row.dashboard').prepend(html);
 					
-					Morris.Bar({
-						parseTime:false,
-						element: 'graph_radar',
-						data: data_radar,
-						xkey: 'xkey',
-						ykeys: ['ykey'],
-						labels: ['Neerslag'],
-						lineColors: [graphColor],
-						pointFillColors: ['none'],
-						pointSize: 2,
-						xLabelMargin: 1,
-						hideHover: 'auto',
-						resize: true
+						if($('#buienradar').length>0){
+							$('#buienradar').replaceWith(html);
+						}
+						else $('.row.dashboard').prepend(html);
+						
+						Morris.Bar({
+							parseTime:false,
+							element: 'graph_radar',
+							data: data_radar,
+							xkey: 'xkey',
+							ykeys: ['ykey'],
+							labels: ['Neerslag'],
+							lineColors: [graphColor],
+							pointFillColors: ['none'],
+							pointSize: 2,
+							xLabelMargin: 1,
+							hideHover: 'auto',
+							resize: true
+						});
 					});
-				});
-				*/
+				}
 			}
 			
 			for(bo in _BLOCKSORDER){

@@ -97,6 +97,15 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '</div>';
 			
 				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-5">'+lang['settings_onlyfavorites']+'</label>';
+					blocks['settings']+= '<div class="col-md-7">';
+						var favorites='';
+						if(_FAVORITES==1) favorites='checked';
+						blocks['settings']+= '<input type="checkbox" name="dashticz_onlyfavorites" value="1" '+favorites+' class="form-control" style="width:12px;margin:0;"/>';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';	
+			
+				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_pathdomoticz']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
 						blocks['settings']+= '<input type="text" name="dashticz_pathdomoticz" value="'+_DOMOTICZHOST+'" class="form-control" />';
@@ -111,6 +120,28 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 							sunswitch = uservars['dashticz_sunswitch']['Value'];
 						}
 						blocks['settings']+= '<input type="text" name="dashticz_sunswitch" value="'+sunswitch+'" class="form-control" />';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-5">'+lang['settings_latitude']+'</label>';
+					blocks['settings']+= '<div class="col-md-7">';
+						var latitude='';
+						if(typeof(uservars['dashticz_latitude'])!=='undefined'){
+							latitude = uservars['dashticz_latitude']['Value'];
+						}
+						blocks['settings']+= '<input type="text" name="dashticz_latitude" value="'+latitude+'" class="form-control" />';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-5">'+lang['settings_longitude']+'</label>';
+					blocks['settings']+= '<div class="col-md-7">';
+						var longitude='';
+						if(typeof(uservars['dashticz_longitude'])!=='undefined'){
+							longitude = uservars['dashticz_longitude']['Value'];
+						}
+						blocks['settings']+= '<input type="text" name="dashticz_longitude" value="'+longitude+'" class="form-control" />';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';
 			

@@ -62,6 +62,11 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.65 - 07/02/2015
+- Option (in settings) to show only favorite-blocks from Domoticz
+- Add Buienradar-block. Fill in latitude/longitude in Settings.
+(If you're not living in the Netherlands, you can hide this block)
+
 0.64 - 03/02/2015
 - Possible fix for not hiding blocks
 
