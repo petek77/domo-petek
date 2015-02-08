@@ -3,16 +3,6 @@ var xbmcplaying;
 var xbmcdevice;
 var reqxbmc;
 
-var _XBMCSWITCH='';
-if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined'){
-	_XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
-}
-
-var _XBMCHOST='';
-if(typeof(uservars['dashticz_pathxbmc'])!=='undefined'){
-	_XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
-}
-
 function loadXBMC(){
 	if(_XBMCHOST!==""){
 		$('span#menu').show();	
@@ -53,27 +43,29 @@ function openXbmcLibrary(){
 	_data = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies",  "params": {"sort": {"order": "ascending", "method": "title"}, "properties": ["title", "art"] }, "id": 1};
 
 	$.post(_XBMCHOST,_data,function(data){
-		data=$.parseJSON(data);
-		for(m in data['result']['movies']){
-			if($('#movie'+data['result']['movies'][m]['movieid']).length==0){
-
-				var html='<div class="col-sm-2 movieitem" id="movie'+data['result']['movies'][m]['movieid']+'">';
-					html+='<div class="panel">';
-						html+='<div class="panel-heading">';
-							html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
-						html+='</div>';
-						
-						html+='<a class="details" href="javascript:playMovie('+data['result']['movies'][m]['movieid']+');">';
-							html+='<div class="panel-footer">';
-								html+='<span class="pull-left">'+lang['media_play']+'</span>';
-								html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-								html+='<div class="clearfix"></div>';
+		if(data!==""){
+			data=$.parseJSON(data);
+			for(m in data['result']['movies']){
+				if($('#movie'+data['result']['movies'][m]['movieid']).length==0){
+	
+					var html='<div class="col-sm-2 movieitem" id="movie'+data['result']['movies'][m]['movieid']+'">';
+						html+='<div class="panel">';
+							html+='<div class="panel-heading">';
+								html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
 							html+='</div>';
-						html+='</a>';
+							
+							html+='<a class="details" href="javascript:playMovie('+data['result']['movies'][m]['movieid']+');">';
+								html+='<div class="panel-footer">';
+									html+='<span class="pull-left">'+lang['media_play']+'</span>';
+									html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+									html+='<div class="clearfix"></div>';
+								html+='</div>';
+							html+='</a>';
+						html+='</div>';
 					html+='</div>';
-				html+='</div>';
-				  
-				$('.row.xbmc').append(html);
+					  
+					$('.row.xbmc').append(html);
+				}
 			}
 		}
 		

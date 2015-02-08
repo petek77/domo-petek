@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.67';
+var dashticz_version='0.68';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -12,12 +12,17 @@ var showNavigation;
 var _DOMOTICZHOST='';
 var _LANGUAGE='en_US';
 var _THEME='default';
+var _XBMCSWITCH='';
+var _XBMCHOST='';
+
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
 var _FAVORITES=0;
+var _DEBUG=true;
 
-$(document).ready(function(){
-	
+var _DEBUG_JSON = '';
+
+$(document).ready(function(){	
    $.get(_DOMOTICZHOST+'/json.htm?type=command&param=getuservariables',function(data){
 	    data=$.parseJSON(data);
 		for(r in data.result){
@@ -36,9 +41,11 @@ $(document).ready(function(){
 		if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
 		if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
 		if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
-		
+		if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
+		if(typeof(uservars['dashticz_pathxbmc'])!=='undefined') _XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
+
 		$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
-			$.getScript( 'js/xbmc.js');
+			if(_XBMCSWITCH!=='' || _XBMCHOST!=='') $.getScript( 'js/xbmc.js');
 			$.getScript( 'js/blocks.js');
 			$.getScript( 'js/functions.js');
 			
@@ -212,6 +219,7 @@ function getDevices(){
 	if(!sliding){
 		if(typeof(req)!=='undefined') req.abort();
 		req = $.get(_DOMOTICZHOST+'/json.htm?type=devices&filter=all&used=true&order=Name',function(data){
+			if(_DEBUG) data = _DEBUG_JSON;
 			data=$.parseJSON(data);
 			for(r in data.result){
 				alldevices[data.result[r]['idx']] = data.result[r];
@@ -674,107 +682,109 @@ function showGraph(idx,title,label,range,current,forced,sensor){
                 html+='</div>';
             html+='</div>';
 			
-			if($('#device'+idx).length>0){
-				$('#device'+idx).replaceWith(html);
-			}
-			else $('.row.dashboard:last').after(html);
 			
 			data=$.parseJSON(data);
-			var data_com=new Array();
-			var count=0;
-			for(r in data.result){
-				
-				var currentdate = data.result[r].d;
-				var currentstamp = strtotime(currentdate);
-				var currenttimeLessFour = Math.round((new Date().getTime()) / 1000)-(3600*4);
-				//console.log('DIFF: '+currentstamp+' > '+currenttimeLessFour);
-				
-				if(range=='month' || range=='year'){
-					currentdate = currentdate.split('-');
-					currentdate = currentdate[2]+'/'+currentdate[1];
+			if(data.status=="ERR") alert('Could not load graph!');
+			else {
+				if($('#device'+idx).length>0){
+					$('#device'+idx).replaceWith(html);
 				}
-				else {
-					currentdate = currentdate.split(' ');
-					currentdate = currentdate[1];
+				else $('.row.dashboard:last').after(html);
+					var data_com=new Array();
+				var count=0;
+				for(r in data.result){
 					
-					hourmin = currentdate.split(':');
+					var currentdate = data.result[r].d;
+					var currentstamp = strtotime(currentdate);
+					var currenttimeLessFour = Math.round((new Date().getTime()) / 1000)-(3600*4);
+					//console.log('DIFF: '+currentstamp+' > '+currenttimeLessFour);
+					
+					if(range=='month' || range=='year'){
+						currentdate = currentdate.split('-');
+						currentdate = currentdate[2]+'/'+currentdate[1];
+					}
+					else {
+						currentdate = currentdate.split(' ');
+						currentdate = currentdate[1];
+						
+						hourmin = currentdate.split(':');
+					}
+					
+					if(range!=='last' || (range=='last' && currentstamp>currenttimeLessFour)){
+						
+						if(typeof(data.result[r]['te'])!=='undefined'){
+							data_com[count] = {
+								xkey: currentdate,
+								ykey: data.result[r]['te']
+							}; 
+						}
+						else if(typeof(data.result[r]['v_max'])!=='undefined'){
+							data_com[count] = {
+								xkey: currentdate,
+								ykey: data.result[r]['v_max']
+							}; 
+						}
+						else if(typeof(data.result[r]['v2'])!=='undefined'){
+							data_com[count] = {
+								xkey: currentdate,
+								ykey: parseFloat(data.result[r]['v2'])+parseFloat(data.result[r]['v'])
+							}; 
+						}
+						else if(typeof(data.result[r]['v'])!=='undefined'){
+							data_com[count] = {
+								xkey: currentdate,
+								ykey: data.result[r]['v']
+							}; 
+						}
+						else if(typeof(data.result[r]['u'])!=='undefined'){
+							data_com[count] = {
+								xkey: currentdate,
+								ykey: data.result[r]['u']
+							};
+						}
+						else if(typeof(data.result[r]['u_max'])!=='undefined' ){
+							data_com[count] = {
+								xkey: currentdate,
+								ykey: data.result[r]['u_max'],
+								ykey2: data.result[r]['u_min']
+							};
+						}
+						count++;
+					}
 				}
-				
-				if(range!=='last' || (range=='last' && currentstamp>currenttimeLessFour)){
-					
-					if(typeof(data.result[r]['te'])!=='undefined'){
-						data_com[count] = {
-							xkey: currentdate,
-							ykey: data.result[r]['te']
-						}; 
+				//console.log(data_com);
+				if(typeof(data_com[0])!=='undefined'){
+					if(typeof(data_com[0]['ykey2'])!=='undefined'){
+						
+						Morris.Area({
+							parseTime:false,element: 'graph'+idx+'',
+							data: data_com,
+							xkey: ['xkey'],
+							ykeys: ['ykey', 'ykey2'],
+							labels: [label],
+							lineColors: [graphColor, graphColor2],
+							pointFillColors: ['none'],
+							pointSize: 3,
+							hideHover: 'auto',
+							resize: true
+						});
 					}
-					else if(typeof(data.result[r]['v_max'])!=='undefined'){
-						data_com[count] = {
-							xkey: currentdate,
-							ykey: data.result[r]['v_max']
-						}; 
+					else {
+						Morris.Area({
+							parseTime:false,element: 'graph'+idx+'',
+							data: data_com,
+							xkey: ['xkey'],
+							ykeys: ['ykey'],
+							labels: [label],
+							lineColors: [graphColor],
+							pointFillColors: ['none'],
+							pointSize: 3,
+							hideHover: 'auto',
+							resize: true
+						});
 					}
-					else if(typeof(data.result[r]['v2'])!=='undefined'){
-						data_com[count] = {
-							xkey: currentdate,
-							ykey: parseFloat(data.result[r]['v2'])+parseFloat(data.result[r]['v'])
-						}; 
-					}
-					else if(typeof(data.result[r]['v'])!=='undefined'){
-						data_com[count] = {
-							xkey: currentdate,
-							ykey: data.result[r]['v']
-						}; 
-					}
-					else if(typeof(data.result[r]['u'])!=='undefined'){
-						data_com[count] = {
-							xkey: currentdate,
-							ykey: data.result[r]['u']
-						};
-					}
-				   	else if(typeof(data.result[r]['u_max'])!=='undefined' ){
-						data_com[count] = {
-							xkey: currentdate,
-							ykey: data.result[r]['u_max'],
-							ykey2: data.result[r]['u_min']
-						};
-					}
-					count++;
 				}
 			}
-			//console.log(data_com);
-			if(typeof(data_com[0])!=='undefined'){
-				if(typeof(data_com[0]['ykey2'])!=='undefined'){
-					
-					Morris.Area({
-						parseTime:false,element: 'graph'+idx+'',
-						data: data_com,
-						xkey: ['xkey'],
-						ykeys: ['ykey', 'ykey2'],
-						labels: [label],
-						lineColors: [graphColor, graphColor2],
-						pointFillColors: ['none'],
-						pointSize: 3,
-						hideHover: 'auto',
-						resize: true
-					});
-				}
-				else {
-					Morris.Area({
-						parseTime:false,element: 'graph'+idx+'',
-						data: data_com,
-						xkey: ['xkey'],
-						ykeys: ['ykey'],
-						labels: [label],
-						lineColors: [graphColor],
-						pointFillColors: ['none'],
-						pointSize: 3,
-						hideHover: 'auto',
-						resize: true
-					});
-				}
-			}
-
 		});
 	}
 }
