@@ -576,14 +576,12 @@ function getDevices(){
 					typeof(uservars['dashticz_latitude'])!=='undefined' && uservars['dashticz_latitude']['Value']!=='' && 
 					typeof(uservars['dashticz_longitude'])!=='undefined' && uservars['dashticz_longitude']['Value']!==''
 				){
-					$.get('http://www.84media.nl/projects/dashticz/buienradar.php?lat='+uservars['dashticz_latitude']['Value']+'&lon='+uservars['dashticz_longitude']['Value'],function(data){
+					$.get('http://www.84media.nl/projects/dashticz/buienradar.php?time='+new Date().getTime()+'&lat='+uservars['dashticz_latitude']['Value']+'&lon='+uservars['dashticz_longitude']['Value'],function(data){
 						data=$.parseJSON(data);
 						var data_radar = new Array();
 						for(d in data){
 							if(data[d]!==""){
 								var rain = data[d].split('|');
-								//rain[0] = rain[0]+Math.floor(Math.random()*11)-8;
-								//if(rain[0]<0) rain[0] = 1;
 								data_radar[d] = {
 									xkey: rain[1],
 									ykey: rain[0]
@@ -609,7 +607,6 @@ function getDevices(){
 							$('#buienradar').replaceWith(html);
 						}
 						else $('.row.dashboard').first().prepend(html);
-						
 						Morris.Bar({
 							parseTime:false,
 							element: 'graph_radar',
