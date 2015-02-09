@@ -14,6 +14,7 @@ var _LANGUAGE='en_US';
 var _THEME='default';
 var _XBMCSWITCH='';
 var _XBMCHOST='';
+var _DAY=false;
 
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
@@ -290,8 +291,14 @@ function getDevices(){
 					else if(
 						typeof(uservars['dashticz_sunswitch'])!=='undefined' && data.result[r]['Name']==uservars['dashticz_sunswitch']['Value']
 					){
-						if(current=='On') var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-sun-o"></i></span>';
-						if(current=='Off') var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-moon-o"></i></span>';
+						if(current=='On'){
+							_DAY=false;
+							var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-sun-o"></i></span>';
+						}
+						if(current=='Off'){
+							_DAY=true;
+							var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-moon-o"></i></span>';
+						}
 						if($('#device'+data.result[r]['idx']).length>0){
 							$('#device'+data.result[r]['idx']).replaceWith(html);
 
@@ -524,11 +531,9 @@ function getDevices(){
 									else if(stristr(wg['Forecast'], 'Partly Cloudy')){
 										var iconclass = 'Skycons.PARTLY_CLOUDY_DAY';
 									}
-									else if(stristr(wg['Forecast'],'sunny')){
-										var iconclass = 'Skycons.CLEAR_DAY';
-									}
-									else if(stristr(wg['Forecast'],'clear')){
-										var iconclass = 'Skycons.CLEAR_NIGHT';
+									else if(stristr(wg['Forecast'],'sunny') || stristr(wg['Forecast'],'clear')){
+										if(_DAY) var iconclass = 'Skycons.CLEAR_DAY';
+										else var iconclass = 'Skycons.CLEAR_NIGHT';
 									}
 									else if(stristr(wg['Forecast'],'Cloudy')){
 										var iconclass = 'Skycons.CLOUDY';

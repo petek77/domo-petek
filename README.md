@@ -62,6 +62,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.69 - 09/02/2015
+- Possible fix for showing moon-icon when weather is clear
+
 0.68 - 08/02/2015
 - Added some debug options
 - Not loading xbmc.js if not needed
