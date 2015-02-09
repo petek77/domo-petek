@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.69';
+var dashticz_version='0.70';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
