@@ -644,13 +644,13 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 	
 	if(typeof(forced)=='undefined') forced=false;
 	
-	if(!forced && $('#device'+idx).length>0){
+	//if(!forced && $('#device'+idx).length>0){
 		//if month, dan once a day
-	}
-	else {
+	//}
+	//else {
 		realrange=range;
 		if(range=='last') realrange='day';
-		$.get(_DOMOTICZHOST+'/json.htm?type=graph&sensor='+sensor+'&idx='+idx+'&range='+realrange,function(data){
+		$.get(_DOMOTICZHOST+'/json.htm?type=graph&sensor='+sensor+'&idx='+idx+'&range='+realrange+'&time='+new Date().getTime(),function(data){
 			
 			var html = '<div class="row dashboard" id="device'+idx+'">';
 				html+='<div class="col-lg-12">';
@@ -788,7 +788,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 				}
 			}
 		});
-	}
+	//}
 }
 
 function switchDevice(idx){
