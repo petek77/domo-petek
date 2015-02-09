@@ -14,7 +14,7 @@ var _LANGUAGE='en_US';
 var _THEME='default';
 var _XBMCSWITCH='';
 var _XBMCHOST='';
-var _DAY=false;
+var _DAY=true;
 
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
@@ -292,11 +292,11 @@ function getDevices(){
 						typeof(uservars['dashticz_sunswitch'])!=='undefined' && data.result[r]['Name']==uservars['dashticz_sunswitch']['Value']
 					){
 						if(current=='On'){
-							_DAY=false;
+							_DAY=true;
 							var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-sun-o"></i></span>';
 						}
 						if(current=='Off'){
-							_DAY=true;
+							_DAY=false;
 							var html = '<span id="device'+data.result[r]['idx']+'"><i class="fa fa-moon-o"></i></span>';
 						}
 						if($('#device'+data.result[r]['idx']).length>0){
