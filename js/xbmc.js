@@ -4,10 +4,10 @@ var xbmcdevice;
 var reqxbmc;
 
 function loadXBMC(){
-	if(_XBMCHOST!==""){
-		$('span#menu').show();	
-		openXbmcLibrary();
-	}
+	
+	$('span#menu').show();	
+	openXbmcLibrary();
+	
 }
 
 $(window).resize(function(){

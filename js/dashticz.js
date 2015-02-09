@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.68';
+var dashticz_version='0.69';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -18,7 +18,7 @@ var _XBMCHOST='';
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
 var _FAVORITES=0;
-var _DEBUG=true;
+var _DEBUG=false;
 
 var _DEBUG_JSON = '';
 
@@ -67,7 +67,7 @@ $(document).ready(function(){
 						$('span#version').html(data.version);
 					});
 					
-					loadXBMC();
+					if(_XBMCHOST!=="") loadXBMC();
 					autoGetDevices();
 				});
 			});
@@ -223,7 +223,7 @@ function getDevices(){
 			data=$.parseJSON(data);
 			for(r in data.result){
 				alldevices[data.result[r]['idx']] = data.result[r];
-				getXbmc(data.result[r]);
+				if(_XBMCHOST!=="") getXbmc(data.result[r]);
 							
 				if(
 					(
