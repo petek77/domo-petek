@@ -62,6 +62,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.71 - 10/02/2015
+- Check for genuine language
+
 0.70 - 09/02/2015
 - Graph not refreshing correctly
 

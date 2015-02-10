@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.70';
+var dashticz_version='0.71';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -44,7 +44,11 @@ $(document).ready(function(){
 		if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
 		if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 		if(typeof(uservars['dashticz_pathxbmc'])!=='undefined') _XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
-
+		
+		if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL'){
+			_LANGUAGE='en_US';	
+		}
+		
 		$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
 			if(_XBMCSWITCH!=='' || _XBMCHOST!=='') $.getScript( 'js/xbmc.js');
 			$.getScript( 'js/blocks.js');
