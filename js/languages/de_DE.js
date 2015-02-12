@@ -1,6 +1,6 @@
 
 var lang = new Object();
-lang['Dashboard'] = 'Dashboard';
+lang['dashboard'] = 'Dashboard';
 lang['kodi'] = 'Kodi';
 
 lang['settings_title'] = 'Einstellungen';

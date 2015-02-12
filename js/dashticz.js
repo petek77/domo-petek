@@ -45,7 +45,7 @@ $(document).ready(function(){
 		if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 		if(typeof(uservars['dashticz_pathxbmc'])!=='undefined') _XBMCHOST = uservars['dashticz_pathxbmc']['Value'];
 		
-		if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL'){
+		if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
 			_LANGUAGE='en_US';	
 		}
 		
