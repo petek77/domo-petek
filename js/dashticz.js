@@ -548,7 +548,8 @@ function getDevices(){
 										var iconclass = 'Skycons.RAIN';
 									}
 									else if(stristr(wg['Forecast'], 'Partly Cloudy')){
-										var iconclass = 'Skycons.PARTLY_CLOUDY_DAY';
+										if(_DAY) var iconclass = 'Skycons.PARTLY_CLOUDY_DAY';
+										else var iconclass = 'Skycons.PARTLY_CLOUDY_NIGHT';
 									}
 									else if(stristr(wg['Forecast'],'sunny') || stristr(wg['Forecast'],'clear')){
 										if(_DAY) var iconclass = 'Skycons.CLEAR_DAY';
