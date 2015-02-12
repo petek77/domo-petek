@@ -2,7 +2,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.71';
+var dashticz_version='0.73';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -369,7 +369,16 @@ function getDevices(){
 												}
 												else */{
 													html+='<div class="huge">'+current+'</div>';
-													html+='<div>'+data.result[r]['Name']+'</div>';
+													
+													if(data.result[r]['Name']=='jointspace-TV Schakelaar'){
+														var name='TV Schakelaar';
+													}
+													else {
+														var name=data.result[r]['Name'];
+													}
+													
+													html+='<div>'+name+'</div>';
+
 												}
 											html+='</div>';
 											html+='<div class="col-xs-4 text-right icon">';
@@ -431,7 +440,13 @@ function getDevices(){
 											html+='</a>';
 										}
 										else{
-											html+='<a href="javascript:switchDevice('+data.result[r]['idx']+');">';
+											if(data.result[r]['Name']=='jointspace-TV Schakelaar'){
+												html+='<a href="javascript:switchJointspaceDevice('+data.result[r]['idx']+');">';
+											}
+											else {
+												html+='<a href="javascript:switchDevice('+data.result[r]['idx']+');">';
+											}
+												
 												html+='<div class="panel-footer">';
 													html+='<span class="pull-left">'+lang['switch']+currentdate+'</span>';
 													html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
@@ -812,6 +827,18 @@ function switchDevice(idx){
 	$.get(_DOMOTICZHOST+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd='+doStatus+'&level=0&passcode=',function(){
 		setTimeout(function(){ getDevices(); },1000);
 	});	
+}
+
+function switchJointspaceDevice(idx){
+	$.ajax({ url: 'http://192.168.1.51:1925/1/input/key'
+           , data: '{ "key": "Standby" }'
+           , dataType: 'json'
+           , success: function(data) {
+             }
+           , type: 'post'
+           , timeout: 5000 // max wait 5 sec
+        }
+    );
 }
 
 function switchScene(idx){

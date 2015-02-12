@@ -85,6 +85,9 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 					blocks['settings']+= '<label class="col-md-5">'+lang['settings_language']+'</label>';
 					blocks['settings']+= '<div class="col-md-7">';
 						blocks['settings']+= '<select name="dashticz_language" class="form-control">';
+						
+							if(_LANGUAGE=='de_DE') blocks['settings']+= '<option value="de_DE" selected>Deutsch</option>';
+							else blocks['settings']+= '<option value="de_DE">Deutsch</option>';
 												
 							if(_LANGUAGE=='en_US') blocks['settings']+= '<option value="en_US" selected>English</option>';
 							else blocks['settings']+= '<option value="en_US">English</option>';

@@ -62,6 +62,12 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.73 - 12/02/2015
+- Preparions for adding support for televisions with JointSpace-support
+
+0.72 - 10/02/2015
+- Added German language
+
 0.71 - 10/02/2015
 - Check for genuine language
 
