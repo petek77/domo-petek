@@ -34,7 +34,7 @@ A special THANK YOU, for help, testing, ideas and tips
 
 #Frequently Asked Questions
 <b>How to use Dashticz if Domoticz is password protected?</b><br />
-Go to Dashticz's settings via the cog-icon in the top right of the screen.
+Open up CONFIG.js in a text-editor (notepad for example).
 Fill in the full path for Domoticz, e.g.: http://username:password@192.168.1.3:8084 (withouth trailing slash)
 
 <b>When Domoticz is updated, it has removed Dashticz?!</b><br />
