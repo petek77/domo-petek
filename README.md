@@ -3,34 +3,23 @@ Alternative dashboard for Domoticz
 
 
 
-
 # Screenshots
 http://plaatjesdump.nl/upload/6570bb2afbeab696fc3eeb8261bee636.jpg
 http://plaatjesdump.nl/upload/5ef2edcd1f2b6eb6c76547d1331f853e.jpg
 
 
 
+#Getting Started
+If you want interaction with your XBMC/Kodi-device, make sure you have a webserver with PHP enabled on a device in your network.
+
+For windows, OSX or Linux, you can try XAMPP (https://www.apachefriends.org/download.html)
+If you have a Synology NAS, you are able to enable the webserver in the DiskStation Manager.
+
+
 
 #Installation
-To install Dashticz, you should have access to the installation directory of Domoticz.
-If Domoticz is installed on a Synology NAS, you could create a symbolic link for easier access.
-In my case I used to following command through SSH:
-
-mount -o bind /usr/local/domoticz /volume1/Rob/Domoticz/
-
-Once you have access to the directory, create a subfolder named 'dash' (or any other foldername you want) in the www-folder. Extract the files from the ZIP-file you've just downloaded into this folder.
-
-If you want to interact with Kodi/XBMC, create a PHP-file on a webserver, with the following code and replace the IP-address of Kodi:
-http://jsfiddle.net/d2vpuc26/ 
-
-Last but not least, Dashticz is accessible via http://DOMOTICZ_IP:PORT/YOUR_FOLDERNAME/index.html
-(Do not forget index.html in the end of the URL. For some reason Domoticz-webserver not automatically opens index.html)
-
-WARNING!! WARNING!! WARNING!! WARNING!!
-After a Domoticz-update, you have to re-upload Dashticz.
-Domoticz removes the whole folder!
-
-
+Before you can use Dashticz, unzip all files to a subfolder in Domoticz or on a webserver (With PHP) of your choice.
+Edit CONFIG.js in the root and insert the IP-address of Domoticz without a trailing slash; e.g.: http://192.168.1.3:8084
 
 
 # Special thanks
@@ -43,25 +32,42 @@ A special THANK YOU, for help, testing, ideas and tips
 
 
 
-
 #Frequently Asked Questions
-<b>How do I get the day/night icon in the top right of the screen?</b><br />
-In Domoticz, add a dummy switch with a name of your choice. Set a timer so it goes on at sunrise and goes out on sunset.
-Fill in the name of this dummy switch in Dashticz's settings.
-
 <b>How to use Dashticz if Domoticz is password protected?</b><br />
 Go to Dashticz's settings via the cog-icon in the top right of the screen.
 Fill in the full path for Domoticz, e.g.: http://username:password@192.168.1.3:8084 (withouth trailing slash)
 
 <b>When Domoticz is updated, it has removed Dashticz?!</b><br />
-Unfortunately, Dashticz has to be installed into Domoticz's www-directory.
-When Domoticz installs an update, it complete removes the www-directory, before placing the updated version back. Currently, there is no solution for this, youhave to re-install Dashticz.
-
+Unfortunately, this occurs when Dashticz is installed into Domoticz's www-directory.
+When Domoticz installs an update, it complete removes the www-directory, before placing the updated version back. Currently, there is no solution for this (except for installing Dashticz on another webserver), you have to re-install Dashticz.
 
 
 
 
 # Changelog
+0.79 - 20/02/2015
+- Fixed XBMC 'Currently Playing'-block
+- Fixes for JointSpace remote
+
+0.78 - 19/02/2015
+- Fixed errors in calling functions before js-files are loaded
+
+0.77 - 19/02/2015
+- Fixed slider issues
+- Fixed Domoticz-calls
+
+0.76 - 16/02/2015
+- HTML of different blocks separated for easier theming
+- Bundled JS-functions in separate files
+
+0.75 - 14/02/2015
+- Getting latitude/longitude from Domoticz instead of own setting
+- Fixes in showing graphs
+- CSS fixes
+
+0.74 - 13/02/2015
+- Separated Dashticz from Domoticz.
+
 0.73 - 12/02/2015
 - Preparions for adding support for televisions with JointSpace-support
 

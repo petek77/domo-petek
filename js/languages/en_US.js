@@ -2,6 +2,7 @@
 var lang = new Object();
 lang['dashboard'] = 'Dashboard';
 lang['kodi'] = 'Kodi';
+lang['remote'] = 'Remote control';
 
 lang['settings_title'] = 'Settings';
 lang['settings_description'] = 'Change Dashticz the way you want it to be';

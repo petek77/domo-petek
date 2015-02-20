@@ -91,7 +91,7 @@ body {
 
 #page-wrapper {
     padding: 15px;
-	padding-top:56px;
+	padding-top:51px;
 }
 
 span#settings {
@@ -137,6 +137,23 @@ div.fl-right { float:right }
 	width:100%;
 	height: 36px;
 }
+
+@media screen and (max-width: 800px) {
+
+  .navbar-static-top {
+		height:59px;  
+  }
+  
+  div.fl-left,div.fl-right {
+	float:none;  
+  }
+  
+  #page-wrapper {
+    padding: 71px 15px 15px;
+}
+  
+}
+
 .modal-body label {
 	line-height:31px;font-weight:600
 }
@@ -288,6 +305,7 @@ body > .header {
   .right-side {
     margin-left: 0;
   }
+  
 }
 /*
     By default the layout is not fixed but if you add the class .fixed to the body element

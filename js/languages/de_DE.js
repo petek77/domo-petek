@@ -2,6 +2,7 @@
 var lang = new Object();
 lang['dashboard'] = 'Dashboard';
 lang['kodi'] = 'Kodi';
+lang['remote'] = 'Fernbedienung';
 
 lang['settings_title'] = 'Einstellungen';
 lang['settings_description'] = 'Dashticz Beschreibung';
