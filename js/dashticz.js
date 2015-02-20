@@ -12,7 +12,7 @@ var showNavigation;
 
 var _LANGUAGE='en_US';
 var _THEME='default';
-var _XBMCSWITCH='';
+//var _XBMCSWITCH='';
 var _DAY=false;
 
 var _LATITUDE='';
@@ -33,91 +33,94 @@ $(document).ready(function(){
 		//_HOST_XBMC = encodeURIComponent(_HOST_XBMC);
 		
 		$.getScript( 'js/functions.js',function(){
-			$.ajax({
-				url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getSunRiseSet&jsoncallback=?',
-				type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
-				success: function(data) {
-		
-					if(time()>=strtotime(date('Y-m-d ')+data.Sunrise) && time()<=strtotime(date('Y-m-d ')+data.Sunset)){
-						_DAY=true;
-					}
-					
-					$.ajax({
-						url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getuservariables&jsoncallback=?',
-						type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
-						success: function(data) {
-							for(r in data.result){
-								uservars[data.result[r]['Name']] = data.result[r];
-							}
-							
-							if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
-								_BLOCKSORDER = uservars['dashticz_blockorder']['Value'].split(',');
-							}
-							
-							if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
-								_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
-							}
-							
-							if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
-							if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
-							if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
-							if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
-							
-							if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
-								_LANGUAGE='en_US';	
-							}
-							
-							$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
-								if(_XBMCSWITCH!=='' || _HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
-								if(_HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
-				
-								$.getScript( 'js/blocks.js',function(){
-									$.getScript( 'js/graphs.js');
-									$.getScript( 'js/settings.js');
-									$.getScript( 'js/edit.js');
-									$.getScript( 'js/switches.js');
-									
-									$.getScript( 'themes/'+_THEME+'/js/config.js',function(){
-										$.getScript( 'themes/'+_THEME+'/js/blocks.js',function(){
-										
-											$('div#wrapper').append(blocks['topbar']);
-											$('div#wrapper').append(blocks['blocks']);
-											if(showNavigation) $('div#wrapper').append(blocks['navigation']);
-											$('div#wrapper').append(blocks['settings']);
-											
-											if(_HOST_XBMC!=='' || _HOST_JOINTSPACE!==''){
-												$('span#menu').show();	
-											}
-											
-											$('span#dversion').html(dashticz_version);
+			if(_HOST_DOMOTICZ=='') alert('Fill in the path to Domoticz in CONFIG.js!!');
+			else {
+				$.ajax({
+					url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getSunRiseSet&jsoncallback=?',
+					type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+					success: function(data) {
+			
+						if(time()>=strtotime(date('Y-m-d ')+data.Sunrise) && time()<=strtotime(date('Y-m-d ')+data.Sunset)){
+							_DAY=true;
+						}
+						
+						$.ajax({
+							url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getuservariables&jsoncallback=?',
+							type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+							success: function(data) {
+								for(r in data.result){
+									uservars[data.result[r]['Name']] = data.result[r];
+								}
 								
-											$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css');
-											$('img#logo').attr('src','themes/'+_THEME+'/images/logo.png');
+								if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
+									_BLOCKSORDER = uservars['dashticz_blockorder']['Value'].split(',');
+								}
+								
+								if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
+									_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
+								}
+								
+								if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
+								if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
+								if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
+								//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
+								
+								if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
+									_LANGUAGE='en_US';	
+								}
+								
+								$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
+									if(_HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
+									if(_HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
+					
+									$.getScript( 'js/blocks.js',function(){
+										$.getScript( 'js/graphs.js');
+										$.getScript( 'js/settings.js');
+										$.getScript( 'js/edit.js');
+										$.getScript( 'js/switches.js');
+										
+										$.getScript( 'themes/'+_THEME+'/js/config.js',function(){
+											$.getScript( 'themes/'+_THEME+'/js/blocks.js',function(){
 											
-											$.ajax({
-												url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getversion&jsoncallback=?',
-												type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
-												success: function(data) {
-													$('span#version').html(data.version);
+												$('div#wrapper').append(blocks['topbar']);
+												$('div#wrapper').append(blocks['blocks']);
+												if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+												$('div#wrapper').append(blocks['settings']);
+												
+												if(_HOST_XBMC!=='' || _HOST_JOINTSPACE!==''){
+													$('span#menu').show();	
 												}
+												
+												$('span#dversion').html(dashticz_version);
+									
+												$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css');
+												$('img#logo').attr('src','themes/'+_THEME+'/images/logo.png');
+												
+												$.ajax({
+													url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getversion&jsoncallback=?',
+													type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+													success: function(data) {
+														$('span#version').html(data.version);
+													}
+												});
+												
+												if(_DAY) var html = '<span id="dayornight"><i class="fa fa-sun-o"></i></span>';
+												else var html = '<span id="dayornight"><i class="fa fa-moon-o"></i></span>';
+												
+												if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
+												else $('#sun').append(html);
+								
+												if(_HOST_XBMC!=="") loadXBMC();
+												autoGetDevices();
 											});
-											
-											if(_DAY) var html = '<span id="dayornight"><i class="fa fa-sun-o"></i></span>';
-											else var html = '<span id="dayornight"><i class="fa fa-moon-o"></i></span>';
-											
-											if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
-											else $('#sun').append(html);
-							
-											if(_HOST_XBMC!=="") loadXBMC();
-											autoGetDevices();
 										});
 									});
 								});
-							});
-						}
-					});
-				}
-			});
+							}
+						});
+					}
+				});
+			}
 		});
 	});
 });
