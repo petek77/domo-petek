@@ -25,11 +25,11 @@ Edit CONFIG.js in the root and insert the IP-address of Domoticz without a trail
 
 #Configuration
 To enable communcation with different services/devices, add following lines to CONFIG.js and change the IP-address/port:
+
 (!) = Install dashticz on webserver with PHP-support
 
 
 For Domoticz:
-
 var _HOST_DOMOTICZ		= 'http://192.168.1.3:8084'; 
 
 
