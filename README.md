@@ -30,7 +30,9 @@ To enable communcation with different services/devices, add following lines to C
 
 
 For Domoticz:
+
 var _HOST_DOMOTICZ		= 'http://192.168.1.3:8084'; 
+
 
 
 For XBMC/Kodi (!):
@@ -38,9 +40,11 @@ For XBMC/Kodi (!):
 var _HOST_XBMC			= 'http://192.168.1.109:8080';
 
 
+
 For Philips-televisions with JointSpace-support (!):
 
 var _HOST_JOINTSPACE	= 'http://192.168.1.51:1925';
+
 
 
 For Plex Media Server (!):
