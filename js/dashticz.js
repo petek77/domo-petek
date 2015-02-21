@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.79';
+var dashticz_version='0.80';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -35,6 +35,7 @@ $(document).ready(function(){
 		$.getScript( 'js/functions.js',function(){
 			if(_HOST_DOMOTICZ=='') alert('Fill in the path to Domoticz in CONFIG.js!!');
 			else {
+				
 				$.ajax({
 					url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getSunRiseSet&jsoncallback=?',
 					type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
@@ -71,6 +72,7 @@ $(document).ready(function(){
 								
 								$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
 									if(_HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
+									if(_HOST_PLEX!=='') $.getScript( 'apps/plex/plex.js');
 									if(_HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
 					
 									$.getScript( 'js/blocks.js',function(){
@@ -111,6 +113,7 @@ $(document).ready(function(){
 												else $('#sun').append(html);
 								
 												if(_HOST_XBMC!=="") loadXBMC();
+												if(_HOST_PLEX!=="") loadPLEX();
 												autoGetDevices();
 											});
 										});

@@ -22,6 +22,25 @@ Before you can use Dashticz, unzip all files to a subfolder in Domoticz or on a 
 Edit CONFIG.js in the root and insert the IP-address of Domoticz without a trailing slash; e.g.: http://192.168.1.3:8084
 
 
+
+#Configuration
+To enable communcation with different services/devices, add following lines to CONFIG.js and change the IP-address/port:
+* = Install dashticz on webserver with PHP-support
+
+For Domoticz:
+var _HOST_DOMOTICZ		= 'http://192.168.1.3:8084'; 
+
+For XBMC/Kodi *:
+var _HOST_XBMC			= 'http://192.168.1.109:8080';
+
+For Philips-televisions with JointSpace-support *:
+var _HOST_JOINTSPACE	= 'http://192.168.1.51:1925';
+
+For Plex Media Server *:
+var _HOST_PLEX			= 'http://192.168.1.28:32400';
+
+
+
 # Special thanks
 A special THANK YOU, for help, testing, ideas and tips
 - Michaël van der Heijden
@@ -45,6 +64,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.80 - 21/02/2015
+- Support for Plex Media Server: 'Currently Playing'-block
+
 0.79 - 20/02/2015
 - Fixed XBMC 'Currently Playing'-block
 - Fixes for JointSpace remote
