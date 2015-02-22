@@ -112,8 +112,8 @@ $(document).ready(function(){
 												if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
 												else $('#sun').append(html);
 								
-												if(_HOST_XBMC!=="") loadXBMC();
-												if(_HOST_PLEX!=="") loadPLEX();
+												if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=="") loadXBMC();
+												if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=="") loadPLEX();
 												autoGetDevices();
 											});
 										});
