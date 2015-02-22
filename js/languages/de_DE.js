@@ -47,3 +47,4 @@ lang['locked'] = 'Gesperrt';
 lang['turn_on'] = 'Schalter';
 lang['switch'] = 'Schalter';
 lang['activate'] = 'Aktivieren';
+lang['view'] = 'Sehen';

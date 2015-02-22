@@ -47,3 +47,4 @@ lang['locked'] = 'Locked';
 lang['turn_on'] = 'Turn on';
 lang['switch'] = 'Switch';
 lang['activate'] = 'Activate';
+lang['view'] = 'View';

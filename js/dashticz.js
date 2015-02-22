@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.80';
+var dashticz_version='0.81';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -71,9 +71,9 @@ $(document).ready(function(){
 								}
 								
 								$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
-									if(_HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
-									if(_HOST_PLEX!=='') $.getScript( 'apps/plex/plex.js');
-									if(_HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
+									if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
+									if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=='') $.getScript( 'apps/plex/plex.js');
+									if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
 					
 									$.getScript( 'js/blocks.js',function(){
 										$.getScript( 'js/graphs.js');
@@ -150,16 +150,150 @@ function switchTheme(theme){
 	}
 }
 
+function setFloorplan(idx){
+	if(typeof(uservars['dashticz_currentfloorplan'])=='undefined'){
+		$.ajax({
+			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=saveuservariable&vname=dashticz_currentfloorplan&vtype=2&vvalue='+idx+'&jsoncallback=?',
+			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			success: function(data) {
+				window.location.reload();
+			}
+		});
+	}
+	else {
+		$.ajax({
+			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=updateuservariable&idx='+uservars['dashticz_currentfloorplan']['idx']+'&vname=dashticz_currentfloorplan&vtype=2&vvalue='+idx+'&jsoncallback=?',
+			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			success: function(data) {
+				window.location.reload();
+			}
+		});
+	}
+	
+}
+
 function autoGetDevices(){
+	
+	/*
+	//http://192.168.1.3:8084/json.htm?type=command&param=getplandevices&idx=3
+	
+	
+	$.ajax({
+		url: _HOST_DOMOTICZ+'/json.htm?type=plans&displayhidden=1&jsoncallback=?',
+		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+		success: function(data) {
+			if(typeof(data.result)=='undefined'){
+				$('.floorplans').hide();
+			}
+			else {
+				$('.floorplans').show();
+				$('.floorplans select').html('');
+				$('.floorplans select').append('<option value="0"></option>');
+				for(r in data.result){
+					var sel='';
+					if(typeof(uservars['dashticz_currentfloorplan'])!=='undefined' && uservars['dashticz_currentfloorplan']['Value']==data.result[r]['idx']){
+						sel='selected';	
+					}
+					
+					$('.floorplans select').append('<option value="'+data.result[r]['idx']+'" '+sel+'>'+data.result[r]['Name']+'</option>');
+				}
+			}
+		}
+	});
+	*/
+	$('.cameras').hide();
+	$.ajax({
+		url: _HOST_DOMOTICZ+'/json.htm?type=cameras&jsoncallback=?',
+		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+		success: function(data) {
+			if(typeof(data.result)=='undefined'){
+				//openCamera(0,'Camera');
+				//$('.cameras').hide();
+			}
+			else {
+				//$('.cameras').show();
+				//$('.cameras select').html('');
+				//$('.cameras select').append('<option value="0"></option>');
+				for(r in data.result){
+					openCamera(data.result[r]['idx'],data.result[r]['Name']);
+					//$('.cameras select').append('<option value="'+data.result[r]['idx']+'-">'+data.result[r]['Name']+'</option>');
+				}
+			}
+		}
+	});
+	
+	$.ajax({
+		url: _HOST_DOMOTICZ+'/json.htm?type=floorplans&jsoncallback=?',
+		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+		success: function(data) {
+			if(typeof(data.result)=='undefined'){
+				$('.floorplans').hide();
+			}
+			else {
+				$('.floorplans').show();
+				$('.floorplans select').html('');
+				$('.floorplans select').append('<option value="0"></option>');
+				for(r in data.result){
+					var sel='';
+					if(typeof(uservars['dashticz_currentfloorplan'])!=='undefined' && uservars['dashticz_currentfloorplan']['Value']==data.result[r]['idx']){
+						sel='selected';	
+					}
+					
+					$('.floorplans select').append('<option value="'+data.result[r]['idx']+'" '+sel+'>'+data.result[r]['Name']+'</option>');
+				}
+			}
+		}
+	});
+	
 	getDevices();
 	setTimeout(function(){ autoGetDevices (); },60000);
 }
 
+function openCamera(idx,name){
+
+	var camera='';
+	camera='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="camera'+idx+'">';
+		camera+='<div class="panel panel-block panel-default" data-idx="'+idx+'">';
+			camera+='<div class="panel-heading">';
+				camera+='<div class="row">';
+						camera+='<div class="col-xs-8">';
+							camera+='<div class="huge">'+name+'</div>';
+							//camera+='<div>'+name+'</div>';
+						camera+='</div>';
+						camera+='<div class="col-xs-4 text-right icon">';
+							camera+='<div><img style="height:62px;" src="'+_HOST_DOMOTICZ+'/camsnapshot.jpg?idx='+idx+'&count=0?t='+new Date().getTime()+'" /></div>';
+							//camera+='<div><img style="height:62px;" src="http://images.webcams.travel/webcam/1341948018-Weer-Live-New-York-traffic-web-cam-in-Broadway-@-Vesey-St-in-NYC-Manhattan.jpg" /></div>';
+						camera+='</div>';
+				
+					camera+='</div>';
+			camera+='</div>';
+			camera+='<a href="javascript:alert(\'Live View is not yet implemented...\')">';
+				camera+='<div class="panel-footer">';
+					camera+='<span class="pull-left">'+lang['view']+'</span>';
+					camera+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+					camera+='<div class="clearfix"></div>';
+				camera+='</div>';
+			camera+='</a>';
+		camera+='</div>';
+	camera+='</div>';
+	
+	if($('#camera'+idx).length>0){
+		$('#camera'+idx).replaceWith(camera);
+	}
+	else $('.row.dashboard').append(camera);
+	
+}
+
 function getDevices(){
+	var floorplan='';
+	if(typeof(uservars['dashticz_currentfloorplan'])!=='undefined' && parseFloat(uservars['dashticz_currentfloorplan']['Value'])>0){
+		floorplan='&floor='+uservars['dashticz_currentfloorplan']['Value'];
+	}
+	
 	if(!sliding){
 		if(typeof(req)!=='undefined') req.abort();
 		req = $.ajax({
-			url: _HOST_DOMOTICZ+'/json.htm?type=devices&filter=all&used=true&order=Name&jsoncallback=?',
+			url: _HOST_DOMOTICZ+'/json.htm?type=devices&filter=all&used=true&order=Name'+floorplan+'&jsoncallback=?',
 			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
 				if(_DEBUG) data = _DEBUG_JSON;

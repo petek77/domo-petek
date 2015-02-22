@@ -76,6 +76,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.81 - 22/02/2015
+- Support for multiple floorplans, select a floorplan in the dropdown next to the versionnumber at the top of the screen
+- Support for cameras (will be extended later)
+
 0.80 - 21/02/2015
 - Support for Plex Media Server: 'Currently Playing'-block
 

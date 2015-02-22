@@ -15,7 +15,7 @@ function getPlex(){
 			success: function(data){
 				data=$.parseJSON(data);
 				
-				console.log(data);
+				//console.log(data);
 			
 				if(data!=="{}" && typeof(data['title'])!=='undefined'){
 					//_data = {"jsonrpc": "2.0", "method": "Player.GetProperties", "params": { "properties": ["playlistid","speed","position","totaltime","time"], "playerid": 1 }, "id": "VideoGetItem"};

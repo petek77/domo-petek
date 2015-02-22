@@ -17,7 +17,7 @@ function saveSettings(){
 				url: _HOST_DOMOTICZ+'/json.htm?type=command&param=saveuservariable&vname='+$(this).attr('name')+'&vtype=2&vvalue='+value+'&jsoncallback=?',
 				type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 				success: function(data) {
-					
+					window.location.reload();
 				}
 			});
 		}
@@ -26,10 +26,9 @@ function saveSettings(){
 				url: _HOST_DOMOTICZ+'/json.htm?type=command&param=updateuservariable&idx='+uservars[$(this).attr('name')]['idx']+'&vname='+$(this).attr('name')+'&vtype=2&vvalue='+value+'&jsoncallback=?',
 				type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 				success: function(data) {
-					
+					window.location.reload();
 				}
 			});
 		}
 	});
-	setTimeout(function(){ window.location.reload(); },1000);
 }

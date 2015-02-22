@@ -236,6 +236,8 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
         blocks['topbar']+= '<div class="fl-left">';
             blocks['topbar']+= '<img id="logo" src="" />v<span id="dversion"></span> | ';
         	blocks['topbar']+= '<span class="domoticz"><strong>Domoticz</strong> v<span id="version"></span></span>';
+        	blocks['topbar']+= '<span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span>';
+        	//blocks['topbar']+= '<span class="cameras"> | <select onchange="openCamera(this.value);"></select></span>';
             blocks['topbar']+= '<span id="menu" style="display:none;">';
                 if(_HOST_DOMOTICZ!=='') 	blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showDashboard();">'+lang['dashboard']+'</a> ';
                 //if(_HOST_XBMC!=='') 		blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showXbmc();">'+lang['kodi']+'</a> ';
