@@ -76,6 +76,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.82 - 23/02/2015
+- Changed sortorder-variables because of the fact Domoticz-variables not accepting large texts
+
 0.81 - 22/02/2015
 - Support for multiple floorplans, select a floorplan in the dropdown next to the versionnumber at the top of the screen
 - Support for cameras (will be extended later)

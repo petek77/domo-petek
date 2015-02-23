@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.81';
+var dashticz_version='0.82';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -54,7 +54,14 @@ $(document).ready(function(){
 								}
 								
 								if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
-									_BLOCKSORDER = uservars['dashticz_blockorder']['Value'].split(',');
+									var blocksorder = uservars['dashticz_blockorder']['Value'].split(',');
+									for(bo in blocksorder){
+										if(blocksorder[bo].substr(0,1)=='d'){
+											blocksorder[bo] = 'device'+blocksorder[bo].substr(1,blocksorder[bo].length);	
+										}
+									}
+									
+									_BLOCKSORDER = blocksorder;
 								}
 								
 								if(typeof(uservars['dashticz_blockhide'])!=='undefined'){

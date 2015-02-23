@@ -35,6 +35,7 @@ function openEditmode(){
 		$( ".row.dashboard" ).sortable({
 			update: function () {
 				var order1 = $(this).sortable('toArray').toString();
+				order1 = str_replace('device','d',order1);
 				if(typeof(uservars['dashticz_blockorder'])=='undefined'){
 					$.ajax({
 						url: _HOST_DOMOTICZ+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockorder&vtype=2&vvalue='+order1+'&jsoncallback=?',
