@@ -100,11 +100,11 @@ XBMC MOVIESLIST={ "jsonrpc": "2.0", "method": "GUI.ActivateWindow", "params": { 
 XBMC TVLIST={"jsonrpc": "2.0", "method": "GUI.ActivateWindow", "params": { "window": "video", "parameters": [ "TvShowTitles" ] }, "id": 1 } 
 */
 
-function playpauseVideo(){
+function playpauseMedia(playerid){
 	xbmcinteract = true;
 	$('#xbmc-playing .pause,#xbmc-playing .play').toggle();	
 	
-	_data = {"jsonrpc":"2.0","method":"Player.PlayPause","params":{"playerid":1},"id":1};
+	_data = {"jsonrpc":"2.0","method":"Player.PlayPause","params":{"playerid":playerid},"id":1};
 	reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
 		prop=$.parseJSON(prop);
 		delete reqxbmc;
@@ -190,7 +190,7 @@ function getXbmc(){
 													if(prop['result']['totaltime']['seconds']<10) currenttime+='0';
 													currenttime+=prop['result']['totaltime']['seconds'];
 													
-													html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseVideo();">';
+													html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseMedia('+active['playerid']+');">';
 														html+='<div class="panel-footer">';
 															html+='<span class="pull-left">'+lang['media_pause']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
 															html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
@@ -198,7 +198,7 @@ function getXbmc(){
 														html+='</div>';
 													html+='</a>';
 												
-													html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseVideo();">';
+													html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseMedia('+active['playerid']+');">';
 														html+='<div class="panel-footer">';
 															html+='<span class="pull-left">'+lang['media_resume']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
 															html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
@@ -278,23 +278,23 @@ function getXbmc(){
 												if(prop['result']['totaltime']['seconds']<10) currenttime+='0';
 												currenttime+=prop['result']['totaltime']['seconds'];
 												
-												//html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseVideo();">';
+												html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseMedia('+active['playerid']+');">';
 													html+='<div class="panel-footer">';
-														html+='<span class="pull-left"><!--'+lang['media_pause']+'--><div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
-														//html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-														html+='<div class="clearfix"></div>';
-													html+='</div>';
-												//html+='</a>';
-											
-												/*
-												html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseVideo();">';
-													html+='<div class="panel-footer">';
-														html+='<span class="pull-left"><!--'+lang['media_resume']+'--><div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
+														html+='<span class="pull-left">'+lang['media_pause']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
 														html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
 														html+='<div class="clearfix"></div>';
 													html+='</div>';
 												html+='</a>';
-												*/
+											
+												
+												html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseMedia('+active['playerid']+');">';
+													html+='<div class="panel-footer">';
+														html+='<span class="pull-left">'+lang['media_resume']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
+														html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+														html+='<div class="clearfix"></div>';
+													html+='</div>';
+												html+='</a>';
+												
 											html+='</div>';
 										html+='</div>';
 											
