@@ -76,30 +76,6 @@ function playMovie(ID){
 	alert('Not yet implemented!');
 }
 
-/*
-XBMC DOWN={"jsonrpc":"2.0","method":"Input.Down","id":1}
-XBMC RIGHT={"jsonrpc":"2.0","method":"Input.Right","id":1}
-XBMC SELECT={"jsonrpc":"2.0","method":"Input.Select","id":1}
-XBMC LEFT={"jsonrpc":"2.0","method":"Input.Left","id":1}
-XBMC INFO={"jsonrpc":"2.0","method":"Input.Info","id":1}
-XBMC HOME={"jsonrpc":"2.0","method":"Input.Home","id":1}
-XBMC UP={"jsonrpc":"2.0","method":"Input.Up","id":1}
-XBMC ContextMenu={"jsonrpc":"2.0","method":"Input.ContextMenu","id":1}
-XBMC 30SecForward={"jsonrpc":"2.0","id":1,"method":"Player.Seek","params":{"playerid":1,"value":"smallforward"}}
-XBMC 30SecBkwd={"jsonrpc":"2.0","id":1,"method":"Player.Seek","params":{"playerid":1,"value":"smallbackward"}}
-XBMC QUIT={"jsonrpc":"2.0","method":"Application.Quit","id":1}
-XBMC BACK={"jsonrpc":"2.0","method":"Input.Back","id":1}
-XBMC PLAYPAUSE={"jsonrpc":"2.0","method":"Player.PlayPause","params":{"playerid":1},"id":1}
-XBMC STOP={"jsonrpc":"2.0","method":"Player.Stop","params":{"playerid":1},"id":1}
-XBMC SUBTITLENEXT={"jsonrpc":"2.0","id":1,"method":"Player.SetSubtitle","params":{"playerid":1,"subtitle":"next"}}
-XBMC SUBTITLEOFF={"jsonrpc":"2.0","id":1,"method":"Player.SetSubtitle","params":{"playerid":1,"subtitle":"off"}}
-XBMC SUBTITLEON={"jsonrpc":"2.0","id":1,"method":"Player.SetSubtitle","params":{"playerid":1,"subtitle":"off"}}
-XBMC SHOWOSD={"jsonrpc":"2.0","method":"Input.ShowOSD","id":1}
-XBMC SETFULLSCREEN={"jsonrpc": "2.0", "method": "GUI.SetFullscreen", "params": { "fullscreen": "toggle" }, "id": "1"}
-XBMC MOVIESLIST={ "jsonrpc": "2.0", "method": "GUI.ActivateWindow", "params": { "window": "video", "parameters": [ "MovieTitles" ] }, "id": 1 }
-XBMC TVLIST={"jsonrpc": "2.0", "method": "GUI.ActivateWindow", "params": { "window": "video", "parameters": [ "TvShowTitles" ] }, "id": 1 } 
-*/
-
 function playpauseMedia(playerid){
 	xbmcinteract = true;
 	$('#xbmc-playing .pause,#xbmc-playing .play').toggle();	
@@ -115,8 +91,6 @@ function playpauseMedia(playerid){
 
 function forwardMedia(playerid){
 	xbmcinteract = true;
-	//$('#xbmc-playing .pause,#xbmc-playing .play').toggle();	
-	
 	_data = {"jsonrpc":"2.0","method":"Player.GoTo","params":{"playerid":playerid,"to":"next"},"id":1};
 	delete reqxbmc;
 	reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
@@ -127,9 +101,7 @@ function forwardMedia(playerid){
 }
 
 function backwardMedia(playerid){
-	xbmcinteract = true;
-	//$('#xbmc-playing .pause,#xbmc-playing .play').toggle();	
-	
+	xbmcinteract = true;	
 	_data = {"jsonrpc":"2.0","method":"Player.GoTo","params":{"playerid":playerid,"to":"previous"},"id":1};
 	delete reqxbmc;
 	reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
@@ -189,7 +161,8 @@ function getXbmc(){
 													html+='<div class="panel-heading">';
 														html+='<div class="row">';
 															html+='<div class="col-xs-12 text-left">';
-																if(data['result']['item']['type'] == 'movie'){
+															
+																if(data['result']['item']['type'] == 'movie' || data['result']['item']['type'] == 'unknown'){
 																	label = data['result']['item']['label'].split(' - ');
 																	label[0] = label[0].replace('.avi','').replace('.mkv','');
 																	html+='<div class="huge">'+label[0]+'</div>';
@@ -231,21 +204,22 @@ function getXbmc(){
 													if(prop['result']['totaltime']['seconds']<10) currenttime+='0';
 													currenttime+=prop['result']['totaltime']['seconds'];
 													
-													html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseMedia('+active['playerid']+');">';
+													html+='<div class="details pause" style="'+dis_pause+'">';
 														html+='<div class="panel-footer">';
 															html+='<span class="pull-left">'+lang['media_pause']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
-															html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+															html+='<span class="pull-right media"><a href="javascript:backwardMedia('+active['playerid']+');"><i class="fa fa-step-backward"></i></a>&nbsp;&nbsp;<a href="javascript:stopMedia('+active['playerid']+');"><i class="fa fa-stop"></i></a>&nbsp;&nbsp;<a href="javascript:playpauseMedia('+active['playerid']+');"><i class="fa fa-pause"></i></a>&nbsp;&nbsp;<a href="javascript:forwardMedia('+active['playerid']+');"><i class="fa fa-step-forward"></i></a></span>';
 															html+='<div class="clearfix"></div>';
 														html+='</div>';
-													html+='</a>';
+													html+='</div>';
 												
-													html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseMedia('+active['playerid']+');">';
+													
+													html+='<div class="details play" style="'+dis_play+'">';
 														html+='<div class="panel-footer">';
 															html+='<span class="pull-left">'+lang['media_resume']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
-															html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+															html+='<span class="pull-right media"><a href="javascript:backwardMedia('+active['playerid']+');"><i class="fa fa-step-backward"></i></a>&nbsp;&nbsp;<a href="javascript:stopMedia('+active['playerid']+');"><i class="fa fa-stop"></i></a>&nbsp;&nbsp;<a href="javascript:playpauseMedia('+active['playerid']+');"><i class="fa fa-play"></i></a>&nbsp;&nbsp;<a href="javascript:forwardMedia('+active['playerid']+');"><i class="fa fa-step-forward"></i></a></span>';
 															html+='<div class="clearfix"></div>';
 														html+='</div>';
-													html+='</a>';
+													html+='</div>';
 												html+='</div>';
 											html+='</div>';
 											
