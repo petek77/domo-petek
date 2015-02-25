@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.82';
+var dashticz_version='0.83';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -214,7 +214,7 @@ function autoGetDevices(){
 		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 		success: function(data) {
 			if(typeof(data.result)=='undefined'){
-				//openCamera(0,'Camera');
+				if(_DEBUG) openCamera(0,'Camera');
 				//$('.cameras').hide();
 			}
 			else {
@@ -258,6 +258,11 @@ function autoGetDevices(){
 
 function openCamera(idx,name){
 
+	var imageUrl = _HOST_DOMOTICZ+'/camsnapshot.jpg?idx='+idx+'&count={COUNT}?t=';
+	if(_DEBUG) var imageUrl = 'http://77.168.185.144:50080/mjpg/video.mjpg?count={COUNT}&time=';
+	
+	imageUrl = str_replace('{COUNT}','0',imageUrl);
+	
 	var camera='';
 	camera='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="camera'+idx+'">';
 		camera+='<div class="panel panel-block panel-default" data-idx="'+idx+'">';
@@ -268,13 +273,12 @@ function openCamera(idx,name){
 							//camera+='<div>'+name+'</div>';
 						camera+='</div>';
 						camera+='<div class="col-xs-4 text-right icon">';
-							camera+='<div><img style="height:62px;" src="'+_HOST_DOMOTICZ+'/camsnapshot.jpg?idx='+idx+'&count=0?t='+new Date().getTime()+'" /></div>';
-							//camera+='<div><img style="height:62px;" src="http://images.webcams.travel/webcam/1341948018-Weer-Live-New-York-traffic-web-cam-in-Broadway-@-Vesey-St-in-NYC-Manhattan.jpg" /></div>';
+							camera+='<div><img class="camimage'+idx+'" style="height:62px;" src="'+imageUrl+new Date().getTime()+'" width="100%" /></div>';
 						camera+='</div>';
 				
 					camera+='</div>';
 			camera+='</div>';
-			camera+='<a href="javascript:alert(\'Live View is not yet implemented...\')">';
+			camera+='<a href="javascript:void(0);" data-toggle="modal" data-target="#cameramodal'+idx+'">';
 				camera+='<div class="panel-footer">';
 					camera+='<span class="pull-left">'+lang['view']+'</span>';
 					camera+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
@@ -284,11 +288,39 @@ function openCamera(idx,name){
 		camera+='</div>';
 	camera+='</div>';
 	
+	camera+='<div class="modal fade" id="cameramodal'+idx+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+		camera+='<div class="modal-dialog">';
+			camera+='<div class="modal-content">';
+				camera+='<div class="modal-header">';
+					camera+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+					camera+='<h4 class="modal-title" id="myModalLabel">'+name+'</h4>';
+				camera+='</div>';
+				camera+='<div class="modal-body">';
+					camera+='<img class="camimage'+idx+'" src="'+imageUrl+new Date().getTime()+'" width="1000" />';
+				camera+='</div>';
+				camera+='<div class="modal-footer">';
+					camera+='<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>';
+				camera+='</div>';
+			camera+='</div>';
+		camera+='</div>';
+	camera+='</div>';
+	
+	reloadCamImage(idx,imageUrl,0);
+	
 	if($('#camera'+idx).length>0){
 		$('#camera'+idx).replaceWith(camera);
 	}
 	else $('.row.dashboard').append(camera);
 	
+}
+
+function reloadCamImage(idx,imageUrl,counter){
+	var newcount = (counter+1);
+	imageUrl = str_replace('count='+counter+'&','count='+newcount+'&',imageUrl);
+	$('.camimage'+idx).attr('src',imageUrl+new Date().getTime());
+	setTimeout(function(){
+		reloadCamImage(idx,imageUrl,newcount);
+	},500);	
 }
 
 function getDevices(){
@@ -303,7 +335,7 @@ function getDevices(){
 			url: _HOST_DOMOTICZ+'/json.htm?type=devices&filter=all&used=true&order=Name'+floorplan+'&jsoncallback=?',
 			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
-				if(_DEBUG) data = _DEBUG_JSON;
+				if(_DEBUG && _DEBUG_JSON!=='') data = _DEBUG_JSON;
 				if(typeof(data.Latitude)!=='undefined') _LATITUDE = data.Latitude;
 				if(typeof(data.Longitude)!=='undefined') _LONGITUDE = data.Longitude;
 				

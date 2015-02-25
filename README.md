@@ -76,6 +76,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.83 - 25/02/2015
+- Changes to communication with XBMC/Kodi
+
 0.82 - 23/02/2015
 - Changed sortorder-variables because of the fact Domoticz-variables not accepting large texts
 

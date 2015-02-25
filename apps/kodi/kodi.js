@@ -114,109 +114,206 @@ function playpauseVideo(){
 
 function getXbmc(){
 	if(_HOST_XBMC!==""){
-		_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": 1 }, "id": "VideoGetItem"};
 		if(!xbmcinteract && typeof(reqxbmc)=='undefined'){
-			reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(data){
-				data=$.parseJSON(data);
-				
-				if(data!=="{}" && typeof(data['result'])!=='undefined'){
-					_data = {"jsonrpc": "2.0", "method": "Player.GetProperties", "params": { "properties": ["playlistid","speed","position","totaltime","time"], "playerid": 1 }, "id": "VideoGetItem"};
-					reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
-						prop=$.parseJSON(prop);
-						
-						if(typeof(prop['result'])!=='undefined'){
-							dis_pause = '';
-							dis_play = 'display:none;';
-							if(prop['result']['speed']==0){
-								dis_pause = 'display:none;';
-								dis_play = '';
-							}
-							
-							var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
-								html+='<div class="panel panel-default">';
-									html+='<div class="panel-heading">';
-										html+='<div class="row">';
-											html+='<div class="col-xs-12 text-left">';
-												
-												if(data['result']['item']['season']<0){
-													label = data['result']['item']['label'].split(' - ');
-													label[0] = label[0].replace('.avi','').replace('.mkv','');
-													html+='<div class="huge">'+label[0]+'</div>';
-													if(typeof(label[1])!=='undefined') html+='<div>'+label[1]+'</div>';
-													else html+='<div>&nbsp;</div>';
-												}
-												else {
-													html+='<div class="huge">'+data['result']['item']['showtitle']+'</div>';
-													
-													var season = data['result']['item']['season'];
-													if(season<10) season='0'+season;
-													var episode = data['result']['item']['episode'];
-													if(episode<10) episode='0'+episode;
-													
-													html+='<div>S'+season+'E'+episode+' - '+data['result']['item']['label']+'</div>';
-												}
-												
-											html+='</div>';
-										html+='</div>';
-									html+='</div>';
-									
-									var currenttime = '';
-									if(prop['result']['time']['hours']>0){
-										if(prop['result']['time']['hours']<10) currenttime+='0';
-										currenttime+=prop['result']['time']['hours']+':';
-									}
-									
-									if(prop['result']['time']['minutes']<10) currenttime+='0';
-									currenttime+=prop['result']['time']['minutes']+':';
-									if(prop['result']['time']['seconds']<10) currenttime+='0';
-									currenttime+=prop['result']['time']['seconds'];
-									currenttime+=' / ';
-									if(prop['result']['totaltime']['hours']>0){
-										if(prop['result']['totaltime']['hours']<10) currenttime+='0';
-										currenttime+=prop['result']['totaltime']['hours']+':';
-									}
-									if(prop['result']['totaltime']['minutes']<10) currenttime+='0';
-									currenttime+=prop['result']['totaltime']['minutes']+':';
-									if(prop['result']['totaltime']['seconds']<10) currenttime+='0';
-									currenttime+=prop['result']['totaltime']['seconds'];
-									
-									html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseVideo();">';
-										html+='<div class="panel-footer">';
-											html+='<span class="pull-left">'+lang['media_pause']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
-											html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-											html+='<div class="clearfix"></div>';
-										html+='</div>';
-									html+='</a>';
-								
-									html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseVideo();">';
-										html+='<div class="panel-footer">';
-											html+='<span class="pull-left">'+lang['media_resume']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
-											html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
-											html+='<div class="clearfix"></div>';
-										html+='</div>';
-									html+='</a>';
-								html+='</div>';
-							html+='</div>';
-							
-							if($('#xbmc-playing').length>0){
-								$('#xbmc-playing').replaceWith(html);
-							}
-							else $('.row.dashboard:first').prepend(html);
-						}
-						else {
-							$('#xbmc-playing').remove();	
-						}
-						
-					
-					});	
+			_data = {"jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1};
+			reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(active){
+				if(active=='{}'){
+					alert('No connection with XBMC/Kodi-host at '+_HOST_XBMC+'!');
 				}
 				else {
-					$('#xbmc-playing').remove();	
+					active=$.parseJSON(active);
+					if(typeof(active['result'][0])!=='undefined'){
+						active = active['result'][0];
+						delete reqxbmc;
+						if(active['type']=='video'){
+							_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "season", "episode", "duration", "showtitle", "tvshowid", "thumbnail", "file", "fanart", "streamdetails"], "playerid": active['playerid'] }, "id": "VideoGetItem"};
+							reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(data){
+								data=$.parseJSON(data);
+								
+								if(data!=="{}" && typeof(data['result'])!=='undefined'){
+									_data = {"jsonrpc": "2.0", "method": "Player.GetProperties", "params": { "properties": ["playlistid","speed","position","totaltime","time"], "playerid": active['playerid'] }, "id": "VideoGetItem"};
+									reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
+										prop=$.parseJSON(prop);
+										
+										if(typeof(prop['result'])!=='undefined'){
+											dis_pause = '';
+											dis_play = 'display:none;';
+											if(prop['result']['speed']==0){
+												dis_pause = 'display:none;';
+												dis_play = '';
+											}
+											
+											var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
+												html+='<div class="panel panel-default">';
+													html+='<div class="panel-heading">';
+														html+='<div class="row">';
+															html+='<div class="col-xs-12 text-left">';
+																if(data['result']['item']['type'] == 'movie'){
+																	label = data['result']['item']['label'].split(' - ');
+																	label[0] = label[0].replace('.avi','').replace('.mkv','');
+																	html+='<div class="huge">'+label[0]+'</div>';
+																	if(typeof(label[1])!=='undefined') html+='<div>'+label[1]+'</div>';
+																	else html+='<div>&nbsp;</div>';
+																}
+																else {
+																	html+='<div class="huge">'+data['result']['item']['showtitle']+'</div>';
+																	
+																	var season = data['result']['item']['season'];
+																	if(season<10) season='0'+season;
+																	var episode = data['result']['item']['episode'];
+																	if(episode<10) episode='0'+episode;
+																	
+																	html+='<div>S'+season+'E'+episode+' - '+data['result']['item']['label']+'</div>';
+																}
+																
+															html+='</div>';
+														html+='</div>';
+													html+='</div>';
+													
+													var currenttime = '';
+													if(prop['result']['time']['hours']>0){
+														if(prop['result']['time']['hours']<10) currenttime+='0';
+														currenttime+=prop['result']['time']['hours']+':';
+													}
+													
+													if(prop['result']['time']['minutes']<10) currenttime+='0';
+													currenttime+=prop['result']['time']['minutes']+':';
+													if(prop['result']['time']['seconds']<10) currenttime+='0';
+													currenttime+=prop['result']['time']['seconds'];
+													currenttime+=' / ';
+													if(prop['result']['totaltime']['hours']>0){
+														if(prop['result']['totaltime']['hours']<10) currenttime+='0';
+														currenttime+=prop['result']['totaltime']['hours']+':';
+													}
+													if(prop['result']['totaltime']['minutes']<10) currenttime+='0';
+													currenttime+=prop['result']['totaltime']['minutes']+':';
+													if(prop['result']['totaltime']['seconds']<10) currenttime+='0';
+													currenttime+=prop['result']['totaltime']['seconds'];
+													
+													html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseVideo();">';
+														html+='<div class="panel-footer">';
+															html+='<span class="pull-left">'+lang['media_pause']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
+															html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+															html+='<div class="clearfix"></div>';
+														html+='</div>';
+													html+='</a>';
+												
+													html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseVideo();">';
+														html+='<div class="panel-footer">';
+															html+='<span class="pull-left">'+lang['media_resume']+'<div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
+															html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+															html+='<div class="clearfix"></div>';
+														html+='</div>';
+													html+='</a>';
+												html+='</div>';
+											html+='</div>';
+											
+											if($('#xbmc-playing').length>0){
+												$('#xbmc-playing').replaceWith(html);
+											}
+											else $('.row.dashboard:first').prepend(html);
+										}
+										else {
+											$('#xbmc-playing').remove();	
+										}
+										
+									});	
+								}
+								else {
+									$('#xbmc-playing').remove();	
+								}
+								delete reqxbmc;
+								setTimeout(function(){ getXbmc(); },1000); 
+										
+							});	
+						}
+						else if(active['type']=='audio'){
+							_data = {"jsonrpc": "2.0", "method": "Player.GetItem", "params": { "properties": ["title", "album", "artist", "duration", "thumbnail", "file", "fanart", "streamdetails"], "playerid": active['playerid'] }, "id": "AudioGetItem"};
+							reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(data){
+								data=$.parseJSON(data);
+
+								console.log(data);
+								if(data!=="{}" && typeof(data['result'])!=='undefined'){
+									_data = {"jsonrpc": "2.0", "method": "Player.GetProperties", "params": { "properties": ["playlistid","speed","position","totaltime","time"], "playerid": active['playerid'] }, "id": "AudioGetItem"};
+									reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
+										prop=$.parseJSON(prop);
+										
+										console.log(prop);
+										var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
+											html+='<div class="panel panel-default">';
+												html+='<div class="panel-heading">';
+													html+='<div class="row">';
+														html+='<div class="col-xs-12 text-left">';
+																html+='<div class="huge">'+data['result']['item']['artist'][0]+'</div>';
+																html+='<div>'+data['result']['item']['label']+'</div>';
+															
+														html+='</div>';
+													html+='</div>';
+												html+='</div>';
+												
+												dis_pause = '';
+												dis_play = 'display:none;';
+												if(typeof(prop['result']['speed'])!=='undefined' && prop['result']['speed']==0){
+													dis_pause = 'display:none;';
+													dis_play = '';
+												}
+												
+												var currenttime = '';
+												if(prop['result']['time']['hours']>0){
+													if(prop['result']['time']['hours']<10) currenttime+='0';
+													currenttime+=prop['result']['time']['hours']+':';
+												}
+												
+												if(prop['result']['time']['minutes']<10) currenttime+='0';
+												currenttime+=prop['result']['time']['minutes']+':';
+												if(prop['result']['time']['seconds']<10) currenttime+='0';
+												currenttime+=prop['result']['time']['seconds'];
+												currenttime+=' / ';
+												if(prop['result']['totaltime']['hours']>0){
+													if(prop['result']['totaltime']['hours']<10) currenttime+='0';
+													currenttime+=prop['result']['totaltime']['hours']+':';
+												}
+												if(prop['result']['totaltime']['minutes']<10) currenttime+='0';
+												currenttime+=prop['result']['totaltime']['minutes']+':';
+												if(prop['result']['totaltime']['seconds']<10) currenttime+='0';
+												currenttime+=prop['result']['totaltime']['seconds'];
+												
+												//html+='<a class="details pause" style="'+dis_pause+'" href="javascript:playpauseVideo();">';
+													html+='<div class="panel-footer">';
+														html+='<span class="pull-left"><!--'+lang['media_pause']+'--><div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
+														//html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+														html+='<div class="clearfix"></div>';
+													html+='</div>';
+												//html+='</a>';
+											
+												/*
+												html+='<a class="details play" style="'+dis_play+'" href="javascript:playpauseVideo();">';
+													html+='<div class="panel-footer">';
+														html+='<span class="pull-left"><!--'+lang['media_resume']+'--><div style="font-size:13px;margin-top:-3px">'+currenttime+'</div></span>';
+														html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+														html+='<div class="clearfix"></div>';
+													html+='</div>';
+												html+='</a>';
+												*/
+											html+='</div>';
+										html+='</div>';
+											
+										if($('#xbmc-playing').length>0){
+											$('#xbmc-playing').replaceWith(html);
+										}
+										else $('.row.dashboard:first').prepend(html);
+									});
+								}
+								else {
+									$('#xbmc-playing').remove();	
+								}
+								delete reqxbmc;
+								setTimeout(function(){ getXbmc(); },1000); 
+							});
+						}
+					}
 				}
-				delete reqxbmc;
-				setTimeout(function(){ getXbmc(); },1000); 
-						
-			});	
+			});
 		}
 	}
 }
