@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.83';
+var dashticz_version='0.84';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -49,29 +49,32 @@ $(document).ready(function(){
 							url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getuservariables&jsoncallback=?',
 							type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 							success: function(data) {
-								for(r in data.result){
-									uservars[data.result[r]['Name']] = data.result[r];
-								}
-								
-								if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
-									var blocksorder = uservars['dashticz_blockorder']['Value'].split(',');
-									for(bo in blocksorder){
-										if(blocksorder[bo].substr(0,1)=='d'){
-											blocksorder[bo] = 'device'+blocksorder[bo].substr(1,blocksorder[bo].length);	
-										}
+								if(typeof(data.result)!=='undefined'){
+									
+									for(r in data.result){
+										uservars[data.result[r]['Name']] = data.result[r];
 									}
 									
-									_BLOCKSORDER = blocksorder;
+									if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
+										var blocksorder = uservars['dashticz_blockorder']['Value'].split(',');
+										for(bo in blocksorder){
+											if(blocksorder[bo].substr(0,1)=='d'){
+												blocksorder[bo] = 'device'+blocksorder[bo].substr(1,blocksorder[bo].length);	
+											}
+										}
+										
+										_BLOCKSORDER = blocksorder;
+									}
+									
+									if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
+										_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
+									}
+									
+									if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
+									if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
+									if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
+									//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 								}
-								
-								if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
-									_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
-								}
-								
-								if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
-								if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
-								if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
-								//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 								
 								if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
 									_LANGUAGE='en_US';	
@@ -341,7 +344,6 @@ function getDevices(){
 				
 				for(r in data.result){
 					alldevices[data.result[r]['idx']] = data.result[r];
-					//if(_HOST_XBMC!=="") getXbmc(data.result[r]);
 								
 					if(
 						(

@@ -40,8 +40,8 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 				
 				if(data.status=="ERR") alert('Could not load graph!');
 				else {
-					if($('#device'+idx).length>0){
-						$('#device'+idx).replaceWith(html);
+					if($('#graph'+idx).length>0){
+						$('#graph'+idx).replaceWith(html);
 					}
 					else $('.row.graphs').append(html);
 					
@@ -107,11 +107,11 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 						}
 					}
 					//console.log(data_com);
-					if($('#graph'+idx+'').length>0 && typeof(data_com[0])!=='undefined'){
+					if($('#graphoutput'+idx+'').length>0 && typeof(data_com[0])!=='undefined'){
 						if(typeof(data_com[0]['ykey2'])!=='undefined'){
 							
 							Morris.Area({
-								parseTime:false,element: 'graph'+idx+'',
+								parseTime:false,element: 'graphoutput'+idx+'',
 								data: data_com,
 								xkey: ['xkey'],
 								ykeys: ['ykey', 'ykey2'],
@@ -125,7 +125,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 						}
 						else {
 							Morris.Area({
-								parseTime:false,element: 'graph'+idx+'',
+								parseTime:false,element: 'graphoutput'+idx+'',
 								data: data_com,
 								xkey: ['xkey'],
 								ykeys: ['ykey'],

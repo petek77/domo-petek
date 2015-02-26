@@ -174,7 +174,7 @@ blocks['dimmer']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[ID
 blocks['dimmer']+='</div>';
 							
 //GRAPHS BLOCK
-blocks['graphs'] = '<div class="graph" id="device[ID]">';
+blocks['graphs'] = '<div class="graph" id="graph[ID]">';
 	blocks['graphs']+='<div class="col-lg-12">';
 		blocks['graphs']+='<div class="panel panel-default" data-idx="[ID]">';
 			blocks['graphs']+='<div class="panel-heading graph"><div class="pull-left">[TITLE]</div><div class="pull-right">';
@@ -182,7 +182,7 @@ blocks['graphs'] = '<div class="graph" id="device[ID]">';
 				blocks['graphs']+='</div><div class="clearfix"></div>';
 			blocks['graphs']+='</div>';
 			blocks['graphs']+='<div class="panel-body">';
-				blocks['graphs']+='<div id="graph[ID]"></div>';
+				blocks['graphs']+='<div id="graphoutput[ID]"></div>';
 			blocks['graphs']+='</div>';
 		blocks['graphs']+='</div>';
 	blocks['graphs']+='</div>';

@@ -76,6 +76,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.84 - 26/02/2015
+- Extra checks for existing variables
+
 0.83 - 25/02/2015
 - Changes to communication with XBMC/Kodi
 
