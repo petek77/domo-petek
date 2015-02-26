@@ -77,6 +77,7 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 # Changelog
 0.84 - 26/02/2015
+- Fix voor hidden switches in selected floorplan (wich aren't marked as favorite)
 - Extra checks for existing variables
 
 0.83 - 25/02/2015

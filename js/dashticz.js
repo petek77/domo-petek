@@ -348,7 +348,8 @@ function getDevices(){
 					if(
 						(
 							(_FAVORITES==1 && data.result[r]['Favorite']==1) || 
-							_FAVORITES==0
+							_FAVORITES==0 || 
+							(typeof(uservars['dashticz_currentfloorplan'])!=='undefined' && parseFloat(uservars['dashticz_currentfloorplan']['Value'])>0)
 						)
 						
 					){
