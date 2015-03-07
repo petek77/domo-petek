@@ -1,7 +1,7 @@
 
 function loadNZBGET(){
 	_data = {"method": "listgroups", "nocache": new Date().getTime(), "params": [100] };
-	NZBGET.rpcUrl = _HOST_NZBGET;
+	NZBGET.rpcUrl = _HOST_NZBGET+'/jsonrpc';
 	NZBGET.call(_data,'returnNZBGET');
 }
 

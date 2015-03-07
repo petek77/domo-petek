@@ -53,6 +53,12 @@ var _HOST_PLEX			= 'http://192.168.1.28:32400';
 
 
 
+For NZBget:
+
+var _HOST_NZBGET		= 'http://192.168.1.3:6789';
+
+
+
 
 #Donations
 If you like Dashticz and want to support the developer, you can always send a small donation with PayPal:
