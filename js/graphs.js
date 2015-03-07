@@ -2,8 +2,12 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 	
 	if(typeof(forced)=='undefined') forced=false;
 	
-	if(typeof(_GRAPHS_LOADED[idx])=='undefined' || _GRAPHS_LOADED[idx]<(time()-600)){
+	if(typeof(_GRAPHS_LOADED[idx])=='undefined' || _GRAPHS_LOADED[idx]<(time()-(parseFloat(_GRAPHREFRESH)*60))){
 		forced = true;
+	}
+	
+	if($('.graphcurrent'+idx).length>0){
+		$('.graphcurrent'+idx).html(current);
 	}
 	
 	if(forced){
@@ -16,22 +20,23 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
 
-				title = title+': <B>'+current+'</B>';
+				var orgtitle = title;
+				title = title+': <B class="graphcurrent'+idx+'">'+current+'</B>';
 				if(range=='last') title+='<br />'+lang['graph_last_hours']+':';
 				if(range=='day') title+='<br />'+lang['graph_today']+':';
 				if(range=='month') title+='<br />'+lang['graph_last_month']+':';
 				
 				var buttons ='<button type="button" class="btn btn-default ';
 				if(range=='last') buttons+='active';
-				buttons+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_last_hours']+'</button> ';
+				buttons+='" onclick="showGraph('+idx+',\''+orgtitle+'\',\''+label+'\',\'last\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_last_hours']+'</button> ';
 				
 				buttons+='<button type="button" class="btn btn-default ';
 				if(range=='day') buttons+='active';
-				buttons+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_today']+'</button> ';
+				buttons+='" onclick="showGraph('+idx+',\''+orgtitle+'\',\''+label+'\',\'day\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_today']+'</button> ';
 				
 				buttons+='<button type="button" class="btn btn-default ';
 				if(range=='month') buttons+='active';
-				buttons+='" onclick="showGraph('+idx+',\''+title+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_last_month']+'</button>';
+				buttons+='" onclick="showGraph('+idx+',\''+orgtitle+'\',\''+label+'\',\'month\',\''+current+'\',true,\''+sensor+'\');">'+lang['graph_last_month']+'</button>';
 										
 				var html = blocks['graphs'];
 				html = str_replace('[TITLE]',title,html);

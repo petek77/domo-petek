@@ -253,7 +253,6 @@ function getXbmc(){
 									reqxbmc = $.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(prop){
 										prop=$.parseJSON(prop);
 										
-										console.log(prop);
 										var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
 											html+='<div class="panel panel-default">';
 												html+='<div class="panel-heading">';

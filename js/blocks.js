@@ -289,8 +289,8 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 			blocks['settings']+= '<div class="modal-body">';
 			
 				blocks['settings']+= '<div class="row">';
-					blocks['settings']+= '<label class="col-md-5">'+lang['settings_theme']+'</label>';
-					blocks['settings']+= '<div class="col-md-7">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_theme']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
 						blocks['settings']+= '<select name="dashticz_theme" class="form-control">';
 						
 							if(_THEME=='default') blocks['settings']+= '<option value="default" selected>'+lang['settings_theme_default']+'</option>';
@@ -304,8 +304,8 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '</div>';
 			
 				blocks['settings']+= '<div class="row">';
-					blocks['settings']+= '<label class="col-md-5">'+lang['settings_language']+'</label>';
-					blocks['settings']+= '<div class="col-md-7">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_language']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
 						blocks['settings']+= '<select name="dashticz_language" class="form-control">';
 						
 							if(_LANGUAGE=='de_DE') blocks['settings']+= '<option value="de_DE" selected>Deutsch</option>';
@@ -322,11 +322,18 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '</div>';
 			
 				blocks['settings']+= '<div class="row">';
-					blocks['settings']+= '<label class="col-md-5">'+lang['settings_onlyfavorites']+'</label>';
-					blocks['settings']+= '<div class="col-md-7">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_onlyfavorites']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
 						var favorites='';
 						if(_FAVORITES==1) favorites='checked';
 						blocks['settings']+= '<input type="checkbox" name="dashticz_onlyfavorites" value="1" '+favorites+' class="form-control" style="width:12px;margin:0;"/>';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';	
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_graphrefresh']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
+						blocks['settings']+= '<input type="text" name="dashticz_graphrefresh" value="'+_GRAPHREFRESH+'" class="form-control" />';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';	
 					

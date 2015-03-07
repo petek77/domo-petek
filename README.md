@@ -53,6 +53,15 @@ var _HOST_PLEX			= 'http://192.168.1.28:32400';
 
 
 
+
+#Donations
+If you like Dashticz and want to support the developer, you can always send a small donation with PayPal:
+
+https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TZ73DJGTCK2NE
+
+
+
+
 # Special thanks
 A special THANK YOU, for help, testing, ideas and tips
 - Michaël van der Heijden
@@ -76,6 +85,13 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.86 - 07/03/2015
+- Current usage of energy/gas meters will be updated more frequently (every minute)
+- New setting: refresh intervals for graphs
+
+0.85 - 27/02/2015
+- Support for NZBGET
+
 0.84 - 26/02/2015
 - Fix voor hidden switches in selected floorplan (wich aren't marked as favorite)
 - Extra checks for existing variables

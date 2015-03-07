@@ -22,6 +22,9 @@ position: relative;
 	color:#B9B9B9
 }
 
+.row.dashboard > div {
+	height:150px;	
+}
 .dropdown{
 border-radius: 4px;
 padding-left: 6px;

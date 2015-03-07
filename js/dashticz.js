@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.84';
+var dashticz_version='0.86';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -26,16 +26,13 @@ var _DEBUG=false;
 var _DEBUG_JSON = '';
 var _GRAPHS_LOADED = new Object();
 
-
 $(document).ready(function(){
 	
 	$.getScript( 'CONFIG.js',function(){
-		//_HOST_XBMC = encodeURIComponent(_HOST_XBMC);
-		
 		$.getScript( 'js/functions.js',function(){
 			if(_HOST_DOMOTICZ=='') alert('Fill in the path to Domoticz in CONFIG.js!!');
 			else {
-				
+								
 				$.ajax({
 					url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getSunRiseSet&jsoncallback=?',
 					type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
@@ -70,9 +67,11 @@ $(document).ready(function(){
 										_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
 									}
 									
+									_GRAPHREFRESH = 5;
 									if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
 									if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
 									if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
+									if(typeof(uservars['dashticz_graphrefresh'])!=='undefined') _GRAPHREFRESH = uservars['dashticz_graphrefresh']['Value'];
 									//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 								}
 								
@@ -82,6 +81,7 @@ $(document).ready(function(){
 								
 								$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
 									if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
+									if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=='') $.getScript( 'apps/nzbget/nzbget.js');
 									if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=='') $.getScript( 'apps/plex/plex.js');
 									if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
 					
@@ -105,7 +105,7 @@ $(document).ready(function(){
 												
 												$('span#dversion').html(dashticz_version);
 									
-												$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css');
+												$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css?'+new Date().getTime());
 												$('img#logo').attr('src','themes/'+_THEME+'/images/logo.png');
 												
 												$.ajax({
@@ -124,6 +124,7 @@ $(document).ready(function(){
 								
 												if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=="") loadXBMC();
 												if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=="") loadPLEX();
+												if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=="") loadNZBGET();
 												autoGetDevices();
 											});
 										});
@@ -338,7 +339,10 @@ function getDevices(){
 			url: _HOST_DOMOTICZ+'/json.htm?type=devices&filter=all&used=true&order=Name'+floorplan+'&jsoncallback=?',
 			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
-				if(_DEBUG && _DEBUG_JSON!=='') data = _DEBUG_JSON;
+				if(_DEBUG && _DEBUG_JSON!==''){
+					data = _DEBUG_JSON;
+					data = $.parseJSON(data);
+				}
 				if(typeof(data.Latitude)!=='undefined') _LATITUDE = data.Latitude;
 				if(typeof(data.Longitude)!=='undefined') _LONGITUDE = data.Longitude;
 				
