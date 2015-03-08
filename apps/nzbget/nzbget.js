@@ -1,4 +1,30 @@
 
+/*
+method
+	"editqueue"
+	
+nocache
+	1425763740846
+	
+params
+	["GroupResume", 0, "", [118]]
+	
+0
+	"GroupResume"
+	
+1
+	0
+	
+2
+	""
+	
+3
+	[118]
+	
+0
+	118
+*/
+	
 function loadNZBGET(){
 	_data = {"method": "listgroups", "nocache": new Date().getTime(), "params": [100] };
 	NZBGET.rpcUrl = _HOST_NZBGET+'/jsonrpc';
@@ -14,17 +40,34 @@ function returnNZBGET(data){
 				html+='<div class="panel-heading">';
 					html+='<div class="row">';
 						html+='<div class="col-xs-12 text-left">';
-								html+='<div class="huge">'+data[d]['NZBName'].substr(0,20)+'...</div>';
-								html+='<div>Status: '+data[d]['Status']+'</div>';
+								html+='<div class="huge">'+data[d]['NZBName']+'</div>';
+								//html+='<div>Status: '+data[d]['Status']+'</div>';
 							
 						html+='</div>';
 					html+='</div>';
 				html+='</div>';
-
-				html+='<div class="details pause">';
+				
+				dis_pause = '';
+				dis_play = 'display:none;';
+				
+				if(data[d]['Status']=='DOWNLOADING'){
+					dis_pause = 'display:none;';
+					dis_play = '';
+				}
+										
+				html+='<div class="details pause" style="'+dis_pause+'">';
 					html+='<div class="panel-footer">';
-						html+='<span class="pull-left"></span>';
-						html+='<span class="pull-right media"></span>';
+						html+='<span class="pull-left">'+lang['nzbget_pause']+'<div style="font-size:13px;margin-top:-3px">'+data[d]['DownloadedSizeMB']+'MB / '+data[d]['RemainingSizeMB']+'MB</div></span>';
+						html+='<span class="pull-right media"><a href="javascript:resumepauseNZBget('+data[d]['FirstID']+',\'GroupResume\');"><i class="fa fa-play"></i></a></span>';
+						html+='<div class="clearfix"></div>';
+					html+='</div>';
+				html+='</div>';
+			
+				
+				html+='<div class="details play" style="'+dis_play+'">';
+					html+='<div class="panel-footer">';
+						html+='<span class="pull-left">'+lang['nzbget_downloading']+'<div style="font-size:13px;margin-top:-3px">'+data[d]['DownloadedSizeMB']+'MB / '+data[d]['RemainingSizeMB']+'MB</div></span>';
+						html+='<span class="pull-right media"><a href="javascript:resumepauseNZBget('+data[d]['FirstID']+',\'GroupPause\');"><i class="fa fa-pause"></i></a></span>';
 						html+='<div class="clearfix"></div>';
 					html+='</div>';
 				html+='</div>';
@@ -38,6 +81,13 @@ function returnNZBGET(data){
 		else $('.row.dashboard:first').prepend(html);
 											
 	}
+}
+
+function resumepauseNZBget(id,func){
+	_data = {"method": "editqueue", "nocache": new Date().getTime(), "params": [func, 0, "", [id]] };
+	NZBGET.rpcUrl = _HOST_NZBGET+'/jsonrpc';
+	NZBGET.call(_data,'');
+	$('#nzbget-'+id+' .details.pause,#nzbget-'+id+' .details.play').toggle();
 }
 
 var NZBGET = (new function($)

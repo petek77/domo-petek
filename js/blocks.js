@@ -1,4 +1,15 @@
 var blocks = new Object();
+
+//KNMI RADAR
+blocks['knmiradar']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="knmiradar" style="height:279px;">';
+	blocks['knmiradar']+='<div class="panel panel-block panel-default panel-protected" style="height:279px;">';
+		blocks['knmiradar']+='<div class="row">';
+			blocks['knmiradar']+='<div class="col-xs-8">';
+				blocks['knmiradar']+='<img src="http://www.knmi.nl/actueel/images/tempgmt.png" style="margin:10px;height:256px;" />';
+			blocks['knmiradar']+='</div>';
+		blocks['knmiradar']+='</div>';
+	blocks['knmiradar']+='</div>';
+blocks['knmiradar']+='</div>';
 			
 //REGULAR SWITCH									
 blocks['switch']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[IDX]">';

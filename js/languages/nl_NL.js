@@ -20,6 +20,9 @@ lang['settings_longitude'] = 'Longitude';
 lang['settings_onlyfavorites'] = 'Alleen favoriete blokken';
 lang['settings_graphrefresh'] = 'Vernieuwen grafieken (minuten)';
 
+lang['nzbget_pause'] = 'Gepauzeerd';
+lang['nzbget_downloading'] = 'Bezig met downloaden';
+
 lang['blocksettings_title'] = 'Blocksettings';
 lang['blocksettings_description'] = 'Pas dit blok aan zoals jij het wil';
 lang['blocksettings_blocktitle'] = 'Titel';

@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.86';
+var dashticz_version='0.87';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -292,29 +292,33 @@ function openCamera(idx,name){
 		camera+='</div>';
 	camera+='</div>';
 	
-	camera+='<div class="modal fade" id="cameramodal'+idx+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
-		camera+='<div class="modal-dialog">';
-			camera+='<div class="modal-content">';
-				camera+='<div class="modal-header">';
-					camera+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-					camera+='<h4 class="modal-title" id="myModalLabel">'+name+'</h4>';
-				camera+='</div>';
-				camera+='<div class="modal-body">';
-					camera+='<img class="camimage'+idx+'" src="'+imageUrl+new Date().getTime()+'" width="1000" />';
-				camera+='</div>';
-				camera+='<div class="modal-footer">';
-					camera+='<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>';
-				camera+='</div>';
-			camera+='</div>';
-		camera+='</div>';
-	camera+='</div>';
+	var cameramodal ='<div class="modal fade" id="cameramodal'+idx+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+		cameramodal+='<div class="modal-dialog">';
+			cameramodal+='<div class="modal-content">';
+				cameramodal+='<div class="modal-header">';
+					cameramodal+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+					cameramodal+='<h4 class="modal-title" id="myModalLabel">'+name+'</h4>';
+				cameramodal+='</div>';
+				cameramodal+='<div class="modal-body">';
+					cameramodal+='<img class="camimage'+idx+'" src="'+imageUrl+new Date().getTime()+'" width="1000" />';
+				cameramodal+='</div>';
+				cameramodal+='<div class="modal-footer">';
+					cameramodal+='<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>';
+				cameramodal+='</div>';
+			cameramodal+='</div>';
+		cameramodal+='</div>';
+	cameramodal+='</div>';
 	
 	reloadCamImage(idx,imageUrl,0);
 	
 	if($('#camera'+idx).length>0){
 		$('#camera'+idx).replaceWith(camera);
+		$('#cameramodal'+idx).replaceWith(cameramodal);
 	}
-	else $('.row.dashboard').append(camera);
+	else{
+		$('.row.dashboard').append(camera);
+		$('body').append(cameramodal);
+	}
 	
 }
 
@@ -601,6 +605,15 @@ function getDevices(){
 					$('#'+_BLOCKSORDER[bo]).remove();
 					parent.append(clone);
 				}
+				
+				/*
+				if($('#knmiradar').length==0){
+					setTimeout(function(){
+						var html = blocks['knmiradar'];
+						parent.prepend(html);
+					},5000);
+				}
+				*/
 			}
 		});
 	}

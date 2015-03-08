@@ -18,6 +18,10 @@ lang['settings_xbmcswitch'] = 'Switchname XBMC';
 lang['settings_latitude'] = 'Latitude';
 lang['settings_longitude'] = 'Longitude';
 lang['settings_onlyfavorites'] = 'Only favorite blocks';
+lang['settings_graphrefresh'] = 'Vernieuwen grafieken (minuten)';
+
+lang['nzbget_pause'] = 'Pause';
+lang['nzbget_downloading'] = 'Downloading';
 
 lang['blocksettings_title'] = 'Blocksettings';
 lang['blocksettings_description'] = 'Change this block the way you want it to be';

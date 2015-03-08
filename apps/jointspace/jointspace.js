@@ -1,3 +1,8 @@
+
+function loadJointspace(){
+	getCurrentChannel();	
+}
+
 function showRemote(){
 	$('.row.dashboard').hide();
 	$('.row.graphs').hide();
@@ -65,4 +70,16 @@ function sendKeyEvent(KEY){
 		dataType: 'json',
 		type: 'POST',
 	});
+}
+
+function getCurrentChannel(){
+	$.ajax({
+		url: _HOST_JOINTSPACE + '/1/channels/current',
+		dataType: 'json',
+		type: 'GET',
+	},function(data){
+		console.log(data);
+		alert(data.id);
+	});
+	
 }

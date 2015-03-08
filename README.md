@@ -91,6 +91,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.87 - 08/03/2015
+- Fix popup css for cameras
+
 0.86 - 07/03/2015
 - Current usage of energy/gas meters will be updated more frequently (every minute)
 - New setting: refresh intervals for graphs
