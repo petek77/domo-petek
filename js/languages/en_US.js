@@ -20,6 +20,7 @@ lang['settings_longitude'] = 'Longitude';
 lang['settings_onlyfavorites'] = 'Only favorite blocks';
 lang['settings_graphrefresh'] = 'Refresh graphs (minutes)';
 lang['settings_showsysteminfo'] = 'Show system info';
+lang['settings_showtrafficinfo'] = 'Show traffic info';
 
 lang['nzbget_pause'] = 'Pause';
 lang['nzbget_downloading'] = 'Downloading';

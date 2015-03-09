@@ -378,6 +378,15 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 				blocks['settings']+= '</div>';	
 			
 				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_showtrafficinfo']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
+						var trafficinfo='';
+						if(_TRAFFICINFO==1) trafficinfo='checked';
+						blocks['settings']+= '<input type="checkbox" name="dashticz_showtrafficinfo" value="1" '+trafficinfo+' class="form-control" style="width:12px;margin:0;"/>';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';	
+			
+				blocks['settings']+= '<div class="row">';
 					blocks['settings']+= '<label class="col-md-7">'+lang['settings_graphrefresh']+'</label>';
 					blocks['settings']+= '<div class="col-md-5">';
 						blocks['settings']+= '<input type="text" name="dashticz_graphrefresh" value="'+_GRAPHREFRESH+'" class="form-control" />';

@@ -20,7 +20,7 @@ var _LONGITUDE = '';
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
 var _FAVORITES=0;
-var _DEBUG=true;
+var _DEBUG=false;
 
 var _DEBUG_JSON = '';
 var _GRAPHS_LOADED = new Object();
@@ -68,11 +68,13 @@ $(document).ready(function(){
 									
 									_GRAPHREFRESH = 5;
 									_SYSTEMINFO = 1;
+									_TRAFFICINFO = 1;
 									if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
 									if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
 									if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
 									if(typeof(uservars['dashticz_graphrefresh'])!=='undefined') _GRAPHREFRESH = uservars['dashticz_graphrefresh']['Value'];
 									if(typeof(uservars['dashticz_showsysteminfo'])!=='undefined') _SYSTEMINFO = uservars['dashticz_showsysteminfo']['Value'];
+									if(typeof(uservars['dashticz_showtrafficinfo'])!=='undefined') _TRAFFICINFO = uservars['dashticz_showtrafficinfo']['Value'];
 									//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 								}
 								
@@ -85,7 +87,7 @@ $(document).ready(function(){
 									if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=='') $.getScript( 'apps/nzbget/nzbget.js');
 									if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=='') $.getScript( 'apps/plex/plex.js');
 									if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
-									$.getScript( 'apps/vid/vid.js');
+									if(_TRAFFICINFO==1) $.getScript( 'apps/vid/vid.js');
 					
 									$.getScript( 'js/blocks.js',function(){
 										$.getScript( 'js/graphs.js');
@@ -124,7 +126,7 @@ $(document).ready(function(){
 												if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
 												else $('#sun').append(html);
 												
-												loadVID();
+												if(_TRAFFICINFO==1) loadVID();
 												if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=="") loadJointspace();
 												if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=="") loadXBMC();
 												if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=="") loadPLEX();
