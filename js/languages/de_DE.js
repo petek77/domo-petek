@@ -18,10 +18,11 @@ lang['settings_xbmcswitch'] = 'Einstellung XBMC Name';
 lang['settings_latitude'] = 'Breitengrad';
 lang['settings_longitude'] = 'Längengrad';
 lang['settings_onlyfavorites'] = 'Nur Favoriten';
-lang['settings_graphrefresh'] = 'Vernieuwen grafieken (minuten)';
+lang['settings_graphrefresh'] = 'Vernieuwen Grafiken (minuten)';
+lang['settings_showsysteminfo'] = 'Anzeige der Systeminformationen';
 
 lang['nzbget_pause'] = 'Pause';
-lang['nzbget_downloading'] = 'Downloading';
+lang['nzbget_downloading'] = 'Herunterladen';
 
 lang['blocksettings_title'] = 'Blockbeschreibbung Titel';
 lang['blocksettings_description'] = 'Blockbeschreibung';

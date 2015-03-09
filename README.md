@@ -91,6 +91,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.88 - 09/03/2015
+- Traffic info (Dutch) from Vid.nl (only when Dashticz is installed on a webserver with PHP)
+
 0.87 - 08/03/2015
 - Fix popup css for cameras
 

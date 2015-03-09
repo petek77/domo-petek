@@ -1,5 +1,6 @@
 var blocks = new Object();
 
+/*
 //KNMI RADAR
 blocks['knmiradar']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="knmiradar" style="height:279px;">';
 	blocks['knmiradar']+='<div class="panel panel-block panel-default panel-protected" style="height:279px;">';
@@ -10,6 +11,7 @@ blocks['knmiradar']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="knmira
 		blocks['knmiradar']+='</div>';
 	blocks['knmiradar']+='</div>';
 blocks['knmiradar']+='</div>';
+*/
 			
 //REGULAR SWITCH									
 blocks['switch']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[IDX]">';
@@ -240,6 +242,30 @@ blocks['loading'] = '<div class="modal fade" id="loadingModal" tabindex="-1" rol
 		blocks['loading']+= '</div>';
 	blocks['loading']+= '</div>';
 blocks['loading']+= '</div>';
+		
+//CURRENT TV CHANNEL BLOCK
+
+blocks['currenchannel']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xbmc-playing">';
+	blocks['currenchannel']+='<div class="panel panel-default">';
+		blocks['currenchannel']+='<div class="panel-heading">';
+			blocks['currenchannel']+='<div class="row">';
+				blocks['currenchannel']+='<div class="col-xs-8"><div class="huge">[TITLE]</div></div>';
+				blocks['currenchannel']+='<div class="col-xs-4 text-right" style="padding-left:0px;">';					  
+					blocks['currenchannel']+='<img src="http://bell-vs-rogers.com/channellogos/cid259LOGO_140x_TLChd.png" />';
+				blocks['currenchannel']+='</div>';
+			blocks['currenchannel']+='</div>';
+		blocks['currenchannel']+='</div>';
+
+		blocks['currenchannel']+='<div class="details">';
+			blocks['currenchannel']+='<div class="panel-footer">';
+				blocks['currenchannel']+='<span class="pull-left"></span>';
+				blocks['currenchannel']+='<span class="pull-right media"><a href="javascript:backwardMedia();"><i class="fa fa-step-backward"></i></a>&nbsp;&nbsp;<a href="javascript:forwardMedia();"><i class="fa fa-step-forward"></i></a></span>';
+				blocks['currenchannel']+='<div class="clearfix"></div>';
+			blocks['currenchannel']+='</div>';
+		blocks['currenchannel']+='</div>';
+	blocks['currenchannel']+='</div>';
+blocks['currenchannel']+='</div>';
+			
 
 //TOP BAR
 blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">';
@@ -255,8 +281,9 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
                	if(_HOST_JOINTSPACE!=='') 	blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showRemote();">'+lang['remote']+'</a> ';
             blocks['topbar']+= '</span>';                
         blocks['topbar']+= '</div>';
-    	blocks['topbar']+= '<div class="fl-right">';
-        	blocks['topbar']+= '<span id="systeminfo"></span>';
+    	blocks['topbar']+= '<div class="fl-right infospans">';
+        	if(_SYSTEMINFO==1) blocks['topbar']+= '<span id="systeminfo"></span>';
+        	blocks['topbar']+= '<span id="traffic"></span>';
         	blocks['topbar']+= '<span id="sun"></span>';
             blocks['topbar']+= '<span id="settings"><a href="javascript:openSettings();"><i class="fa fa-cog"></i></a></span>';
           	blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
@@ -338,6 +365,15 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 						var favorites='';
 						if(_FAVORITES==1) favorites='checked';
 						blocks['settings']+= '<input type="checkbox" name="dashticz_onlyfavorites" value="1" '+favorites+' class="form-control" style="width:12px;margin:0;"/>';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';	
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_showsysteminfo']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
+						var systeminfo='';
+						if(_SYSTEMINFO==1) systeminfo='checked';
+						blocks['settings']+= '<input type="checkbox" name="dashticz_showsysteminfo" value="1" '+systeminfo+' class="form-control" style="width:12px;margin:0;"/>';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';	
 			

@@ -73,13 +73,56 @@ function sendKeyEvent(KEY){
 }
 
 function getCurrentChannel(){
+	/*
+	analog
+	
+	false
+digital
+	
+	"N/A"
+frequency
+	
+	"10284"
+logoid
+	
+	"-1"
+name
+	
+	"TLC HD"
+onid
+	
+	"1536"
+preset
+	
+	"19"
+sid
+	
+	"19566"
+tsid
+	
+	"2106"
+	*/
+	
+	
 	$.ajax({
 		url: _HOST_JOINTSPACE + '/1/channels/current',
 		dataType: 'json',
 		type: 'GET',
-	},function(data){
-		console.log(data);
-		alert(data.id);
+	}).done(function(data) {
+	  $.ajax({
+			url: _HOST_JOINTSPACE + '/1/channels/'+data.id,
+			dataType: 'json',
+			type: 'GET',
+		}).done(function(data) {
+			console.log(data);
+			var html = blocks['currenchannel'];
+		  	html = str_replace('[TITLE]',data.name,html);
+		  	if($('#currentchannel').length>0){
+				$('#currentchannel').replaceWith(html);
+			}
+			else{
+				$('.row.dashboard').append(html);
+			}
+		});
 	});
-	
 }
