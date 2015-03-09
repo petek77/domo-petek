@@ -50,7 +50,7 @@ function getVid(){
 					});	
 				}
 				
-				setTimeout(function(){ getVid(); },10000); 
+				setTimeout(function(){ getVid(); },60000); 
 			}
 		}
 	});	

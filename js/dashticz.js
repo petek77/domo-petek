@@ -12,7 +12,6 @@ var showNavigation;
 
 var _LANGUAGE='en_US';
 var _THEME='default';
-//var _XBMCSWITCH='';
 var _DAY=false;
 
 var _LATITUDE='';
@@ -21,7 +20,7 @@ var _LONGITUDE = '';
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
 var _FAVORITES=0;
-var _DEBUG=false;
+var _DEBUG=true;
 
 var _DEBUG_JSON = '';
 var _GRAPHS_LOADED = new Object();
@@ -331,9 +330,16 @@ function reloadCamImage(idx,imageUrl,counter){
 	var newcount = (counter+1);
 	imageUrl = str_replace('count='+counter+'&','count='+newcount+'&',imageUrl);
 	$('.camimage'+idx).attr('src',imageUrl+new Date().getTime());
-	setTimeout(function(){
-		reloadCamImage(idx,imageUrl,newcount);
-	},500);	
+	
+	var image=new Image()
+	image.src=imageUrl+new Date().getTime()
+	image.onload=function(){
+		$('.camimage'+idx).attr('src',image.src);
+		setTimeout(function(){
+			reloadCamImage(idx,imageUrl,newcount);
+		},500);	
+	}
+		
 }
 
 function getDevices(){
