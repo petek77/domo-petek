@@ -1,5 +1,5 @@
 //GENERAL HOSTS
-var _HOST_DOMOTICZ		= 'http://admin:Smart2004r@192.168.1.3:8084'; //IP-address of Domoticz-server, e.g.: http://192.168.1.3:8084
+var _HOST_DOMOTICZ		= 'http://user:pass@192.168.1.3:8084'; //IP-address of Domoticz-server, e.g.: http://192.168.1.3:8084
 var _HOST_NZBGET		= 'http://192.168.1.3:6789/jsonrpc';
 
 //HOSTS IF DASHTICZ IS INSTALLED ON A WEBSERVER WITH PHP-SUPPORT
