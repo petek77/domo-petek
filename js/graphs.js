@@ -148,3 +148,10 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 		});
 	}
 }
+
+function showCharts(){
+	$('.row.graphs').css('opacity',1);
+	$('.row.dashboard').hide();
+	$('.row.xbmc').hide();
+	$('.row.remote').hide();
+}

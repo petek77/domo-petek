@@ -91,6 +91,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.89 - 11/03/2015
+- Changed topmenu layout
+- Graphs in different tab
+
 0.88 - 09/03/2015
 - Traffic info (Dutch) from Vid.nl (only when Dashticz is installed on a webserver with PHP)
 - Setting for showing (or not) the traffic info from vid.nl

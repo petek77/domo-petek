@@ -12,9 +12,10 @@ function getVid(){
 		success: function(data){
 			if(data.length<4){
 				var html = '<span class="fa-stack">';
-				html+='<a href="javascript:void(0);" data-toggle="modal" data-target="#trafficinfo" style="color:#000;"><i class="fa fa-car fa-stack-1x"></i>';
-				html+='<i class="fa fa-stack-1x text-danger" style="margin-left:12px;color:red;">'+data+'</i>';
-				html+='</span></a>';
+				html+='<a href="javascript:void(0);" class="notelink" data-toggle="modal" data-target="#trafficinfo" style="color:#000;"><i class="fa fa-car fa-stack-1x"></i>';
+				html+='<i class="fa fa-stack-1x text-danger" style="margin-left:22px;margin-top: -5px; color:red;font-size:12px;font-weight:bold">'+data+'&nbsp;&nbsp;</i>';
+				html+='</a>';
+				html+='</span>';
 				$('#traffic').html(html);
 				
 				if($('#trafficinfo').length==0 || !$('#trafficinfo').is(':visible')){

@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.88';
+var dashticz_version='0.89';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -27,122 +27,118 @@ var _GRAPHS_LOADED = new Object();
 
 $(document).ready(function(){
 	
-	$.getScript( 'CONFIG.js',function(){
-		$.getScript( 'js/functions.js',function(){
-			if(_HOST_DOMOTICZ=='') alert('Fill in the path to Domoticz in CONFIG.js!!');
-			else {
-								
+	$.ajax({url: 'CONFIG.js', async: false,dataType: "script"});
+	$.ajax({url: 'js/functions.js', async: false,dataType: "script"});
+	
+	if(_HOST_DOMOTICZ=='') alert('Fill in the path to Domoticz in CONFIG.js!!');
+	else {
+						
+		$.ajax({
+			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getSunRiseSet&jsoncallback=?',
+			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			success: function(data) {
+	
+				if(time()>=strtotime(date('Y-m-d ')+data.Sunrise) && time()<=strtotime(date('Y-m-d ')+data.Sunset)){
+					_DAY=true;
+				}
+				
 				$.ajax({
-					url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getSunRiseSet&jsoncallback=?',
+					url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getuservariables&jsoncallback=?',
 					type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 					success: function(data) {
-			
-						if(time()>=strtotime(date('Y-m-d ')+data.Sunrise) && time()<=strtotime(date('Y-m-d ')+data.Sunset)){
-							_DAY=true;
+							
+						_GRAPHREFRESH = 5;
+						_SYSTEMINFO = 1;
+						_TRAFFICINFO = 1;
+							
+						if(typeof(data.result)!=='undefined'){
+							
+							for(r in data.result){
+								uservars[data.result[r]['Name']] = data.result[r];
+							}
+							
+							if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
+								var blocksorder = uservars['dashticz_blockorder']['Value'].split(',');
+								for(bo in blocksorder){
+									if(blocksorder[bo].substr(0,1)=='d'){
+										blocksorder[bo] = 'device'+blocksorder[bo].substr(1,blocksorder[bo].length);	
+									}
+								}
+								
+								_BLOCKSORDER = blocksorder;
+							}
+							
+							if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
+								_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
+							}
+							if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
+							if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
+							if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
+							if(typeof(uservars['dashticz_graphrefresh'])!=='undefined') _GRAPHREFRESH = uservars['dashticz_graphrefresh']['Value'];
+							if(typeof(uservars['dashticz_showsysteminfo'])!=='undefined') _SYSTEMINFO = uservars['dashticz_showsysteminfo']['Value'];
+							if(typeof(uservars['dashticz_showtrafficinfo'])!=='undefined') _TRAFFICINFO = uservars['dashticz_showtrafficinfo']['Value'];
+							//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 						}
 						
+						if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
+							_LANGUAGE='en_US';	
+						}
+						
+						$.ajax({url: 'js/languages/'+_LANGUAGE+'.js', async: false,dataType: "script"});
+						if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=='') $.ajax({url: 'apps/kodi/kodi.js', async: false,dataType: "script"});
+						if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=='') $.ajax({url: 'apps/nzbget/nzbget.js', async: false,dataType: "script"});
+						if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=='') $.ajax({url: 'apps/plex/plex.js', async: false,dataType: "script"});
+						if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=='') $.ajax({url: 'apps/jointspace/jointspace.js', async: false,dataType: "script"});
+						if(_TRAFFICINFO==1) $.ajax({url: 'apps/vid/vid.js', async: false,dataType: "script"});
+		
+						$.ajax({url: 'js/blocks.js', async: false,dataType: "script"});
+						$.ajax({url: 'js/graphs.js', async: false,dataType: "script"});
+						$.ajax({url: 'js/settings.js', async: false,dataType: "script"});
+						$.ajax({url: 'js/edit.js', async: false,dataType: "script"});
+						$.ajax({url: 'js/switches.js', async: false,dataType: "script"});
+						
+						$.ajax({url: 'themes/'+_THEME+'/js/config.js', async: false,dataType: "script"});
+						$.ajax({url: 'themes/'+_THEME+'/js/blocks.js', async: false,dataType: "script"});
+						
+						//$('div#wrapper').append(blocks['topbar']);
+						$('div#wrapper').append(blocks['blocks']);
+						if(showNavigation) $('div#wrapper').append(blocks['navigation']);
+						$('div#wrapper').append(blocks['settings']);
+						
+						if(_HOST_XBMC!=='' || _HOST_JOINTSPACE!==''){
+							$('span#menu').show();	
+						}
+						
+						$('span#dversion').html(dashticz_version);
+			
+						$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css?'+new Date().getTime());
+						$('img#logo').attr('src','themes/'+_THEME+'/images/logo.png');
+						
 						$.ajax({
-							url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getuservariables&jsoncallback=?',
+							url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getversion&jsoncallback=?',
 							type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 							success: function(data) {
-								if(typeof(data.result)!=='undefined'){
-									
-									for(r in data.result){
-										uservars[data.result[r]['Name']] = data.result[r];
-									}
-									
-									if(typeof(uservars['dashticz_blockorder'])!=='undefined'){
-										var blocksorder = uservars['dashticz_blockorder']['Value'].split(',');
-										for(bo in blocksorder){
-											if(blocksorder[bo].substr(0,1)=='d'){
-												blocksorder[bo] = 'device'+blocksorder[bo].substr(1,blocksorder[bo].length);	
-											}
-										}
-										
-										_BLOCKSORDER = blocksorder;
-									}
-									
-									if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
-										_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
-									}
-									
-									_GRAPHREFRESH = 5;
-									_SYSTEMINFO = 1;
-									_TRAFFICINFO = 1;
-									if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
-									if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
-									if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
-									if(typeof(uservars['dashticz_graphrefresh'])!=='undefined') _GRAPHREFRESH = uservars['dashticz_graphrefresh']['Value'];
-									if(typeof(uservars['dashticz_showsysteminfo'])!=='undefined') _SYSTEMINFO = uservars['dashticz_showsysteminfo']['Value'];
-									if(typeof(uservars['dashticz_showtrafficinfo'])!=='undefined') _TRAFFICINFO = uservars['dashticz_showtrafficinfo']['Value'];
-									//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
-								}
-								
-								if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
-									_LANGUAGE='en_US';	
-								}
-								
-								$.getScript( 'js/languages/'+_LANGUAGE+'.js',function(){
-									if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=='') $.getScript( 'apps/kodi/kodi.js');
-									if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=='') $.getScript( 'apps/nzbget/nzbget.js');
-									if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=='') $.getScript( 'apps/plex/plex.js');
-									if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=='') $.getScript( 'apps/jointspace/jointspace.js');
-									if(_TRAFFICINFO==1) $.getScript( 'apps/vid/vid.js');
-					
-									$.getScript( 'js/blocks.js',function(){
-										$.getScript( 'js/graphs.js');
-										$.getScript( 'js/settings.js');
-										$.getScript( 'js/edit.js');
-										$.getScript( 'js/switches.js');
-										
-										$.getScript( 'themes/'+_THEME+'/js/config.js',function(){
-											$.getScript( 'themes/'+_THEME+'/js/blocks.js',function(){
-											
-												$('div#wrapper').append(blocks['topbar']);
-												$('div#wrapper').append(blocks['blocks']);
-												if(showNavigation) $('div#wrapper').append(blocks['navigation']);
-												$('div#wrapper').append(blocks['settings']);
-												
-												if(_HOST_XBMC!=='' || _HOST_JOINTSPACE!==''){
-													$('span#menu').show();	
-												}
-												
-												$('span#dversion').html(dashticz_version);
-									
-												$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css?'+new Date().getTime());
-												$('img#logo').attr('src','themes/'+_THEME+'/images/logo.png');
-												
-												$.ajax({
-													url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getversion&jsoncallback=?',
-													type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
-													success: function(data) {
-														$('span#version').html(data.version);
-													}
-												});
-												
-												if(_DAY) var html = '<span id="dayornight"><i class="fa fa-sun-o"></i></span>';
-												else var html = '<span id="dayornight"><i class="fa fa-moon-o"></i></span>';
-												
-												if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
-												else $('#sun').append(html);
-												
-												if(_TRAFFICINFO==1) loadVID();
-												if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=="") loadJointspace();
-												if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=="") loadXBMC();
-												if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=="") loadPLEX();
-												if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=="") loadNZBGET();
-												autoGetDevices();
-											});
-										});
-									});
-								});
+								$('span#version').html(data.version);
 							}
 						});
+						
+						if(_DAY) var html = '<span id="dayornight"><i class="fa fa-sun-o"></i></span>';
+						else var html = '<span id="dayornight"><i class="fa fa-moon-o"></i></span>';
+						
+						if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
+						else $('#sun').append(html);
+						
+						if(_TRAFFICINFO==1) loadVID();
+						if(typeof(_HOST_JOINTSPACE)!=='undefined' && _HOST_JOINTSPACE!=="") loadJointspace();
+						if(typeof(_HOST_XBMC)!=='undefined' && _HOST_XBMC!=="") loadXBMC();
+						if(typeof(_HOST_PLEX)!=='undefined' && _HOST_PLEX!=="") loadPLEX();
+						if(typeof(_HOST_NZBGET)!=='undefined' && _HOST_NZBGET!=="") loadNZBGET();
+						autoGetDevices();
 					}
 				});
 			}
 		});
-	});
+	}
 });
 
 function switchTheme(theme){
@@ -607,9 +603,9 @@ function getDevices(){
 				}
 					
 				if(_LATITUDE!=="" && _LONGITUDE!==""){
-					$.getScript( 'apps/buienradar/buienradar.js',function(){
+					$.ajax({url: 'apps/buienradar/buienradar.js', async: false,dataType: "script"});
 						getBuienradar();
-					});
+					//});
 				}
 				
 				for(bo in _BLOCKSORDER){
@@ -669,8 +665,10 @@ function initSlider(setslide,element){
 	}
 	},1000);
 }
+
 function showDashboard(){
-	$('.row').show();
+	$('.row.dashboard').show();
+	$('.row.graphs').css('opacity',0);
 	$('.row.xbmc').hide();
 	$('.row.remote').hide();
 }
