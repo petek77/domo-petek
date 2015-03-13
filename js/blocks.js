@@ -296,7 +296,7 @@ blocks['navigation'] = '<div class="dropdown-wrap boxed-velvet">';
 	blocks['navigation']+= '<ul class="dropdown inner clearfix left">';
         blocks['navigation']+= '<li class="first"><img id="logo" src="" /><div class="versiontxt">v<span id="dversion"></span> / <span class="domoticz"><strong>Domoticz</strong> v<span id="version"></span></span></div></li>';
         blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-home fa-2x"></i><span class="menu-item">Dashboard</span></a></li>';
-        blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span>Charts</span></a></li>';
+        if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span>Charts</span></a></li>';
         if(_HOST_JOINTSPACE!=='') blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showRemote();"><i class="fa fa-desktop fa-2x"></i><span>'+lang['remote']+'</span></a></li>';
 		blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="openEditmode();"><i class="fa fa-pencil fa-2x"></i><span>Edit mode</span></a></li>';
         blocks['navigation']+= '<li class="last"><a href="javascript:void(0);" onclick="openSettings();"><i class="fa fa-cog fa-2x"></i><span>Settings</span></a></li>';
@@ -313,7 +313,8 @@ blocks['navigation']+= '</div> ';
 //GENERAL WRAPPERS FOR BLOCKS ON DASHBOARD
 blocks['blocks'] = '<div id="page-wrapper">';
     blocks['blocks']+= '<div class="row dashboard"></div>';
-    blocks['blocks']+= '<div class="row graphs" style="opacity:0;"></div>';
+    if(_GRAPHSEPARATE==1) blocks['blocks']+= '<div class="row graphs" style="opacity:0;"></div>';
+    else blocks['blocks']+= '<div class="row graphs"></div>';
     blocks['blocks']+= '<div class="row xbmc" style="display:none;"></div>'; 
     blocks['blocks']+= '<div class="row remote" style="display:none;"></div>'; 
 blocks['blocks']+= '</div>';
@@ -394,6 +395,15 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 					blocks['settings']+= '<label class="col-md-7">'+lang['settings_graphrefresh']+'</label>';
 					blocks['settings']+= '<div class="col-md-5">';
 						blocks['settings']+= '<input type="text" name="dashticz_graphrefresh" value="'+_GRAPHREFRESH+'" class="form-control" />';
+					blocks['settings']+= '</div>';
+				blocks['settings']+= '</div>';	
+			
+				blocks['settings']+= '<div class="row">';
+					blocks['settings']+= '<label class="col-md-7">'+lang['settings_graphseparate']+'</label>';
+					blocks['settings']+= '<div class="col-md-5">';
+						var graphseparate='';
+						if(_GRAPHSEPARATE==1) graphseparate='checked';
+						blocks['settings']+= '<input type="checkbox" name="dashticz_graphseparate" value="1" '+graphseparate+' class="form-control" style="width:12px;margin:0;"/>';
 					blocks['settings']+= '</div>';
 				blocks['settings']+= '</div>';	
 					

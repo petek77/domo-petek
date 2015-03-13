@@ -21,6 +21,7 @@ lang['settings_onlyfavorites'] = 'Nur Favoriten';
 lang['settings_graphrefresh'] = 'Vernieuwen Grafiken (minuten)';
 lang['settings_showsysteminfo'] = 'Anzeige der Systeminformationen';
 lang['settings_showtrafficinfo'] = 'Anzeige der Verkehr';
+lang['settings_graphseparate'] = 'Charts in separate tab';
 
 lang['nzbget_pause'] = 'Pause';
 lang['nzbget_downloading'] = 'Herunterladen';

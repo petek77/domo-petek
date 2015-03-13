@@ -18,7 +18,7 @@ If you have a Synology NAS, you are able to enable the webserver in the DiskStat
 
 
 #Installation
-Before you can use Dashticz, unzip all files to a subfolder in Domoticz or on a webserver (With PHP) of your choice.
+Before you can use Dashticz, unzip all files to a subfolder in Domoticz or on a webserver (With PHP and cURL) of your choice.
 Edit CONFIG.js in the root and insert the IP-address of Domoticz without a trailing slash; e.g.: http://192.168.1.3:8084
 
 
@@ -91,6 +91,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.90 - 13/03/2015
+- Added setting for showing charts in separate tab (or not)
+
 0.89 - 11/03/2015
 - Changed topmenu layout
 - Graphs in different tab

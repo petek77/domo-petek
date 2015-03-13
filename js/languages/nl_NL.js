@@ -21,6 +21,7 @@ lang['settings_onlyfavorites'] = 'Alleen favoriete blokken';
 lang['settings_graphrefresh'] = 'Vernieuwen grafieken (minuten)';
 lang['settings_showsysteminfo'] = 'Geef systeeminformatie weer';
 lang['settings_showtrafficinfo'] = 'Geef verkeersinformatie weer';
+lang['settings_graphseparate'] = 'Grafieken in aparte tab';
 
 lang['nzbget_pause'] = 'Gepauzeerd';
 lang['nzbget_downloading'] = 'Bezig met downloaden';

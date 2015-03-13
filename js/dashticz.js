@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.89';
+var dashticz_version='0.90';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -50,6 +50,7 @@ $(document).ready(function(){
 						_GRAPHREFRESH = 5;
 						_SYSTEMINFO = 1;
 						_TRAFFICINFO = 1;
+						_GRAPHSEPARATE = 1;
 							
 						if(typeof(data.result)!=='undefined'){
 							
@@ -77,6 +78,7 @@ $(document).ready(function(){
 							if(typeof(uservars['dashticz_graphrefresh'])!=='undefined') _GRAPHREFRESH = uservars['dashticz_graphrefresh']['Value'];
 							if(typeof(uservars['dashticz_showsysteminfo'])!=='undefined') _SYSTEMINFO = uservars['dashticz_showsysteminfo']['Value'];
 							if(typeof(uservars['dashticz_showtrafficinfo'])!=='undefined') _TRAFFICINFO = uservars['dashticz_showtrafficinfo']['Value'];
+							if(typeof(uservars['dashticz_graphseparate'])!=='undefined') _GRAPHSEPARATE = uservars['dashticz_graphseparate']['Value'];
 							//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 						}
 						
@@ -667,8 +669,15 @@ function initSlider(setslide,element){
 }
 
 function showDashboard(){
-	$('.row.dashboard').show();
-	$('.row.graphs').css('opacity',0);
+	if(_GRAPHSEPARATE){
+		$('.row.dashboard').show();
+		$('.row.graphs').css('opacity',0);
+	}
+	else {
+		$('.row.dashboard').show();
+		$('.row.graphs').show();
+	}
+	
 	$('.row.xbmc').hide();
 	$('.row.remote').hide();
 }
