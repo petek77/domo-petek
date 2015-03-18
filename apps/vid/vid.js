@@ -12,7 +12,7 @@ function getVid(){
 		success: function(data){
 			if(data.length<4){
 				var html = '<span class="fa-stack">';
-				html+='<a href="javascript:void(0);" class="notelink" data-toggle="modal" data-target="#trafficinfo" style="color:#000;"><i class="fa fa-car fa-stack-1x"></i>';
+				html+='<a href="javascript:void(0);" class="notelink" data-toggle="modal" data-target="#trafficinfo"><i class="fa fa-car fa-stack-1x"></i>';
 				html+='<i class="fa fa-stack-1x text-danger" style="margin-left:22px;margin-top: -5px; color:red;font-size:12px;font-weight:bold">'+data+'&nbsp;&nbsp;</i>';
 				html+='</a>';
 				html+='</span>';

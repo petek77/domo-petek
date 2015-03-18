@@ -101,6 +101,19 @@ function saveEditblock(idx){
 			}
 		});
 	}
+	else {
+		$.ajax({
+			url: _HOST_DOMOTICZ+'/json.htm?type=setused&idx='+idx+'&name='+modal.find('#name').val()+'&jsoncallback=?',
+			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			success: function(data) {
+				
+				if(!modal.find('#hide').is(':checked')){
+					$('#loadingModal').remove();
+					window.location.reload(); 
+				}
+			}
+		});
+	}
 	
 	if(modal.find('#hide').is(':checked')){
 		_BLOCKSHIDE[idx] = idx;	

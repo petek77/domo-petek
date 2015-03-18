@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.90';
+var dashticz_version='0.91';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -72,6 +72,7 @@ $(document).ready(function(){
 							if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
 								_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
 							}
+							
 							if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
 							if(typeof(uservars['dashticz_theme'])!=='undefined') _THEME = uservars['dashticz_theme']['Value'];
 							if(typeof(uservars['dashticz_onlyfavorites'])!=='undefined') _FAVORITES = uservars['dashticz_onlyfavorites']['Value'];
@@ -390,6 +391,10 @@ function getDevices(){
 						}
 						if(data.result[r]['SwitchType']=='Dimmer'){
 							current = data.result[r]['Level'];
+						}
+						
+						if(data.result[r]['Type']=='Temp + Humidity'){
+							current= current+' / '+data.result[r]['Humidity']+'%'+'<br />'+data.result[r]['HumidityStatus']+'';
 						}
 						
 						if(

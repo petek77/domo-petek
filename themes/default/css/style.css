@@ -72,8 +72,12 @@ body {
     padding: 9px 20px 18px;
 	font-size: 11px;
 }
+.dropdown > li a.active { 
+    color: #f00;
+}
 .dropdown > li a.notelink { 
 	padding:0px;
+	color:#000;
 }
 .dropdown > li a.notelink:hover {
     background-color: #f8f8f8;

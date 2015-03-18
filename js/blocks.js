@@ -286,7 +286,7 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
         	blocks['topbar']+= '<span id="traffic"></span>';
         	blocks['topbar']+= '<span id="sun"></span>';
             blocks['topbar']+= '<span id="settings"><a href="javascript:openSettings();"><i class="fa fa-cog"></i></a></span>';
-          	blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();"><i class="fa fa-pencil"></i></a></span>';
+          	blocks['topbar']+= '<span id="editmode"><a href="javascript:openEditmode();" id="editmode"><i class="fa fa-pencil"></i></a></span>';
     	blocks['topbar']+= '</div>';
     blocks['topbar']+= '</div> ';           
 blocks['topbar']+= '</nav>';
@@ -298,7 +298,7 @@ blocks['navigation'] = '<div class="dropdown-wrap boxed-velvet">';
         blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-home fa-2x"></i><span class="menu-item">Dashboard</span></a></li>';
         if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span>Charts</span></a></li>';
         if(_HOST_JOINTSPACE!=='') blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showRemote();"><i class="fa fa-desktop fa-2x"></i><span>'+lang['remote']+'</span></a></li>';
-		blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="openEditmode();"><i class="fa fa-pencil fa-2x"></i><span>Edit mode</span></a></li>';
+		blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="openEditmode();" id="editmode"><i class="fa fa-pencil fa-2x"></i><span>Edit mode</span></a></li>';
         blocks['navigation']+= '<li class="last"><a href="javascript:void(0);" onclick="openSettings();"><i class="fa fa-cog fa-2x"></i><span>Settings</span></a></li>';
     blocks['navigation']+= '</ul>';
 	blocks['navigation']+= '<ul class="dropdown inner clearfix right">';

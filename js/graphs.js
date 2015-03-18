@@ -10,7 +10,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 		$('.graphcurrent'+idx).html(current);
 	}
 	
-	if(forced){
+	if(forced && typeof(_BLOCKSHIDE[idx])=='undefined'){
 		_GRAPHS_LOADED[idx] = time();
 		realrange=range;
 		if(range=='last') realrange='day';

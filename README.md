@@ -91,6 +91,11 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.91 - 18/03/2015
+- Support for Cresta TX320
+- If in editmode and hide is checked for a chart, it will now be hidden
+- Minor changes to Darkoticz-theme
+
 0.90 - 13/03/2015
 - Added setting for showing charts in separate tab (or not)
 
