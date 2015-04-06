@@ -1,9 +1,11 @@
+var currentremote;
 
 function loadJointspace(){
 	getCurrentChannel();	
 }
 
-function showRemote(){
+function showRemote(REMOTEURL){
+	currentremote = REMOTEURL;
 	$('.row.dashboard').hide();
 	$('.row.graphs').hide();
 	$('.row.xbmc').hide();
@@ -65,7 +67,7 @@ function showRemote(){
 
 function sendKeyEvent(KEY){
 	$.ajax({
-		url: _HOST_JOINTSPACE + '/1/input/key',
+		url: currentremote + '/1/input/key',
 		data: JSON.stringify({ "key" : KEY }),
 		dataType: 'json',
 		type: 'POST',
@@ -104,25 +106,27 @@ tsid
 	*/
 	
 	
-	$.ajax({
-		url: _HOST_JOINTSPACE + '/1/channels/current',
-		dataType: 'json',
-		type: 'GET',
-	}).done(function(data) {
-	  $.ajax({
-			url: _HOST_JOINTSPACE + '/1/channels/'+data.id,
+	var jspcs = _HOST_JOINTSPACE.split(',');
+	for(j in jspcs){
+		$.ajax({
+			url: jspcs[j] + '/1/channels/current',
 			dataType: 'json',
 			type: 'GET',
 		}).done(function(data) {
-			console.log(data);
-			var html = blocks['currenchannel'];
-		  	html = str_replace('[TITLE]',data.name,html);
-		  	if($('#currentchannel').length>0){
-				$('#currentchannel').replaceWith(html);
-			}
-			else{
-				$('.row.dashboard').append(html);
-			}
+		  $.ajax({
+				url: jspcs[j] + '/1/channels/'+data.id,
+				dataType: 'json',
+				type: 'GET',
+			}).done(function(data) {
+				var html = blocks['currenchannel'];
+				html = str_replace('[TITLE]',data.name,html);
+				if($('#currentchannel').length>0){
+					$('#currentchannel').replaceWith(html);
+				}
+				else{
+					$('.row.dashboard').append(html);
+				}
+			});
 		});
-	});
+	}
 }

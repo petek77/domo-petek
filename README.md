@@ -91,6 +91,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.92 - 06/04/2015
+- Support for multiple JointSpace-televisions (add comma-separated list of IP's in config)
+- Added another extra iconset
+
 0.91 - 18/03/2015
 - Support for Cresta TX320
 - If in editmode and hide is checked for a chart, it will now be hidden

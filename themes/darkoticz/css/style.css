@@ -299,11 +299,11 @@ span#editmode {
 }
 
 
-.icon-active {
+.device-active {
 	color:#515559 !important;
 }
 
-.icon-inactive {
+.device-inactive {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	filter: alpha(opacity=30);
 	-moz-opacity: 0.3;
@@ -311,11 +311,13 @@ span#editmode {
 	opacity: 0.3;
 }
 
-.fa.fa-lightbulb-o {
+.icon .fa.fa-lightbulb-o {
 	margin-right:12px;	
 }
-
-.fa.fa-cloud{
+.icon .fa.fa-desktop {
+    margin-top: 6px;
+}
+.icon .fa.fa-cloud{
 	margin-left:-7px;	
 }
 

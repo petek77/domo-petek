@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.91';
+var dashticz_version='0.92';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -459,11 +459,11 @@ function getDevices(){
 									data.result[r]['Status']=='On' ||
 									parseFloat(data.result[r]['Rain'])>0
 								){
-									var iconclass = 'icon-active';
+									var iconclass = 'device-active';
 									var deviceactive = 'device-online';
 								}
 								else {
-									var iconclass = 'icon-inactive';
+									var iconclass = 'device-inactive';
 									var deviceactive = 'device-offline';
 								}
 								
@@ -507,6 +507,10 @@ function getDevices(){
 								else if(element['SubType']=='Solar Radiation') icon='fa fa-sun-o';
 								else if(element['Type']=='Rain') icon='fa fa-umbrella';
 								else if(element['Type']=='Wind') icon='fa fa-location-arrow';
+								else if(element['Image']=='TV') icon='icomoon icon-tv';
+								else if(element['Image']=='ComputerPC') icon='fa fa-desktop';
+								else if(element['Image']=='Computer') icon='fa fa-desktop';
+								else if(element['Image']=='Printer') icon='fa fa-print';
 								
 								var headingclass='';
 								if(element['TypeImg']=='temperature') headingclass=' nodetails';

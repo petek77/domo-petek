@@ -277,9 +277,19 @@ blocks['topbar'] = '<nav class="navbar navbar-default navbar-static-top" role="n
         	//blocks['topbar']+= '<span class="cameras"> | <select onchange="openCamera(this.value);"></select></span>';
             blocks['topbar']+= '<span id="menu" style="display:none;">';
                 if(_HOST_DOMOTICZ!=='') 	blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showDashboard();">'+lang['dashboard']+'</a> ';
-                //if(_HOST_XBMC!=='') 		blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showXbmc();">'+lang['kodi']+'</a> ';
-               	if(_HOST_JOINTSPACE!=='') 	blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showRemote();">'+lang['remote']+'</a> ';
-            blocks['topbar']+= '</span>';                
+               	if(_HOST_JOINTSPACE!==''){
+					var jspcs = _HOST_JOINTSPACE.split(',');
+					var tjspcs = 1;
+					for(j in jspcs){
+						blocks['topbar']+= ' | <a href="javascript:void(0);" onclick="showRemote('+jspcs[j]+');">'+lang['remote']+'';
+						if(jspcs.length>1){
+							blocks['topbar']+= ' ('+tjspcs+')';
+							tjspcs++;	
+						}
+						blocks['topbar']+= '</a> ';
+					}
+				}
+			blocks['topbar']+= '</span>';                
         blocks['topbar']+= '</div>';
     	blocks['topbar']+= '<div class="fl-right infospans">';
         	if(_SYSTEMINFO==1) blocks['topbar']+= '<span id="systeminfo"></span>';
@@ -297,7 +307,20 @@ blocks['navigation'] = '<div class="dropdown-wrap boxed-velvet">';
         blocks['navigation']+= '<li class="first"><img id="logo" src="" /><div class="versiontxt">v<span id="dversion"></span> / <span class="domoticz"><strong>Domoticz</strong> v<span id="version"></span></span></div></li>';
         blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-home fa-2x"></i><span class="menu-item">Dashboard</span></a></li>';
         if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span>Charts</span></a></li>';
-        if(_HOST_JOINTSPACE!=='') blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showRemote();"><i class="fa fa-desktop fa-2x"></i><span>'+lang['remote']+'</span></a></li>';
+        
+		if(_HOST_JOINTSPACE!==''){
+			var jspcs = _HOST_JOINTSPACE.split(',');
+			var tjspcs = 1;
+			for(j in jspcs){
+				blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showRemote(\''+jspcs[j]+'\');"><i class="fa fa-desktop fa-2x"></i><span>'+lang['remote']+'';
+				if(jspcs.length>1){
+					blocks['navigation']+= ' ('+tjspcs+')';
+					tjspcs++;	
+				}
+				blocks['navigation']+= '</span></a></li>';
+			}
+		}
+				
 		blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="openEditmode();" id="editmode"><i class="fa fa-pencil fa-2x"></i><span>Edit mode</span></a></li>';
         blocks['navigation']+= '<li class="last"><a href="javascript:void(0);" onclick="openSettings();"><i class="fa fa-cog fa-2x"></i><span>Settings</span></a></li>';
     blocks['navigation']+= '</ul>';
