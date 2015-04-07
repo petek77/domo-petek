@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.92';
+var dashticz_version='0.93';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -554,7 +554,6 @@ function getDevices(){
 								initSlider(setslide,element);
 								setslide='';
 							}
-				
 						}
 					}
 				}

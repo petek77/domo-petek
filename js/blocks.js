@@ -305,7 +305,7 @@ blocks['topbar']+= '</nav>';
 blocks['navigation'] = '<div class="dropdown-wrap boxed-velvet">';
 	blocks['navigation']+= '<ul class="dropdown inner clearfix left">';
         blocks['navigation']+= '<li class="first"><img id="logo" src="" /><div class="versiontxt">v<span id="dversion"></span> / <span class="domoticz"><strong>Domoticz</strong> v<span id="version"></span></span></div></li>';
-        blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-home fa-2x"></i><span class="menu-item">Dashboard</span></a></li>';
+        blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-home fa-2x"></i><span class="menu-item">'+lang['dashboard']+'</span></a></li>';
         if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span>Charts</span></a></li>';
         
 		if(_HOST_JOINTSPACE!==''){
@@ -321,8 +321,8 @@ blocks['navigation'] = '<div class="dropdown-wrap boxed-velvet">';
 			}
 		}
 				
-		blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="openEditmode();" id="editmode"><i class="fa fa-pencil fa-2x"></i><span>Edit mode</span></a></li>';
-        blocks['navigation']+= '<li class="last"><a href="javascript:void(0);" onclick="openSettings();"><i class="fa fa-cog fa-2x"></i><span>Settings</span></a></li>';
+		blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="openEditmode();" id="editmode"><i class="fa fa-pencil fa-2x"></i><span>'+lang['editmode']+'</span></a></li>';
+        blocks['navigation']+= '<li class="last"><a href="javascript:void(0);" onclick="openSettings();"><i class="fa fa-cog fa-2x"></i><span>'+lang['settings']+'</span></a></li>';
     blocks['navigation']+= '</ul>';
 	blocks['navigation']+= '<ul class="dropdown inner clearfix right">';
         blocks['navigation']+= '<li class="note"><div id="traffic"></div></li>';

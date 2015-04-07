@@ -3,6 +3,8 @@ var lang = new Object();
 lang['dashboard'] = 'Dashboard';
 lang['kodi'] = 'Kodi';
 lang['remote'] = 'Fernbedienung';
+lang['editmode'] = 'Änderung Blöcke';
+lang['settings'] = 'Einstellungen';
 
 lang['settings_title'] = 'Einstellungen';
 lang['settings_description'] = 'Dashticz Beschreibung';
@@ -21,7 +23,7 @@ lang['settings_onlyfavorites'] = 'Nur Favoriten';
 lang['settings_graphrefresh'] = 'Vernieuwen Grafiken (minuten)';
 lang['settings_showsysteminfo'] = 'Anzeige der Systeminformationen';
 lang['settings_showtrafficinfo'] = 'Anzeige der Verkehr';
-lang['settings_graphseparate'] = 'Charts in separate tab';
+lang['settings_graphseparate'] = 'Charts in separaten Registerkarte';
 
 lang['nzbget_pause'] = 'Pause';
 lang['nzbget_downloading'] = 'Herunterladen';

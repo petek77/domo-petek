@@ -3,6 +3,8 @@ var lang = new Object();
 lang['dashboard'] = 'Dashboard';
 lang['kodi'] = 'Kodi';
 lang['remote'] = 'Afstandsbediening';
+lang['editmode'] = 'Blokken wijzigen';
+lang['settings'] = 'Instellingen';
 
 lang['settings_title'] = 'Instellingen';
 lang['settings_description'] = 'Pas Dashticz aan zoals jij het wil';

@@ -91,6 +91,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.93 - 07/04/2015
+- Bugs in translations topmenu
+- Bug in switches
+
 0.92 - 06/04/2015
 - Support for multiple JointSpace-televisions (add comma-separated list of IP's in config)
 - Added another extra iconset

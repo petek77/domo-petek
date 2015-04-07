@@ -3,12 +3,12 @@ function switchDevice(idx){
 	if($('#device'+idx+' .panel').hasClass('device-online')){
 		var doStatus='Off';
 		$('#device'+idx+' .panel').addClass('device-offline').removeClass('device-online');		
-		$('#device'+idx+' .mainicon').addClass('icon-inactive').removeClass('icon-active');	
+		$('#device'+idx+' .mainicon').addClass('device-inactive').removeClass('device-active');	
 	}
 	else {
 		var doStatus='On';
 		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
-		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+		$('#device'+idx+' .mainicon').removeClass('device-inactive').addClass('device-active');	
 	}
 	
 	req.abort();
@@ -25,7 +25,7 @@ function switchScene(idx){
 
 	var doStatus='On';
 	$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
-	$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+	$('#device'+idx+' .mainicon').removeClass('device-inactive').addClass('device-active');	
 	
 	req.abort();	
 	$.ajax({
@@ -42,12 +42,12 @@ function switchGroup(idx){
 	if($('#device'+idx+' .panel').hasClass('device-online')){
 		var doStatus='Off';
 		$('#device'+idx+' .panel').addClass('device-offline').removeClass('device-online');		
-		$('#device'+idx+' .mainicon').addClass('icon-inactive').removeClass('icon-active');	
+		$('#device'+idx+' .mainicon').addClass('device-inactive').removeClass('device-active');	
 	}
 	else {
 		var doStatus='On';
 		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
-		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+		$('#device'+idx+' .mainicon').removeClass('device-inactive').addClass('device-active');	
 	}
 	
 	req.abort();
@@ -66,11 +66,11 @@ function slideDevice(idx,status){
 	if(status>1){
 		sliderlist['sl'+idx] = status;
 		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
-		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+		$('#device'+idx+' .mainicon').removeClass('device-inactive').addClass('device-active');	
 	}
 	else {
 		$('#device'+idx+' .panel').removeClass('device-offline').addClass('device-online');		
-		$('#device'+idx+' .mainicon').removeClass('icon-inactive').addClass('icon-active');	
+		$('#device'+idx+' .mainicon').removeClass('device-inactive').addClass('device-active');	
 	}	
 	var parentblock = $('#device'+idx);
 	var icon = parentblock.find('i.mainicon');
@@ -80,8 +80,8 @@ function slideDevice(idx,status){
 		url: _HOST_DOMOTICZ+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+status+'&jsoncallback=?',
 		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 		success: function(json) {
-			if(status>1) icon.removeClass('icon-inactive').addClass('icon-active');
-			else icon.removeClass('icon-active').addClass('inicon-active');
+			if(status>1) icon.removeClass('device-inactive').addClass('device-active');
+			else icon.removeClass('device-active').addClass('device-active');
 			sliding = false;
 		}
 	});
@@ -90,12 +90,12 @@ function slideDevice(idx,status){
 function slideDeviceToggle(idx){
 	var parentblock = $('#device'+idx);
 	var icon = parentblock.find('i.mainicon');
-	if(icon.hasClass('icon-active')){
+	if(icon.hasClass('device-active')){
 		slide = $.ajax({
 			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level=1&jsoncallback=?',
 			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 			success: function(json) {
-				icon.removeClass('icon-active').addClass('icon-inactive');
+				icon.removeClass('device-active').addClass('device-inactive');
 			}
 		});
 	}
@@ -104,7 +104,7 @@ function slideDeviceToggle(idx){
 			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=switchlight&idx='+idx+'&switchcmd=Set%20Level&level='+sliderlist['sl'+idx]+'&jsoncallback=?',
 			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 			success: function(json) {
-				icon.removeClass('icon-inactive').addClass('icon-active');
+				icon.removeClass('device-inactive').addClass('device-active');
 			}
 		});
 	}
