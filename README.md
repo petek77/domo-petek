@@ -83,6 +83,11 @@ A special THANK YOU, for help, testing, ideas and tips
 Open up CONFIG.js in a text-editor (notepad for example).
 Fill in the full path for Domoticz, e.g.: http://username:password@192.168.1.3:8084 (withouth trailing slash)
 
+<b>Dashticz shows me a completely white screen!</b><br />
+If you open the console-window of your webbrowser, do you see any errors about files that cannot be found?
+Try adding the following code to index.html (after <head>): <base href="/DASHTICZ-FOLDER/"> 
+Replace DASHTICZ-FOLDER with the exact name of the subfolder Dashticz is in...
+
 <b>When Domoticz is updated, it has removed Dashticz?!</b><br />
 Unfortunately, this occurs when Dashticz is installed into Domoticz's www-directory.
 When Domoticz installs an update, it complete removes the www-directory, before placing the updated version back. Currently, there is no solution for this (except for installing Dashticz on another webserver), you have to re-install Dashticz.
@@ -91,6 +96,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.94 - 13/04/2015
+- Changed the way hidden blocks are saved
+
 0.93 - 07/04/2015
 - Bugs in translations topmenu
 - Bug in switches

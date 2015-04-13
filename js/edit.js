@@ -117,7 +117,12 @@ function saveEditblock(idx){
 	
 	if(modal.find('#hide').is(':checked')){
 		_BLOCKSHIDE[idx] = idx;	
-		savehide = JSON.stringify(_BLOCKSHIDE);
+		var savehide = '';
+		for(b in _BLOCKSHIDE){
+			savehide+=b+',';
+		}
+		
+		//savehide = JSON.stringify(_BLOCKSHIDE);
 		if(typeof(uservars['dashticz_blockhide'])=='undefined'){
 			$.ajax({
 				url: _HOST_DOMOTICZ+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockhide&vtype=2&vvalue='+savehide+'&jsoncallback=?',

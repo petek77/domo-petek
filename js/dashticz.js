@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.93';
+var dashticz_version='0.94';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -26,7 +26,7 @@ var _DEBUG_JSON = '';
 var _GRAPHS_LOADED = new Object();
 
 $(document).ready(function(){
-	
+
 	$.ajax({url: 'CONFIG.js', async: false,dataType: "script"});
 	$.ajax({url: 'js/functions.js', async: false,dataType: "script"});
 	
@@ -70,7 +70,13 @@ $(document).ready(function(){
 							}
 							
 							if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
-								_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
+								if(uservars['dashticz_blockhide']['Value'].substr(0,1)=='{'){
+									_BLOCKSHIDE = $.parseJSON(uservars['dashticz_blockhide']['Value'].split(','));
+								}
+								else {
+									_BLOCKSHIDE = uservars['dashticz_blockhide']['Value'].split(',');
+								}
+								
 							}
 							
 							if(typeof(uservars['dashticz_language'])!=='undefined') _LANGUAGE = uservars['dashticz_language']['Value'];
@@ -451,7 +457,7 @@ function getDevices(){
 								}
 								
 							}
-							else if(!sliding && typeof(_BLOCKSHIDE[data.result[r]['idx']])=='undefined'){
+							else if(!sliding && !in_array(data.result[r]['idx'],_BLOCKSHIDE)){
 								var currentdate = '<span class="small">'+lang['last_seen']+': '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 								
 								if(
