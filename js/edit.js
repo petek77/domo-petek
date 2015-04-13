@@ -119,10 +119,10 @@ function saveEditblock(idx){
 		_BLOCKSHIDE[idx] = idx;	
 		var savehide = '';
 		for(b in _BLOCKSHIDE){
-			savehide+=b+',';
+			savehide+=_BLOCKSHIDE[b]+',';
 		}
 		
-		//savehide = JSON.stringify(_BLOCKSHIDE);
+		savehide = savehide.replace(/,,/g, ',');
 		if(typeof(uservars['dashticz_blockhide'])=='undefined'){
 			$.ajax({
 				url: _HOST_DOMOTICZ+'/json.htm?type=command&param=saveuservariable&vname=dashticz_blockhide&vtype=2&vvalue='+savehide+'&jsoncallback=?',
