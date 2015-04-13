@@ -96,6 +96,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.94.1 - 13/04/2015
+- Fix in saving hidden blocks
+
 0.94 - 13/04/2015
 - Changed the way hidden blocks are saved
 
