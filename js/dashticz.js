@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.1';
+var dashticz_version='0.94.2';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -372,22 +372,24 @@ function getDevices(){
 					alldevices[data.result[r]['idx']] = data.result[r];
 								
 					if(
-						(
+						_DEBUG || (
 							(_FAVORITES==1 && data.result[r]['Favorite']==1) || 
 							_FAVORITES==0 || 
 							(typeof(uservars['dashticz_currentfloorplan'])!=='undefined' && parseFloat(uservars['dashticz_currentfloorplan']['Value'])>0)
 						)
 						
 					){
+						var current='';
 						if(typeof(data.result[r]['CounterToday'])!=='undefined') var current=lang['graph_today']+' '+data.result[r]['CounterToday'];
-							else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
-							else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
-							else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
-							else if(data.result[r]['TypeImg']=='temperature'){
+						else if(typeof(data.result[r]['Usage'])!=='undefined') var current=data.result[r]['Usage'];
+						else if(typeof(data.result[r]['Rain'])!=='undefined') var current=data.result[r]['Rain']+'mm';
+						else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
+						else if(data.result[r]['TypeImg']=='temperature'){
 							var current=data.result[r]['Data'].split(' ');
 							current = current[0]+'&deg;';
 						}
-						else var current=data.result[r]['Data'];
+						else if(typeof(data.result[r]['Data'])!=='undefined') var current=data.result[r]['Data'];
+						else if(typeof(data.result[r]['Name'])!=='undefined') var current=data.result[r]['Name'];
 						
 						if(data.result[r]['SubType']=='Energy' || data.result[r]['Type']=='Energy'){
 							current = lang['graph_current']+' '+data.result[r]['Usage']+', '+current;
@@ -435,7 +437,7 @@ function getDevices(){
 						}
 						else {
 		
-							if(data.result[r]['Type']=='Temp + Humidity + Baro' || data.result[r]['Type']=='Rain' || data.result[r]['Type']=='Wind'){
+							if(data.result[r]['HardwareName']!=='RFXcom' && (data.result[r]['Type']=='Temp + Humidity + Baro' || data.result[r]['Type']=='Rain' || data.result[r]['Type']=='Wind')){
 								if(typeof(temperatureBlock['Wunderground'])=='undefined'){
 									temperatureBlock['Wunderground'] = new Object();
 								}
