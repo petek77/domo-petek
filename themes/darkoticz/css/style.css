@@ -140,6 +140,11 @@ ul{
 	line-height:none;
 }
 
+.fa-door-open {
+	font-size: 47px;
+    margin-right: 11px;	
+}
+
 @media screen and (max-width: 775px) {
 	.navbar .version {
 		color:#fff;	
@@ -226,7 +231,7 @@ span#editmode {
 }
 
 .panel > .panel-heading {
-    color: #888888;
+    color: #d3d4d5;
 	height: 73px;
 	overflow: hidden;
 	padding:5px 11px;
@@ -243,15 +248,11 @@ span#editmode {
 
 
 .device-active {
-	color:#515559 !important;
+	color:#959da6 !important;
 }
 
 .device-inactive {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-	filter: alpha(opacity=30);
-	-moz-opacity: 0.3;
-	-khtml-opacity: 0.3;
-	opacity: 0.3;
+	color:#111;
 }
 
 .icon .fa.fa-lightbulb-o {
@@ -275,6 +276,10 @@ margin-top: 2px;
 float: right;
 }
 
+.panel .panel-heading .smaller {
+	display:block;
+	font-size:12px;	
+}
 .icon i.fa { font-size:55px; }
 .icon i.wi { font-size:40px; margin-top:12px;}
 
@@ -292,7 +297,7 @@ float: right;
 .panel-heading.nodetails {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
-	height:113px;
+	height:124px;
 	border:0px;
 	background-color:#F5F5F5;
 }

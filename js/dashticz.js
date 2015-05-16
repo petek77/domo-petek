@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.3';
+var dashticz_version='0.94.4';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -509,7 +509,7 @@ function getDevices(){
 								if(element['Image']=='Media'){
 									icon='fa fa-play-circle-o';
 								}
-								else if(element['SwitchType']=='Door Lock')icon='fa-door-open ';
+								else if(element['SwitchType']=='Door Lock' || element['SwitchType']=='Contact') icon='fa-door-open ';
 								else if(element['Type']=='Scene' || element['Type']=='Group' || element['Image']=='Light') icon='fa fa-lightbulb-o';
 								else if(element['Image']=='Heating') icon='fa fa-fire';
 								else if(element['TypeImg']=='temperature') icon='wi wi-thermometer';
@@ -522,7 +522,7 @@ function getDevices(){
 								else if(element['Image']=='Printer') icon='fa fa-print';
 								
 								var headingclass='';
-								if(element['TypeImg']=='temperature') headingclass=' nodetails';
+								if(element['TypeImg']=='temperature' || element['SwitchType']=='Contact') headingclass=' nodetails';
 								
 								if(element['SwitchType']=='Dimmer'){
 									var name = element['Name'];
@@ -622,7 +622,7 @@ function getDevices(){
 					}
 					else $('.row.dashboard').first().prepend(html);
 					
-					var skycons = new Skycons({"color": "#ccc"});
+					var skycons = new Skycons({"color": "#959da6"});
 					skycons.add("icon_wg", eval(iconclass));
 					skycons.play();
 				}

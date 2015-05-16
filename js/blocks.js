@@ -208,7 +208,7 @@ blocks['buienradar']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="buien
 			blocks['buienradar']+='<div class="row">';
 				blocks['buienradar']+='<div class="col-xs-12">';
 					blocks['buienradar']+='<div class="huge">[TITLE]</div>';
-					blocks['buienradar']+='<div id="graph_radar" style="height: 100px;"></div>';
+					blocks['buienradar']+='<div id="graph_radar" style="height: 100px;margin-top:-10px"></div>';
 				blocks['buienradar']+='</div>';
 			blocks['buienradar']+='</div>';
 		blocks['buienradar']+='</div>';
@@ -222,7 +222,7 @@ blocks['wunderground']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="wun
 			blocks['wunderground']+='<div class="row">';
 				blocks['wunderground']+='<div class="col-xs-8">';
 					blocks['wunderground']+='<div class="huge">[TITLE]</div>';
-					blocks['wunderground']+='<div class="small">[CONTENT]</div>';
+					blocks['wunderground']+='<div class="smaller">[CONTENT]</div>';
 				blocks['wunderground']+='</div>';
 				blocks['wunderground']+='<div class="col-xs-4 text-right" style="padding-left:0px;">';					  
 					blocks['wunderground']+='<canvas id="icon_wg" width="56" height="56" style="margin-top:5px;"></canvas>';

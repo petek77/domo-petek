@@ -32,6 +32,10 @@ body {
 	display:block;
 	font-size:10px;	
 }
+.panel .panel-heading .smaller {
+	display:block;
+	font-size:12px;	
+}
 #wrapper {
     width: 100%;
 }
@@ -121,6 +125,11 @@ div.fl-right { float:right }
 
 .navbar-nav li.note div span i.fa.fa-stack-2x {
 	line-height:none;
+}
+
+.fa-door-open {
+	font-size: 47px;
+    margin-right: 11px;	
 }
 
 @media screen and (max-width: 775px) {

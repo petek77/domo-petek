@@ -98,7 +98,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
-0.94.3
+0.94.4 - 16/05/2015
+- Style fixes in some blocks
+
+0.94.3 - 16/05/2015
 - Icon for magnetic contacts
 - Fix in showing graph after switching back to dashboard-tab
 
