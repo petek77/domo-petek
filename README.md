@@ -6,6 +6,7 @@ Alternative dashboard for Domoticz
 # Screenshots
 http://puu.sh/hPj3v/5e70de7d54.png
 
+http://puu.sh/hPjac/ae95338fdb.png
 
 
 #Getting Started
@@ -43,6 +44,7 @@ var _HOST_XBMC			= 'http://192.168.1.109:8080';
 For Philips-televisions with JointSpace-support (!):
 
 var _HOST_JOINTSPACE	= 'http://192.168.1.51:1925';
+
 var _HOST_JOINTSPACE	= 'http://192.168.1.51:1925,http://192.168.1.52:1925'; //multiple
 
 
