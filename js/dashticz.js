@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.2';
+var dashticz_version='0.94.3';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -50,7 +50,7 @@ $(document).ready(function(){
 						_GRAPHREFRESH = 5;
 						_SYSTEMINFO = 1;
 						_TRAFFICINFO = 1;
-						_GRAPHSEPARATE = 1;
+						_GRAPHSEPARATE = 0;
 							
 						if(typeof(data.result)!=='undefined'){
 							
@@ -509,6 +509,7 @@ function getDevices(){
 								if(element['Image']=='Media'){
 									icon='fa fa-play-circle-o';
 								}
+								else if(element['SwitchType']=='Door Lock')icon='fa-door-open ';
 								else if(element['Type']=='Scene' || element['Type']=='Group' || element['Image']=='Light') icon='fa fa-lightbulb-o';
 								else if(element['Image']=='Heating') icon='fa fa-fire';
 								else if(element['TypeImg']=='temperature') icon='wi wi-thermometer';
@@ -536,7 +537,13 @@ function getDevices(){
 									}
 									var level = '';
 								}
-									
+								
+								if(current=='Off') current = 'Uit';
+								if(current=='On') current = 'Aan';
+								
+								if(current=='Open') current = 'Open';
+								if(current=='Closed') current = 'Gesloten';
+								
 								html = str_replace('[IDX]',element['idx'],html);
 								html = str_replace('[NAME]',name,html);
 								html = str_replace('[CURRENT]',current,html);
@@ -685,7 +692,7 @@ function initSlider(setslide,element){
 }
 
 function showDashboard(){
-	if(_GRAPHSEPARATE){
+	if(_GRAPHSEPARATE==1){
 		$('.row.dashboard').show();
 		$('.row.graphs').css('opacity',0);
 	}

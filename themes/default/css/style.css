@@ -277,7 +277,11 @@ div.fl-right { float:right }
 	font-size:55px;
 	margin-right:18px;
 }
-
+.fa-door-open::before {
+    font-size: 49px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
 .device-active {
 	color:#FFE03F;
 }

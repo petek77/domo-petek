@@ -250,16 +250,16 @@ blocks['currenchannel']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="xb
 		blocks['currenchannel']+='<div class="panel-heading">';
 			blocks['currenchannel']+='<div class="row">';
 				blocks['currenchannel']+='<div class="col-xs-8"><div class="huge">[TITLE]</div></div>';
-				blocks['currenchannel']+='<div class="col-xs-4 text-right" style="padding-left:0px;">';					  
-					blocks['currenchannel']+='<img src="http://bell-vs-rogers.com/channellogos/cid259LOGO_140x_TLChd.png" />';
-				blocks['currenchannel']+='</div>';
+				//blocks['currenchannel']+='<div class="col-xs-4 text-right" style="padding-left:0px;">';					  
+					//blocks['currenchannel']+='<img src="http://bell-vs-rogers.com/channellogos/cid259LOGO_140x_TLChd.png" />';
+				//blocks['currenchannel']+='</div>';
 			blocks['currenchannel']+='</div>';
 		blocks['currenchannel']+='</div>';
 
 		blocks['currenchannel']+='<div class="details">';
 			blocks['currenchannel']+='<div class="panel-footer">';
 				blocks['currenchannel']+='<span class="pull-left"></span>';
-				blocks['currenchannel']+='<span class="pull-right media"><a href="javascript:backwardMedia();"><i class="fa fa-step-backward"></i></a>&nbsp;&nbsp;<a href="javascript:forwardMedia();"><i class="fa fa-step-forward"></i></a></span>';
+				//blocks['currenchannel']+='<span class="pull-right media"><a href="javascript:backwardMedia();"><i class="fa fa-step-backward"></i></a>&nbsp;&nbsp;<a href="javascript:forwardMedia();"><i class="fa fa-step-forward"></i></a></span>';
 				blocks['currenchannel']+='<div class="clearfix"></div>';
 			blocks['currenchannel']+='</div>';
 		blocks['currenchannel']+='</div>';

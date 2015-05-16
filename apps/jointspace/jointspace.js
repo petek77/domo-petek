@@ -121,10 +121,10 @@ tsid
 				var html = blocks['currenchannel'];
 				html = str_replace('[TITLE]',data.name,html);
 				if($('#currentchannel').length>0){
-					$('#currentchannel').replaceWith(html);
+					//$('#currentchannel').replaceWith(html);
 				}
 				else{
-					$('.row.dashboard').append(html);
+					//$('.row.dashboard').append(html);
 				}
 			});
 		});
