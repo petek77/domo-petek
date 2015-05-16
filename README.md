@@ -4,8 +4,7 @@ Alternative dashboard for Domoticz
 
 
 # Screenshots
-http://plaatjesdump.nl/upload/6570bb2afbeab696fc3eeb8261bee636.jpg
-http://plaatjesdump.nl/upload/5ef2edcd1f2b6eb6c76547d1331f853e.jpg
+http://puu.sh/hPj3v/5e70de7d54.png
 
 
 
@@ -44,6 +43,7 @@ var _HOST_XBMC			= 'http://192.168.1.109:8080';
 For Philips-televisions with JointSpace-support (!):
 
 var _HOST_JOINTSPACE	= 'http://192.168.1.51:1925';
+var _HOST_JOINTSPACE	= 'http://192.168.1.51:1925,http://192.168.1.52:1925'; //multiple
 
 
 
@@ -96,6 +96,10 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.94.3
+- Icon for magnetic contacts
+- Fix in showing graph after switching back to dashboard-tab
+
 0.94.1 - 13/04/2015
 - Fix in saving hidden blocks
 
