@@ -5,6 +5,7 @@ lang['kodi'] = 'Kodi';
 lang['remote'] = 'Fernbedienung';
 lang['editmode'] = 'Änderung Blöcke';
 lang['settings'] = 'Einstellungen';
+lang['graphs'] = 'Grafiken';
 
 lang['settings_title'] = 'Einstellungen';
 lang['settings_description'] = 'Dashticz Beschreibung';

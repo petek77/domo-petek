@@ -5,6 +5,7 @@ lang['kodi'] = 'Kodi';
 lang['remote'] = 'Afstandsbediening';
 lang['editmode'] = 'Blokken wijzigen';
 lang['settings'] = 'Instellingen';
+lang['graphs'] = 'Grafieken';
 
 lang['settings_title'] = 'Instellingen';
 lang['settings_description'] = 'Pas Dashticz aan zoals jij het wil';
