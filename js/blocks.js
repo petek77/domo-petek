@@ -311,12 +311,16 @@ blocks['navigation'] = '<nav class="navbar navbar-default navbar-fixed-top">';
 				blocks['navigation']+= '<span class="icon-bar"></span>';
 				blocks['navigation']+= '<span class="icon-bar"></span>';
 			blocks['navigation']+= '</button>';
-			blocks['navigation']+= '<a class="navbar-brand" href="#"><img id="logo" src="" /><div class="version">v<span id="dversion"></span></div></a>';
+			blocks['navigation']+= '<a class="navbar-brand" href="#"><img id="logo" src="" /><div class="version">v<span id="version"></span></div></a>';
 		blocks['navigation']+= '</div>';
 		blocks['navigation']+= '<div id="navbar" class="navbar-collapse collapse">';
 			blocks['navigation']+= '<ul class="nav navbar-nav">';
-				blocks['navigation']+= '<li><img id="logo" src="" /><div class="version">v<span id="dversion"></span></div></li>';
-				blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-home fa-2x"></i><span class="menu-item">'+lang['dashboard']+'</span></a></li>';
+				blocks['navigation']+= '<li><img id="logo" src="" /><div class="version"><span id ="version">v</span></div></li>';
+				blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-edge fa-2x"></i><span class="menu-item">'+lang['dashboard']+'</span></a></li>';
+				//if(_SYSTEMINFO==1) blocks['navigation']+= '<span id="systeminfo"></span>';
+				
+				//blocks['navigation']+= '<li><span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span></li>';
+				
 				if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span class="menu-item">'+lang['graphs']+'</span></a></li>';
 				
 				if(_HOST_JOINTSPACE!==''){
@@ -394,6 +398,9 @@ blocks['settings'] = '<div class="modal fade" id="settingsModal" tabindex="-1" r
 						
 							if(_LANGUAGE=='nl_NL') blocks['settings']+= '<option value="nl_NL" selected>Nederlands</option>';
 							else blocks['settings']+= '<option value="nl_NL">Nederlands</option>';
+							
+							if(_LANGUAGE=='fr_FR') blocks['settings']+= '<option value="fr_FR" selected>Français</option>';
+							else blocks['settings']+= '<option value="fr_FR">Français</option>';
 							
 						blocks['settings']+= '</select>';
 					blocks['settings']+= '</div>';

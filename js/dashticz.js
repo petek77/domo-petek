@@ -8,7 +8,7 @@ var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
 var uservars = new Object();
-var showNavigation;
+var showNavigation = true;
 
 var _LANGUAGE='en_US';
 var _THEME='default';
@@ -20,7 +20,7 @@ var _LONGITUDE = '';
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
 var _FAVORITES=0;
-var _DEBUG=false;
+var _DEBUG=true;
 
 var _DEBUG_JSON = '';
 var _GRAPHS_LOADED = new Object();
@@ -89,7 +89,7 @@ $(document).ready(function(){
 							//if(typeof(uservars['dashticz_xbmcswitch'])!=='undefined') _XBMCSWITCH = uservars['dashticz_xbmcswitch']['Value'];
 						}
 						
-						if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE'){
+						if(_LANGUAGE!=='en_US' && _LANGUAGE!=='nl_NL' && _LANGUAGE!=='de_DE' && _LANGUAGE!=='fr_FR'){
 							_LANGUAGE='en_US';	
 						}
 						
@@ -117,8 +117,8 @@ $(document).ready(function(){
 						if(_HOST_XBMC!=='' || _HOST_JOINTSPACE!==''){
 							$('span#menu').show();	
 						}
-						
-						$('span#dversion').html(dashticz_version);
+
+						$('span#version').append(dashticz_version);
 			
 						$('link#themecss').attr('href','themes/'+_THEME+'/css/style.css?'+new Date().getTime());
 						$('img#logo').attr('src','themes/'+_THEME+'/images/logo.png');
@@ -127,7 +127,7 @@ $(document).ready(function(){
 							url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getversion&jsoncallback=?',
 							type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
 							success: function(data) {
-								$('span#version').html(data.version);
+								$('span#dversion').append(data.version);
 							}
 						});
 						
@@ -311,10 +311,10 @@ function openCamera(idx,name){
 					cameramodal+='<h4 class="modal-title" id="myModalLabel">'+name+'</h4>';
 				cameramodal+='</div>';
 				cameramodal+='<div class="modal-body">';
-					cameramodal+='<img class="camimage'+idx+'" src="'+imageUrl+new Date().getTime()+'" width="1000" />';
+					cameramodal+='<img class="camimage'+idx+'" src="'+imageUrl+new Date().getTime()+'" width="570" />';
 				cameramodal+='</div>';
 				cameramodal+='<div class="modal-footer">';
-					cameramodal+='<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>';
+					cameramodal+='<button type="button" class="btn btn-default" data-dismiss="modal">'+lang['close']+'</button>';
 				cameramodal+='</div>';
 			cameramodal+='</div>';
 		cameramodal+='</div>';
@@ -538,11 +538,11 @@ function getDevices(){
 									var level = '';
 								}
 								
-								if(current=='Off') current = 'Uit';
-								if(current=='On') current = 'Aan';
+								if(current=='Off') current = lang['device_off'];
+								if(current=='On') current = lang['device_on'];
 								
-								if(current=='Open') current = 'Open';
-								if(current=='Closed') current = 'Gesloten';
+								if(current=='Open') current = lang['device_open'];
+								if(current=='Closed') current = lang['device_closed'];
 								
 								html = str_replace('[IDX]',element['idx'],html);
 								html = str_replace('[NAME]',name,html);
@@ -578,9 +578,9 @@ function getDevices(){
 					var html = blocks['wunderground'];
 					
 					var content = '';
-					if(typeof(wg['Rain'])!=='undefined') content+='Rain: '+wg['Rain']+'mm<br />';
-					if(typeof(wg['Gust'])!=='undefined') content+='Gust: '+wg['Gust']+', '+wg['Direction']+'<br />';
-					if(typeof(wg['Humidity'])!=='undefined') content+='Pressure: '+wg['Pressure']+', '+wg['Humidity']+'<br />';
+					if(typeof(wg['Rain'])!=='undefined') content+= lang['block_wundergrund_rain'] +': '+wg['Rain']+'mm<br />';
+					if(typeof(wg['Gust'])!=='undefined') content+= lang['block_wundergrund_gust'] +': '+wg['Gust']+', '+wg['Direction']+'<br />';
+					if(typeof(wg['Humidity'])!=='undefined') content+= lang['block_wundergrund_pressurehumidity'] +': '+wg['Pressure']+', '+wg['Humidity']+'<br />';
 										
 					html = str_replace('[TITLE]',wg['Temp'],html);
 					html = str_replace('[CONTENT]',content,html);

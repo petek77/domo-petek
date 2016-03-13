@@ -7,6 +7,11 @@ lang['editmode'] = 'Blokken wijzigen';
 lang['settings'] = 'Instellingen';
 lang['graphs'] = 'Grafieken';
 
+lang['device_on'] = 'Aan';
+lang['device_off'] = 'Uit';
+lang['device_open'] = 'Open';
+lang['device_closed'] = 'Gesloten';
+
 lang['settings_title'] = 'Instellingen';
 lang['settings_description'] = 'Pas Dashticz aan zoals jij het wil';
 
@@ -35,6 +40,11 @@ lang['blocksettings_blocktitle'] = 'Titel';
 lang['blocksettings_switchtype'] = 'Schakelaar type';
 lang['blocksettings_hide'] = 'Blok verbergen';
 
+lang['block_wundergrund_rain'] = 'Rain';
+lang['block_wundergrund_gust'] = 'Gust';
+lang['block_wundergrund_pressurehumidity'] = 'Pressure / Humidity';
+
+lang['close'] = 'Close';
 lang['cancel'] = 'Annuleren';
 lang['save'] = 'Opslaan';
 lang['saving'] = 'Bezig met opslaan...';
