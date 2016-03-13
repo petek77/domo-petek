@@ -20,7 +20,7 @@ var _LONGITUDE = '';
 var _BLOCKSORDER = false;
 var _BLOCKSHIDE = new Object();
 var _FAVORITES=0;
-var _DEBUG=true;
+var _DEBUG=false;
 
 var _DEBUG_JSON = '';
 var _GRAPHS_LOADED = new Object();
