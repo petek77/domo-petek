@@ -43,6 +43,8 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 				html = str_replace('[ID]',idx,html);
 				html = str_replace('[BUTTONS]',buttons,html);	
 				
+				//console.log(data);
+				
 				if(data.status=="ERR") alert('Could not load graph!');
 				else {
 					if($('#graph'+idx).length>0){
@@ -69,9 +71,36 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 							hourmin = currentdate.split(':');
 						}
 						
-						if(range!=='last' || (range=='last' && currentstamp>currenttimeLessFour)){
-							
-							if(typeof(data.result[r]['te'])!=='undefined'){
+						if(range!=='last' || (range=='last' && currentstamp>currenttimeLessFour))
+						{
+								if(typeof(data.result[r]['uvi'])!=='undefined'){
+								data_com[count] = {
+									xkey: currentdate,
+									ykey: data.result[r]['uvi']
+								}; 
+							}
+							else if(typeof(data.result[r]['gu'])!=='undefined' && typeof(data.result[r]['sp'])!=='undefined'){
+								data_com[count] = {
+									xkey: currentdate,
+									ykey: data.result[r]['gu'],
+									ykey2: data.result[r]['sp']
+								}; 
+							}
+							else if(typeof(data.result[r]['ba'])!=='undefined' && typeof(data.result[r]['hu'])!=='undefined' && typeof(data.result[r]['te'])!=='undefined'){
+								data_com[count] = {
+									xkey: currentdate,
+									ykey: data.result[r]['ba'],
+									ykey2: data.result[r]['hu'],
+									ykey3: data.result[r]['te']
+								}; 
+							}
+							else if(typeof(data.result[r]['mm'])!=='undefined'){
+								data_com[count] = {
+									xkey: currentdate,
+									ykey: data.result[r]['mm']
+								}; 
+							}
+							else if(typeof(data.result[r]['te'])!=='undefined'){
 								data_com[count] = {
 									xkey: currentdate,
 									ykey: data.result[r]['te']
@@ -108,12 +137,33 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 									ykey2: data.result[r]['u_min']
 								};
 							}
+							else
+							{
+								console.log("PROBLEM");
+								console.log(data.result[r]);
+							}
+							
 							count++;
 						}
 					}
 					//console.log(data_com);
 					if($('#graphoutput'+idx+'').length>0 && typeof(data_com[0])!=='undefined'){
-						if(typeof(data_com[0]['ykey2'])!=='undefined'){
+						if(typeof(data_com[0]['ykey3'])!=='undefined'){
+							
+							Morris.Area({
+								parseTime:false,element: 'graphoutput'+idx+'',
+								data: data_com,
+								xkey: ['xkey'],
+								ykeys: ['ykey', 'ykey2', 'ykey3'],
+								labels: [label],
+								lineColors: [graphColor, graphColor2, graphColor2],
+								pointFillColors: ['none'],
+								pointSize: 3,
+								hideHover: 'auto',
+								resize: true
+							});
+						}
+						else if(typeof(data_com[0]['ykey2'])!=='undefined'){
 							
 							Morris.Area({
 								parseTime:false,element: 'graphoutput'+idx+'',

@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.5';
+var dashticz_version='0.94.6 Beta';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -370,7 +370,7 @@ function getDevices(){
 				
 				for(r in data.result){
 					alldevices[data.result[r]['idx']] = data.result[r];
-								
+				
 					if(
 						_DEBUG || (
 							(_FAVORITES==1 && data.result[r]['Favorite']==1) || 
@@ -401,21 +401,23 @@ function getDevices(){
 							current = data.result[r]['Level'];
 						}
 						
-						if(data.result[r]['Type']=='Temp + Humidity'){
+						if(data.result[r]['Type']=='Temp + Humidity')
+						{
 							current= current+' / '+data.result[r]['Humidity']+'%'+'<br />'+data.result[r]['HumidityStatus']+'';
 						}
 						
-						if(
-							data.result[r]['HardwareName']=='Motherboard'
-						){
+						if(data.result[r]['HardwareName']=='Motherboard')
+						{
 							var html = '<span id="system'+data.result[r]['idx']+'">'+data.result[r]['Name']+': <B>'+current+'</B>&nbsp;&nbsp;&nbsp;</span>';
-							if($('#system'+data.result[r]['idx']).length>0){
+							if($('#system'+data.result[r]['idx']).length>0)
+							{
 								$('#system'+data.result[r]['idx']).replaceWith(html);
 							}
 							else $('#systeminfo').append(html);
 						}
 	
 						// now process data	
+						
 						if(
 							data.result[r]['SubType']=='Energy' ||
 							data.result[r]['Type']=='Energy' ||
@@ -430,13 +432,20 @@ function getDevices(){
 						else if (data.result[r]['HardwareName']=='Motherboard' && (stristr(data.result[r]['Name'],'cpu') || stristr(data.result[r]['Name'],'hdd') || stristr(data.result[r]['Name'],'geheugen') || stristr(data.result[r]['Name'],'memory'))){
 							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_percentage'],'last',current,false,'Percentage');
 						}
-						else if(
-							data.result[r]['SubType']=='Solar Radiation'
-						){
-							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_radiation'],'last',current,false,'counter');
+						else if(data.result[r]['SubType']=='Solar Radiation')
+						{
+							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['graph_radiation'],'last',current,false,'uv');
+						}
+						else if(data.result[r]['SubType']=='Visibility')
+						{
+							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['block_wundergrund_visibility'],'last',current,false,'counter');
+						}
+						else if(data.result[r]['Type']=='UV')
+						{
+							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['block_wundergrund_uv'],'day',current,false,'uv');
 						}
 						else {
-		
+							//console.log(data.result[r]['Type']);
 							if(data.result[r]['HardwareName']!=='RFXcom' && (data.result[r]['Type']=='Temp + Humidity + Baro' || data.result[r]['Type']=='Rain' || data.result[r]['Type']=='Wind')){
 								if(typeof(temperatureBlock['Wunderground'])=='undefined'){
 									temperatureBlock['Wunderground'] = new Object();
@@ -445,8 +454,15 @@ function getDevices(){
 								if(data.result[r]['Type']=='Wind'){ 
 									temperatureBlock['Wunderground']['Direction'] = data.result[r]['DirectionStr']; 
 									temperatureBlock['Wunderground']['Gust'] = data.result[r]['Gust']; 
+									
+									showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['block_wundergrund_wind'],'last',current,false,'wind');
 								}
-								else if(typeof(data.result[r]['Rain'])!=='undefined'){ temperatureBlock['Wunderground']['Rain'] = data.result[r]['Rain']; }
+								else if(typeof(data.result[r]['Rain'])!=='undefined')
+								{ 
+									temperatureBlock['Wunderground']['Rain'] = data.result[r]['Rain']; 
+									
+									showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['block_wundergrund_rain'],'last',current,false,'rain');
+								}
 								else if(typeof(data.result[r]['ForecastStr'])!=='undefined'){
 									temperatureBlock['Wunderground']['Forecast'] = data.result[r]['ForecastStr'];
 									
@@ -456,6 +472,8 @@ function getDevices(){
 									temperatureBlock['Wunderground']['Pressure'] = d[2];
 									temperatureBlock['Wunderground']['DewPoint'] = data.result[r]['DewPoint'];
 									temperatureBlock['Wunderground']['HumidityStatus'] = data.result[r]['HumidityStatus'];
+									
+									showGraph(data.result[r]['idx'],data.result[r]['Name'] + ': ' +lang['graph_temperature'],lang['graph_temperature'],'last',current,false,'temp');
 								}
 								
 							}

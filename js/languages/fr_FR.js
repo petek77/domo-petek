@@ -41,8 +41,11 @@ lang['blocksettings_switchtype'] = 'Type d interrupteur';
 lang['blocksettings_hide'] = 'Cacher le block';
 
 lang['block_wundergrund_rain'] = 'Précipitations';
-lang['block_wundergrund_gust'] = 'Vent';
+lang['block_wundergrund_gust'] = 'Rafales';
 lang['block_wundergrund_pressurehumidity'] = 'Pression / Humidité';
+lang['block_wundergrund_wind'] = 'Vent';
+lang['block_wundergrund_visibility'] = 'Visibilité';
+lang['block_wundergrund_uv'] = 'UV';
 
 lang['close'] = 'Fermer';
 lang['cancel'] = 'Annuler';

@@ -43,6 +43,9 @@ lang['blocksettings_hide'] = 'Hide block';
 lang['block_wundergrund_rain'] = 'Rain';
 lang['block_wundergrund_gust'] = 'Gust';
 lang['block_wundergrund_pressurehumidity'] = 'Pressure / Humidity';
+lang['block_wundergrund_wind'] = 'Wind';
+lang['block_wundergrund_visibility'] = 'Visibility';
+lang['block_wundergrund_uv'] = 'UV';
 
 lang['close'] = 'Close';
 lang['cancel'] = 'Cancel';
