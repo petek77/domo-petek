@@ -410,12 +410,18 @@ function getDevices(){
 						
 						if(data.result[r]['HardwareName']=='Motherboard')
 						{
-							var html = '<span id="system'+data.result[r]['idx']+'">'+data.result[r]['Name']+': <B>'+current+'</B>&nbsp;&nbsp;&nbsp;</span>';
-							if($('#system'+data.result[r]['idx']).length>0)
+							if(_SYSTEMINFO == 1)
 							{
-								$('#system'+data.result[r]['idx']).replaceWith(html);
+								var html = '<span id="systeminfo'+data.result[r]['idx']+'">&nbsp;&nbsp;&nbsp;'+data.result[r]['Name']+': <B>'+current+'</B>&nbsp;&nbsp;&nbsp;</span>';
+								if($('#systeminfo'+data.result[r]['idx']).length>0)
+								{
+									$('#systeminfo'+data.result[r]['idx']).replaceWith(html);
+								}
+								else 
+								{
+									$('#systeminfo').append(html);
+								}
 							}
-							else $('#systeminfo').append(html);
 						}
 	
 						// now process data	

@@ -345,9 +345,9 @@ blocks['navigation'] = '<nav class="navbar navbar-default navbar-fixed-top">';
 			blocks['navigation']+= '<ul class="nav navbar-nav">';
 				blocks['navigation']+= '<li><img id="logo" src="" /><div class="version"><span id ="version">v</span></div></li>';
 				blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-edge fa-2x"></i><span class="menu-item">'+lang['dashboard']+'</span></a></li>';
-				if(_SYSTEMINFO==1) blocks['navigation']+= '<span id="systeminfo"></span>';
+				// if(_SYSTEMINFO==1) blocks['navigation']+= '<span id="systeminfo"></span>';
 				
-				//blocks['navigation']+= '<li><span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span></li>';
+				// blocks['navigation']+= '<li><span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span></li>';
 				
 				if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span class="menu-item">'+lang['graphs']+'</span></a></li>';
 				
@@ -368,6 +368,8 @@ blocks['navigation'] = '<nav class="navbar navbar-default navbar-fixed-top">';
 				blocks['navigation']+= '<li class="last"><a href="javascript:void(0);" onclick="openSettings();"><i class="fa fa-cog fa-2x"></i><span class="menu-item">'+lang['settings']+'</span></a></li>';
 			blocks['navigation']+= '</ul>';
 			blocks['navigation']+= '<ul class="nav navbar-nav navbar-right">';
+				if(_SYSTEMINFO==1) blocks['navigation']+= '<li class="note"><span id="systeminfo"></span></li>';
+				// blocks['navigation']+= '<li><span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span></li>';
 				blocks['navigation']+= '<li class="note"><div id="traffic"></div></li>';
 				blocks['navigation']+= '<li class="note"><div id="sun"></div></li>';
 			blocks['navigation']+= '</ul>';
