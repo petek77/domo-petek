@@ -17,13 +17,27 @@ function stristr(haystack, needle, bool) {
   }
 }
 
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
 function str_replace(find, replace, str) {
-  var newstring = str;
-  for(i=1;i<=10;i++){
-	  newstring = newstring.replace(find, replace);
-  }
-  return newstring;
+  
+  // OLD CODE DISABLED BY JFH
+  // WAS WRONG, after 10 times in the loop, the replace was not made anymore
+  // wich caused side effects when updating the blockorder stuff in edit.js
+  // domoticz rejected the JSON call because arg was exceeding max length
+  // should work now
+  
+  // var newstring = str;
+  // for(i=1;i<=10;i++){
+	  // newstring = newstring.replace(find, replace);
+  // }
+  // return newstring;
   // return str.replace(new RegExp(find, 'g'), replace);
+  
+  // NEW CODE ADDED BY JFH
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 function in_array(needle, haystack, argStrict) {
 

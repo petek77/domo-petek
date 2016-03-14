@@ -68,6 +68,7 @@ $(document).ready(function(){
 								}
 								
 								_BLOCKSORDER = blocksorder;
+								//console.log(_BLOCKSORDER);
 							}
 							
 							if(typeof(uservars['dashticz_blockhide'])!=='undefined'){
@@ -653,7 +654,7 @@ function getDevices(){
 						getBuienradar();
 					//});
 				}
-				
+
 				for(bo in _BLOCKSORDER){
 					var clone = $('#'+_BLOCKSORDER[bo]);
 					var parent = $('#'+_BLOCKSORDER[bo]).parent();
