@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.7 Beta';
+var dashticz_version='0.94.8 Beta';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -399,7 +399,7 @@ function getDevices(){
 						if(data.result[r]['SubType']=='Electric'){
 							current = parseFloat(data.result[r]['Data'].replace( / Watt$/g, ''));
 						}
-						if(data.result[r]['SwitchType']=='Dimmer'){
+						if(data.result[r]['SwitchType']=='Dimmer' || data.result[r]['SwitchType']=='Selector'){
 							current = data.result[r]['Level'];
 						}
 						
@@ -519,6 +519,9 @@ function getDevices(){
 									var html = blocks['dimmer'];
 									var setslide = 'sl'+element['idx'];
 								}
+								else if(element['SwitchType']=='Selector'){
+									var html = blocks['selector'];									
+								}
 								else{// if(element['TypeImg']!=='temperature') {
 									var html = blocks['noswitch'];
 								}
@@ -546,6 +549,13 @@ function getDevices(){
 								{
 									var name = element['Name'];
 									var level = element['Level'];
+								}
+								else if(element['SwitchType']=='Selector')
+								{
+									var name = element['Name'];
+									var levelNames = element['LevelNames'].split('|');
+									var level = element['Level'];
+									var current = levelNames[level/10];
 								}
 								else 
 								{

@@ -185,6 +185,34 @@ blocks['dimmer']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[ID
 		
 	blocks['dimmer']+='</div>';
 blocks['dimmer']+='</div>';
+
+//SELECTOR
+blocks['selector']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[IDX]">';
+	blocks['selector']+='<div class="panel panel-block panel-default panel-dimmer [DEVICEACTIVE]" data-idx="[IDX]">';
+		blocks['selector']+='<div class="panel-heading [HEADERCLASS]">';
+			blocks['selector']+='<div class="row">';
+				blocks['selector']+='<div class="col-xs-8">';
+					blocks['selector']+='<div>[NAME] (<span id="current[IDX]">[CURRENT]</span>)</div>';
+					blocks['selector']+='<div>';
+						// blocks['selector']+='<input type="text" class="span2" value="[LEVEL]" id="sl[IDX]" >';
+					blocks['selector']+='</div>';
+				blocks['selector']+='</div>';
+				blocks['selector']+='<div class="col-xs-4 text-right icon">';
+					blocks['selector']+='<i class="mainicon [ICON] [ICONCLASS]"></i>';
+				blocks['selector']+='</div>';
+			blocks['selector']+='</div>';
+		blocks['selector']+='</div>';
+		
+		blocks['selector']+='<a href="javascript:slideDeviceToggle([IDX]);">';
+			blocks['selector']+='<div class="panel-footer">';
+				blocks['selector']+='<span class="pull-left">[LANG_SWITCH][CURRENT_DATE]</span>';
+				blocks['selector']+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+				blocks['selector']+='<div class="clearfix"></div>';
+			blocks['selector']+='</div>';
+		blocks['selector']+='</a>';
+		
+	blocks['selector']+='</div>';
+blocks['selector']+='</div>';
 							
 //GRAPHS BLOCK
 blocks['graphs'] = '<div class="graph" id="graph[ID]">';
