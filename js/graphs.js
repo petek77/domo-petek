@@ -17,7 +17,7 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 		
 		$.ajax({
 			url: _HOST_DOMOTICZ+'/json.htm?type=graph&sensor='+sensor+'&idx='+idx+'&range='+realrange+'&time='+new Date().getTime()+'&jsoncallback=?',
-			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			type: 'GET',async: true,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
 
 				var orgtitle = title;
@@ -139,13 +139,16 @@ function showGraph(idx,title,label,range,current,forced,sensor){
 							}
 							else
 							{
-								console.log("PROBLEM");
-								console.log(data.result[r]);
+								//console.log("PROBLEM");
+								//console.log(data.result[r]);
 							}
 							
 							count++;
 						}
 					}
+					// console.log(label);
+					// console.log(count);
+					
 					//console.log(data_com);
 					if($('#graphoutput'+idx+'').length>0 && typeof(data_com[0])!=='undefined'){
 						if(typeof(data_com[0]['ykey3'])!=='undefined'){

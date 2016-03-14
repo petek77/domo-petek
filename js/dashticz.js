@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.6 Beta';
+var dashticz_version='0.94.7 Beta';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -29,6 +29,7 @@ $(document).ready(function(){
 
 	$.ajax({url: 'CONFIG.js', async: false,dataType: "script"});
 	$.ajax({url: 'js/functions.js', async: false,dataType: "script"});
+	
 	
 	if(_HOST_DOMOTICZ=='') alert('Fill in the path to Domoticz in CONFIG.js!!');
 	else {
@@ -110,7 +111,7 @@ $(document).ready(function(){
 						$.ajax({url: 'themes/'+_THEME+'/js/blocks.js', async: false,dataType: "script"});
 						
 						//$('div#wrapper').append(blocks['topbar']);
-						$('div#wrapper').append(blocks['blocks']);
+						$('div#wrapper').html(blocks['blocks']);
 						if(showNavigation) $('div#wrapper').append(blocks['navigation']);
 						$('div#wrapper').append(blocks['settings']);
 						
@@ -155,7 +156,7 @@ function switchTheme(theme){
 	if(typeof(uservars['dashticz_theme'])=='undefined'){
 		$.ajax({
 			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=saveuservariable&vname=theme&vtype=2&vvalue='+theme+'&jsoncallback=?',
-			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			type: 'GET',async: true,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
 				
 			}
@@ -164,7 +165,7 @@ function switchTheme(theme){
 	else {
 		$.ajax({
 			url: _HOST_DOMOTICZ+'/json.htm?type=command&param=updateuservariable&idx='+uservars['dashticz_theme']['idx']+'&vname=theme&vtype=2&vvalue='+theme+'&jsoncallback=?',
-			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			type: 'GET',async: true,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
 				
 			}
@@ -226,7 +227,7 @@ function autoGetDevices(){
 	$('.cameras').hide();
 	$.ajax({
 		url: _HOST_DOMOTICZ+'/json.htm?type=cameras&jsoncallback=?',
-		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+		type: 'GET',async: true,contentType: "application/json",dataType: 'jsonp',
 		success: function(data) {
 			if(typeof(data.result)=='undefined'){
 				if(_DEBUG) openCamera(0,'Camera');
@@ -246,7 +247,7 @@ function autoGetDevices(){
 	
 	$.ajax({
 		url: _HOST_DOMOTICZ+'/json.htm?type=floorplans&jsoncallback=?',
-		type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+		type: 'GET',async: true,contentType: "application/json",dataType: 'jsonp',
 		success: function(data) {
 			if(typeof(data.result)=='undefined'){
 				$('.floorplans').hide();
@@ -359,7 +360,7 @@ function getDevices(){
 		if(typeof(req)!=='undefined') req.abort();
 		req = $.ajax({
 			url: _HOST_DOMOTICZ+'/json.htm?type=devices&filter=all&used=true&order=Name'+floorplan+'&jsoncallback=?',
-			type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+			type: 'GET',async: true,contentType: "application/json",dataType: 'jsonp',
 			success: function(data) {
 				if(_DEBUG && _DEBUG_JSON!==''){
 					data = _DEBUG_JSON;
@@ -442,10 +443,9 @@ function getDevices(){
 						}
 						else if(data.result[r]['Type']=='UV')
 						{
-							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['block_wundergrund_uv'],'day',current,false,'uv');
+							showGraph(data.result[r]['idx'],data.result[r]['Name'],lang['block_wundergrund_uv'],'last',current,false,'uv');
 						}
 						else {
-							//console.log(data.result[r]['Type']);
 							if(data.result[r]['HardwareName']!=='RFXcom' && (data.result[r]['Type']=='Temp + Humidity + Baro' || data.result[r]['Type']=='Rain' || data.result[r]['Type']=='Wind')){
 								if(typeof(temperatureBlock['Wunderground'])=='undefined'){
 									temperatureBlock['Wunderground'] = new Object();
@@ -521,8 +521,7 @@ function getDevices(){
 								else{// if(element['TypeImg']!=='temperature') {
 									var html = blocks['noswitch'];
 								}
-								
-								
+										
 								var icon='';		
 								if(element['Image']=='Media'){
 									icon='fa fa-play-circle-o';
@@ -542,11 +541,13 @@ function getDevices(){
 								var headingclass='';
 								if(element['TypeImg']=='temperature' || element['SwitchType']=='Contact') headingclass=' nodetails';
 								
-								if(element['SwitchType']=='Dimmer'){
+								if(element['SwitchType']=='Dimmer')
+								{
 									var name = element['Name'];
 									var level = element['Level'];
 								}
-								else {
+								else 
+								{
 									if(element['Name']=='jointspace-TV Schakelaar'){
 										var name='TV Schakelaar';
 									}
@@ -577,13 +578,15 @@ function getDevices(){
 								html = str_replace('[LANG_ACTIVATE]',lang['activate'],html);
 								html = str_replace('[CURRENT_DATE]',currentdate,html);
 	
-								if($('#device'+element['idx']).length>0){
+								if($('#device'+element['idx']).length>0)
+								{
 									$('#device'+element['idx']).replaceWith(html);
 								}
 								else $('.row.dashboard').append(html);
 							}
 							
-							if(setslide!==''){
+							if(setslide!=='')
+							{
 								initSlider(setslide,element);
 								setslide='';
 							}
@@ -706,7 +709,7 @@ function initSlider(setslide,element){
 			slideDevice($(this).attr('id').substr(2),ev.value);
 		});
 	}
-	},1000);
+	},0);
 }
 
 function showDashboard(){

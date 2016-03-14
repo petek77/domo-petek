@@ -166,7 +166,7 @@ blocks['dimmer']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[ID
 				blocks['dimmer']+='<div class="col-xs-8">';
 					blocks['dimmer']+='<div>[NAME] (<span id="current[IDX]">[CURRENT]</span>%)</div>';
 					blocks['dimmer']+='<div>';
-					blocks['dimmer']+='<input type="text" class="span2" value="[LEVEL]" id="sl[IDX]" >';
+						blocks['dimmer']+='<input type="text" class="span2" value="[LEVEL]" id="sl[IDX]" >';
 					blocks['dimmer']+='</div>';
 				blocks['dimmer']+='</div>';
 				blocks['dimmer']+='<div class="col-xs-4 text-right icon">';
@@ -317,7 +317,7 @@ blocks['navigation'] = '<nav class="navbar navbar-default navbar-fixed-top">';
 			blocks['navigation']+= '<ul class="nav navbar-nav">';
 				blocks['navigation']+= '<li><img id="logo" src="" /><div class="version"><span id ="version">v</span></div></li>';
 				blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showDashboard();"><i class="fa fa-edge fa-2x"></i><span class="menu-item">'+lang['dashboard']+'</span></a></li>';
-				//if(_SYSTEMINFO==1) blocks['navigation']+= '<span id="systeminfo"></span>';
+				if(_SYSTEMINFO==1) blocks['navigation']+= '<span id="systeminfo"></span>';
 				
 				//blocks['navigation']+= '<li><span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span></li>';
 				
