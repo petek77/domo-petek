@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.8 Beta';
+var dashticz_version='0.94.9 Beta';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -487,24 +487,32 @@ function getDevices(){
 							else if(!sliding && !in_array(data.result[r]['idx'],_BLOCKSHIDE)){
 								var currentdate = '<span class="small">'+lang['last_seen']+': '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
 								
-								if(
-									(data.result[r]['Status']!=='Off' && parseFloat(data.result[r]['Level'])>0) || 
-									data.result[r]['Status']=='On' ||
-									parseFloat(data.result[r]['Rain'])>0
-								){
-									var iconclass = 'device-active';
-									var deviceactive = 'device-online';
-								}
-								else {
-									var iconclass = 'device-inactive';
-									var deviceactive = 'device-offline';
-								}
-								
 								var html = '';
 								var setslide='';
 								var element = data.result[r];							
 								
-								if(element['SwitchType']=='Push On Button' || element['SwitchType']=='On/Off' || element['SwitchType']=='Doorbell' || element['SwitchType']=='Door Lock' || element['Type']=='Scene' || element['Type']=='Group'){
+								if(
+									(element['Status']!=='Off' && parseFloat(element['Level'])>0) || 
+									element['Status']=='On' ||
+									parseFloat(element['Rain'])>0
+								){
+									var iconclass = 'device-active';
+									var deviceactive = 'device-online';
+								}
+								else if(element['SwitchType']=='Blinds' && element['Status']=='Closed'){
+ 									var iconclass = 'device-inactive';
+ 									var deviceactive = 'device-online';
+ 								}
+ 								else if(element['SwitchType']=='Blinds' && element['Status']=='Open'){
+ 									var iconclass = 'device-active';
+ 									var deviceactive = 'device-offline';
+ 								}
+ 								else {
+									var iconclass = 'device-inactive';
+									var deviceactive = 'device-offline';
+								}
+								
+								if(element['SwitchType']=='Push On Button' || element['SwitchType']=='Blinds' || element['SwitchType']=='On/Off' || element['SwitchType']=='Doorbell' || element['SwitchType']=='Door Lock' || element['Type']=='Scene' || element['Type']=='Group'){
 									if(element['Protected'] == true){
 										var html = blocks['protected'];
 									}
@@ -514,6 +522,11 @@ function getDevices(){
 									else if(element['SwitchType']=='Doorbell' || element['SwitchType']=='Push On Button' || element['SwitchType']=='Door Lock') {
 										var html = blocks['pushbutton'];
 									}
+ 									else if(element['SwitchType']=='Blinds') {
+ 										
+ 										//maybe if/esles for different types (element['Type'])
+ 										var html = blocks['blinds'];
+ 									}
 									else if(element['Type']=='Group') {
 										var html = blocks['group'];
 									}
