@@ -98,6 +98,9 @@ When Domoticz installs an update, it complete removes the www-directory, before 
 
 
 # Changelog
+0.94.6 - 07/07/2016
+- Style fixes in some blocks
+
 0.94.4 - 16/05/2015
 - Style fixes in some blocks
 
