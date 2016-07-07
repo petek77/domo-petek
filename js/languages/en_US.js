@@ -7,6 +7,11 @@ lang['editmode'] = 'Edit blocks';
 lang['settings'] = 'Settings';
 lang['graphs'] = 'Graphs';
 
+lang['device_on'] = 'On';
+lang['device_off'] = 'Off';
+lang['device_open'] = 'Open';
+lang['device_closed'] = 'Closed';
+
 lang['settings_title'] = 'Settings';
 lang['settings_description'] = 'Change Dashticz the way you want it to be';
 
@@ -35,6 +40,11 @@ lang['blocksettings_blocktitle'] = 'Title';
 lang['blocksettings_switchtype'] = 'Switch type';
 lang['blocksettings_hide'] = 'Hide block';
 
+lang['block_wundergrund_rain'] = 'Rain';
+lang['block_wundergrund_gust'] = 'Gust';
+lang['block_wundergrund_pressurehumidity'] = 'Pressure / Humidity';
+
+lang['close'] = 'Close';
 lang['cancel'] = 'Cancel';
 lang['save'] = 'Save';
 lang['saving'] = 'Saving...';

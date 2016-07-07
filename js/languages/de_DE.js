@@ -7,6 +7,11 @@ lang['editmode'] = 'Änderung Blöcke';
 lang['settings'] = 'Einstellungen';
 lang['graphs'] = 'Grafiken';
 
+lang['device_on'] = 'Aan';
+lang['device_off'] = 'Uit';
+lang['device_open'] = 'Open';
+lang['device_closed'] = 'Closed';
+
 lang['settings_title'] = 'Einstellungen';
 lang['settings_description'] = 'Dashticz Beschreibung';
 
@@ -35,6 +40,11 @@ lang['blocksettings_blocktitle'] = 'Block Name';
 lang['blocksettings_switchtype'] = 'Schaltertyp';
 lang['blocksettings_hide'] = 'Block verbergen';
 
+lang['block_wundergrund_rain'] = 'Rain';
+lang['block_wundergrund_gust'] = 'Gust';
+lang['block_wundergrund_pressurehumidity'] = 'Pressure / Humidity';
+
+lang['close'] = 'Close';
 lang['cancel'] = 'Abbrechen';
 lang['save'] = 'Speichern';
 lang['saving'] = 'speichert';
