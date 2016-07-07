@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.5';
+var dashticz_version='0.94.6';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -131,7 +131,16 @@ $(document).ready(function(){
 							}
 						});
 						
-						if(_DAY) var html = '<span id="dayornight"><i class="fa fa-sun-o"></i></span>';
+						$.ajax({
+						 url: _HOST_DOMOTICZ+'/json.htm?type=command&param=getconfig&jsoncallback=?',
+						 type: 'GET',async: false,contentType: "application/json",dataType: 'jsonp',
+						 success: function(data) {
+							_LATITUDE = data.Latitude;
+							_LONGITUDE = data.Longitude;
+						 }
+					  });
+				  
+				  		if(_DAY) var html = '<span id="dayornight"><i class="fa fa-sun-o"></i></span>';
 						else var html = '<span id="dayornight"><i class="fa fa-moon-o"></i></span>';
 						
 						if($('#dayornight').length>0) $('#dayornight').replaceWith(html);
@@ -461,25 +470,33 @@ function getDevices(){
 							}
 							else if(!sliding && !in_array(data.result[r]['idx'],_BLOCKSHIDE)){
 								var currentdate = '<span class="small">'+lang['last_seen']+': '+date('d-m H:i',strtotime(data.result[r]['LastUpdate']))+'</span>';
+
+								var html = '';
+								var setslide='';
+								var element = data.result[r];
 								
 								if(
-									(data.result[r]['Status']!=='Off' && parseFloat(data.result[r]['Level'])>0) || 
-									data.result[r]['Status']=='On' ||
-									parseFloat(data.result[r]['Rain'])>0
+									(element['Status']!=='Off' && parseFloat(element['Level'])>0) || 
+									element['Status']=='On' || 
+									parseFloat(element['Rain'])>0
 								){
 									var iconclass = 'device-active';
 									var deviceactive = 'device-online';
 								}
+								else if(element['SwitchType']=='Blinds' && element['Status']=='Closed'){
+									var iconclass = 'device-inactive';
+									var deviceactive = 'device-online';
+								}
+								else if(element['SwitchType']=='Blinds' && element['Status']=='Open'){
+									var iconclass = 'device-active';
+									var deviceactive = 'device-offline';
+								}
 								else {
 									var iconclass = 'device-inactive';
 									var deviceactive = 'device-offline';
-								}
+								}							
 								
-								var html = '';
-								var setslide='';
-								var element = data.result[r];							
-								
-								if(element['SwitchType']=='Push On Button' || element['SwitchType']=='On/Off' || element['SwitchType']=='Doorbell' || element['SwitchType']=='Door Lock' || element['Type']=='Scene' || element['Type']=='Group'){
+								if(element['SwitchType']=='Push On Button' || element['SwitchType']=='Blinds' || element['SwitchType']=='On/Off' || element['SwitchType']=='Doorbell' || element['SwitchType']=='Door Lock' || element['Type']=='Scene' || element['Type']=='Group'){
 									if(element['Protected'] == true){
 										var html = blocks['protected'];
 									}
@@ -491,6 +508,12 @@ function getDevices(){
 									}
 									else if(element['Type']=='Group') {
 										var html = blocks['group'];
+									}
+									else if(element['SwitchType']=='Blinds') {
+										
+										//kan o.a. het type zijn: element['Type'] = RFY
+										//hier nog even de verschillen voor uitzoeken
+										var html = blocks['blinds'];
 									}
 									else{
 										var html = blocks['switch'];

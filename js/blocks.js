@@ -38,6 +38,32 @@ blocks['switch']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[ID
 		
 	blocks['switch']+='</div>';
 blocks['switch']+='</div>';
+			
+//BLINDS SWITCH									
+blocks['blinds']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[IDX]">';
+	blocks['blinds']+='<div class="panel panel-block panel-default panel-switch [DEVICEACTIVE]" data-idx="[IDX]">';
+		blocks['blinds']+='<div class="panel-heading [HEADERCLASS]">';
+			blocks['blinds']+='<div class="row">';
+				blocks['blinds']+='<div class="col-xs-8">';
+					blocks['blinds']+='<div class="huge">[CURRENT]</div>';
+					blocks['blinds']+='<div>[NAME]</div>';
+				blocks['blinds']+='</div>';
+				blocks['blinds']+='<div class="col-xs-4 text-right icon">';
+					blocks['blinds']+='<i class="mainicon [ICON] [ICONCLASS]"></i>';
+				blocks['blinds']+='</div>';
+			blocks['blinds']+='</div>';
+		blocks['blinds']+='</div>';
+
+		blocks['blinds']+='<a href="javascript:[SWITCH_FUNCTION]([IDX]);">';
+			blocks['blinds']+='<div class="panel-footer">';
+				blocks['blinds']+='<span class="pull-left">[LANG_SWITCH][CURRENT_DATE]</span>';
+				blocks['blinds']+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+				blocks['blinds']+='<div class="clearfix"></div>';
+			blocks['blinds']+='</div>';
+		blocks['blinds']+='</a>';
+		
+	blocks['blinds']+='</div>';
+blocks['blinds']+='</div>';
 
 //PROTECTED
 blocks['protected']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[IDX]">';
