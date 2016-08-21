@@ -512,7 +512,11 @@ function getDevices(){
 									var deviceactive = 'device-offline';
 								}
 								
-								if(element['SwitchType']=='Push On Button' || element['SwitchType']=='Blinds' || element['SwitchType']=='On/Off' || element['SwitchType']=='Doorbell' || element['SwitchType']=='Door Lock' || element['Type']=='Scene' || element['Type']=='Group'){
+								if(element['SwitchType']=='Media Player'){
+									var html = blocks['mediaplayer'];
+									console.log(element);
+								}
+								else if(element['SwitchType']=='Push On Button' || element['SwitchType']=='Blinds' || element['SwitchType']=='On/Off' || element['SwitchType']=='Doorbell' || element['SwitchType']=='Door Lock' || element['Type']=='Scene' || element['Type']=='Group'){
 									if(element['Protected'] == true){
 										var html = blocks['protected'];
 									}
@@ -564,7 +568,12 @@ function getDevices(){
 								var headingclass='';
 								if(element['TypeImg']=='temperature' || element['SwitchType']=='Contact') headingclass=' nodetails';
 								
-								if(element['SwitchType']=='Dimmer')
+								if(element['SwitchType']=='Media Player')
+								{
+									var name = element['Data'];
+									var current = element['Name'];
+								}
+								else if(element['SwitchType']=='Dimmer')
 								{
 									var name = element['Name'];
 									var level = element['Level'];

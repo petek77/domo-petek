@@ -198,11 +198,6 @@ div.fl-right { float:right }
 	font-size:16px;
 }
 
-.row.xbmc .panel > .panel-heading {
-	height:auto;
-	padding:0px;
-}
-
 .panel-heading.nodetails {
 	height:127px;
 	border:0px;

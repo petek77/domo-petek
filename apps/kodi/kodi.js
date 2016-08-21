@@ -45,13 +45,21 @@ function openXbmcLibrary(){
 	$.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_data,function(data){
 		if(data!=="{}"){
 			data=$.parseJSON(data);
+			
+			
 			for(m in data['result']['movies']){
 				if($('#movie'+data['result']['movies'][m]['movieid']).length==0){
 	
-					var html='<div class="col-sm-2 movieitem" id="movie'+data['result']['movies'][m]['movieid']+'">';
-						html+='<div class="panel">';
+					var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="movie'+data['result']['movies'][m]['movieid']+'">';
+						html+='<div class="panel panel-block panel-default">';
 							html+='<div class="panel-heading">';
-								html+='<img class="poster" width="100%" src="'+decodeURIComponent(data['result']['movies'][m]['art']['poster']).substr(0,decodeURIComponent(data['result']['movies'][m]['art']['poster']).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+' title="'+data['result']['movies'][m]['label']+'"/>';		
+								/*
+								if(typeof(data['result']['movies'][m]['art']['fanart'])!=='undefined') var poster = data['result']['movies'][m]['art']['fanart'];
+								if(typeof(data['result']['movies'][m]['art']['poster'])!=='undefined') var poster = data['result']['movies'][m]['art']['poster'];
+							
+								html+='<img class="poster" width="100%" src="'+decodeURIComponent(poster).substr(0,decodeURIComponent(poster).length - 1).replace('image://','').replace('/original/','/w396/')+'" alt="'+data['result']['movies'][m]['label']+'" title="'+data['result']['movies'][m]['label']+'"/>';		
+								*/
+								html+='<div class="row"><div class="col-xs-8"><div class="huge">'+data['result']['movies'][m]['label']+'</div></div></div>';
 							html+='</div>';
 							
 							html+='<a class="details" href="javascript:playMovie('+data['result']['movies'][m]['movieid']+');">';
@@ -67,12 +75,51 @@ function openXbmcLibrary(){
 					$('.row.xbmc').append(html);
 				}
 			}
+			
+			_dataTV = {"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows",  "params": {"sort": {"order": "ascending", "method": "title"}, "properties": ["title", "art"] }, "id": 1};
+			$.post('apps/kodi/kodi.php?host='+_HOST_XBMC,_dataTV,function(dataTV){
+				if(dataTV!=="{}"){
+					dataTV=$.parseJSON(dataTV);
+					console.log(dataTV);
+					
+					for(m in dataTV['result']['tvshows']){
+						if($('#tvshow'+dataTV['result']['tvshows'][m]['tvshowid']).length==0){
+			
+							var html='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="tvshow'+dataTV['result']['tvshows'][m]['tvshowid']+'">';
+								html+='<div class="panel panel-block panel-default">';
+									html+='<div class="panel-heading">';
+										html+='<div class="row"><div class="col-xs-8"><div class="huge">'+dataTV['result']['tvshows'][m]['label']+'</div></div></div>';
+									html+='</div>';
+									
+									html+='<a class="details" href="javascript:playTvShow('+dataTV['result']['tvshows'][m]['tvshowid']+');">';
+										html+='<div class="panel-footer">';
+											html+='<span class="pull-left">'+lang['media_play']+'</span>';
+											html+='<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>';
+											html+='<div class="clearfix"></div>';
+										html+='</div>';
+									html+='</a>';
+								html+='</div>';
+							html+='</div>';
+							  
+							$('.row.xbmc').append(html);
+						}
+					}
+			
+				}
+			});
+			
+	
+	
 		}
 		
 	});
 }
 
 function playMovie(ID){
+	alert('Not yet implemented!');
+}
+
+function playTvShow(ID){
 	alert('Not yet implemented!');
 }
 
@@ -227,6 +274,7 @@ function getXbmc(){
 												$('#xbmc-playing').replaceWith(html);
 											}
 											else $('.row.dashboard:first').prepend(html);
+											$('.mediaplayerBlock').hide();
 										}
 										else {
 											$('#xbmc-playing').remove();	

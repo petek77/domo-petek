@@ -86,6 +86,20 @@ blocks['protected']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device
 	blocks['protected']+='</div>';
 blocks['protected']+='</div>';
 
+//MEDIA PLAYER
+blocks['mediaplayer']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 mediaplayerBlock" id="device[IDX]">';
+	blocks['mediaplayer']+='<div class="panel panel-block panel-default panel-noswitch [DEVICEACTIVE]" data-idx="[IDX]">';
+		blocks['mediaplayer']+='<div class="panel-heading [HEADERCLASS]">';
+			blocks['mediaplayer']+='<div class="row">';
+				blocks['mediaplayer']+='<div class="col-xs-12">';
+					blocks['mediaplayer']+='<div class="huge">[CURRENT]</div>';
+					blocks['mediaplayer']+='<div>[NAME]</div>';
+				blocks['mediaplayer']+='</div>';
+			blocks['mediaplayer']+='</div>';
+		blocks['mediaplayer']+='</div>';
+	blocks['mediaplayer']+='</div>';
+blocks['mediaplayer']+='</div>';
+
 //NO SWITCH AVAILABLE
 blocks['noswitch']='<div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" id="device[IDX]">';
 	blocks['noswitch']+='<div class="panel panel-block panel-default panel-noswitch [DEVICEACTIVE]" data-idx="[IDX]">';
@@ -376,7 +390,7 @@ blocks['navigation'] = '<nav class="navbar navbar-default navbar-fixed-top">';
 				// blocks['navigation']+= '<li><span class="floorplans"> | <select onchange="setFloorplan(this.value);"></select></span></li>';
 				
 				if(_GRAPHSEPARATE==1) blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showCharts();"><i class="fa fa-line-chart fa-2x"></i><span class="menu-item">'+lang['graphs']+'</span></a></li>';
-				
+				if(_HOST_XBMC!=='') blocks['navigation']+= '<li><a href="javascript:void(0);" onclick="showXbmc();"><i class="fa fa-play-circle-o fa-2x"></i><span class="menu-item">'+lang['kodi']+'</span></a></li>';
 				if(_HOST_JOINTSPACE!==''){
 					var jspcs = _HOST_JOINTSPACE.split(',');
 					var tjspcs = 1;
@@ -548,10 +562,12 @@ blocks['editblock'] = '<div class="modal fade" id="editblockModal" tabindex="-1"
 							switchtypes[11] = 'Door Lock';
 							switchtypes[1] = 'Doorbell';
 							switchtypes[12] = 'Dusk Sensor';
+							switchtypes[17] = 'Media Player';
 							switchtypes[8] = 'Motion Sensor';
 							switchtypes[0] = 'On/Off';
 							switchtypes[10] = 'Push Off Button';
 							switchtypes[9] = 'Push On Button';
+							switchtypes[18] = 'Selector';
 							switchtypes[5] = 'Smoke Detector';
 							switchtypes[15] = 'Venetian Blinds EU';
 							switchtypes[14] = 'Venetian Blinds US';
