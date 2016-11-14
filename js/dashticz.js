@@ -3,7 +3,7 @@
 var req;
 var slide;
 var sliding = false;
-var dashticz_version='0.94.9 Beta';
+var dashticz_version='0.94.10 Beta';
 var temperatureBlock=new Object();
 var sliderlist = new Object();
 var alldevices = new Object();
@@ -309,7 +309,7 @@ function openCamera(idx,name){
 		cameramodal+='<div class="modal-dialog">';
 			cameramodal+='<div class="modal-content">';
 				cameramodal+='<div class="modal-header">';
-					cameramodal+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+					cameramodal+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
 					cameramodal+='<h4 class="modal-title" id="myModalLabel">'+name+'</h4>';
 				cameramodal+='</div>';
 				cameramodal+='<div class="modal-body">';
@@ -388,7 +388,7 @@ function getDevices(){
 						else if(typeof(data.result[r]['Status'])!=='undefined') var current=data.result[r]['Status'];
 						else if(data.result[r]['TypeImg']=='temperature'){
 							var current=data.result[r]['Data'].split(' ');
-							current = current[0]+'&deg;';
+							current = current[0]+'°';
 						}
 						else if(typeof(data.result[r]['Data'])!=='undefined') var current=data.result[r]['Data'];
 						else if(typeof(data.result[r]['Name'])!=='undefined') var current=data.result[r]['Name'];
@@ -412,7 +412,7 @@ function getDevices(){
 						{
 							if(_SYSTEMINFO == 1)
 							{
-								var html = '<span id="systeminfo'+data.result[r]['idx']+'">&nbsp;&nbsp;&nbsp;'+data.result[r]['Name']+': <B>'+current+'</B>&nbsp;&nbsp;&nbsp;</span>';
+								var html = '<span id="systeminfo'+data.result[r]['idx']+'">   '+data.result[r]['Name']+': <B>'+current+'</B>   </span>';
 								if($('#systeminfo'+data.result[r]['idx']).length>0)
 								{
 									$('#systeminfo'+data.result[r]['idx']).replaceWith(html);
@@ -474,7 +474,7 @@ function getDevices(){
 									temperatureBlock['Wunderground']['Forecast'] = data.result[r]['ForecastStr'];
 									
 									d = data.result[r]['Data'].split(', ');
-									temperatureBlock['Wunderground']['Temp'] = d[0].replace(' C','&deg;');
+									temperatureBlock['Wunderground']['Temp'] = d[0].replace(' C','°');
 									temperatureBlock['Wunderground']['Humidity'] = d[1];
 									temperatureBlock['Wunderground']['Pressure'] = d[2];
 									temperatureBlock['Wunderground']['DewPoint'] = data.result[r]['DewPoint'];
